@@ -1,0 +1,75 @@
+{
+  "name": "CICD | LT | Audit Log",
+  "schema": [
+    {
+      "control_type": "text",
+      "label": "Entity",
+      "name": "col1",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Entity ID",
+      "name": "col2",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Operation",
+      "name": "col3",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "User ID",
+      "name": "col4",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "User Name",
+      "name": "col5",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Timestamp",
+      "name": "col6",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 7",
+      "name": "col7",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 8",
+      "name": "col8",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 9",
+      "name": "col9",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 10",
+      "name": "col10",
+      "type": "string",
+      "sticky": false
+    }
+  ]
+}

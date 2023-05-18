@@ -1,0 +1,394 @@
+{
+  "name": "CICD | FUNC | Create Release",
+  "description": "When there is a function call, do action and other actions",
+  "version": 17,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "524c86bd",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Pipeline Configuration ID\",\"name\":\"pipeline_config_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Project Configuration ID\",\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Pipeline Execution Reference\",\"name\":\"pipeline_exec_ref\",\"type\":\"string\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Promote Source Configuration Id\",\"name\":\"promote_source_config_id\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Promote Target Folder Id\",\"name\":\"promote_target_folder_id\",\"type\":\"string\",\"optional\":true}],\"label\":\"Promote Context\",\"name\":\"promote_context\",\"type\":\"object\",\"optional\":true}]",
+      "result_schema_json": "[{\"name\":\"status\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Status\"},{\"name\":\"message\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Message\"},{\"name\":\"release_log\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Release log\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Pipeline Configuration ID",
+            "name": "pipeline_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Project Configuration ID",
+            "name": "project_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Pipeline Execution Reference",
+            "name": "pipeline_exec_ref",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Promote Source Configuration Id",
+                "name": "promote_source_config_id",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Promote Target Folder Id",
+                "name": "promote_target_folder_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "label": "Promote Context",
+            "name": "promote_context",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato.job_context.account_properties.Accl_CICD_source_code_repository', 'account_property', 'Accl.CICD.source_code_repository').downcase",
+              "rhs": "github",
+              "uuid": "condition-2c154395-8c76-4aa8-a5ca-babd6913dcd8"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "73a0153b",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | Create Release in GitHub</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | Create Release in GitHub"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Extensions/Code Repository/GitHub/cicd_func_create_release_in_github.recipe.json",
+                "name": "CICD | FUNC | Create Release in GitHub",
+                "folder": "Extensions/Code Repository/GitHub"
+              },
+              "parameters": {
+                "pipeline_config_id": "#{_('data.workato_recipe_function.524c86bd.parameters.pipeline_config_id')}",
+                "project_config_id": "#{_('data.workato_recipe_function.524c86bd.parameters.project_config_id')}",
+                "pipeline_exec_ref": "#{_('data.workato_recipe_function.524c86bd.parameters.pipeline_exec_ref')}",
+                "promote_context": {
+                  "promote_source_config_id": "#{_('data.workato_recipe_function.524c86bd.parameters.promote_context.promote_source_config_id')}",
+                  "promote_target_folder_id": "#{_('data.workato_recipe_function.524c86bd.parameters.promote_context.promote_target_folder_id')}"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "status",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Message",
+                    "name": "message",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Release log",
+                    "name": "release_log",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Configuration ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Configuration ID",
+                    "name": "project_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Execution Reference",
+                    "name": "pipeline_exec_ref",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Promote Source Configuration Id",
+                        "name": "promote_source_config_id",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Promote Target Folder Id",
+                        "name": "promote_target_folder_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "label": "Promote Context",
+                    "name": "promote_context",
+                    "type": "object",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "a1b11cbb-4052-42dd-866d-d64c82c7ec7d"
+          },
+          {
+            "number": 3,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "bbd447f1",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "result": {
+                "status": "#{_('data.workato_recipe_function.73a0153b.result.status')}",
+                "message": "#{_('data.workato_recipe_function.73a0153b.result.message')}",
+                "release_log": "#{_('data.workato_recipe_function.73a0153b.result.release_log')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "status",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Message",
+                    "name": "message",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Release log",
+                    "name": "release_log",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "status",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Message",
+                    "name": "message",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Release log",
+                    "name": "release_log",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "result.message",
+              "result.status",
+              "result",
+              "result.release_log"
+            ],
+            "uuid": "19893e56-13a2-4e87-96ec-b6f86da4034a"
+          }
+        ],
+        "uuid": "59126a0f-7c79-4cb4-a594-b9ab96258505"
+      },
+      {
+        "number": 4,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "b00f7499",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "result": {
+            "status": "ERROR",
+            "message": "Source Code Repository not configured!"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Status",
+                "name": "status",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Message",
+                "name": "message",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Release log",
+                "name": "release_log",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Status",
+                "name": "status",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Message",
+                "name": "message",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Release log",
+                "name": "release_log",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "result.message",
+          "result.status"
+        ],
+        "uuid": "1cfe0ea8-2e53-489e-84b4-d95e2558d4b3"
+      }
+    ],
+    "uuid": "8a51896d-ab34-417c-96dc-f5d6e29c038e"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

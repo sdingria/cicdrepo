@@ -1,0 +1,2855 @@
+{
+  "name": "CICD | FUNC | (Slack) Collect Target Configuration details",
+  "description": "When there is a new command to Slack Workbot, do action and other actions",
+  "version": 12,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "83e2f583",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Trigger ID\",\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Deployment mode\",\"name\":\"deployment_mode\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Source environment\",\"name\":\"source_environment\",\"type\":\"string\",\"optional\":false},{\"name\":\"target_details\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Target details\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Target env\",\"name\":\"target_env\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Folder ID\",\"name\":\"folder_id\",\"type\":\"string\",\"optional\":false}]},{\"name\":\"project_name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Project name\"}]",
+      "result_schema_json": "[{\"control_type\":\"text\",\"label\":\"Target folder details\",\"name\":\"target_folder_details\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Modal cancelled\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Modal cancelled\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"modal_cancelled\",\"type\":\"boolean\",\"optional\":false},\"name\":\"modal_cancelled\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Trigger ID",
+            "name": "trigger_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Deployment mode",
+            "name": "deployment_mode",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Source environment",
+            "name": "source_environment",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "target_details",
+            "type": "array",
+            "of": "object",
+            "label": "Target details",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Target env",
+                "name": "target_env",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "control_type": "text",
+            "label": "Project name",
+            "name": "project_name",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.workato_recipe_function.83e2f583.parameters.deployment_mode')}",
+              "rhs": "rlcm",
+              "uuid": "condition-2c60feeb-7756-42a5-b3a0-e91f3a333129"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "4d94ee94",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | List Environments</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | List Environments"
+            },
+            "toggleCfg": {
+              "parameters.exclude_production": true
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Functions/CICD for Workato/cicd_func_list_environments.recipe.json",
+                "name": "CICD | FUNC | List Environments",
+                "folder": "Functions/CICD for Workato"
+              },
+              "parameters": {
+                "exclude_production": "false",
+                "source_environment": "#{_('data.workato_recipe_function.83e2f583.parameters.source_environment')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "environments",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Environments",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Is production",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Is production",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "is_production",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "is_production",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "integer",
+                        "label": "Level",
+                        "parse_output": "integer_conversion",
+                        "name": "level",
+                        "type": "integer",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Source environment",
+                    "name": "source_environment",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "environment",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Exclude production",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Exclude production",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "exclude_production",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "exclude_production",
+                    "type": "boolean",
+                    "optional": true,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.exclude_production",
+              "parameters.source_environment"
+            ],
+            "uuid": "bf3fdd1d-c91d-4e03-bc23-58b8d82b29a1"
+          },
+          {
+            "number": 3,
+            "provider": "workato_variable",
+            "name": "declare_variable",
+            "as": "7af8a3b8",
+            "title": "  Create variables Target Environment 1, Target Folder Details",
+            "description": "Create variables <span class=\"provider\">Target Environment 1</span>, <span class=\"provider\">Target Folder Details</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "variables": {
+                "schema": "[{\"control_type\":\"text\",\"label\":\"Target Environment 1\",\"name\":\"target_environment_1\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Target Folder Details\",\"name\":\"target_folder_details\",\"type\":\"string\",\"optional\":true}]",
+                "data": {
+                  "target_environment_1": "=_('data.workato_recipe_function.4d94ee94.result.environments')[0][:name]",
+                  "target_folder_details": "[]"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "text",
+                "label": "Target Environment 1",
+                "name": "target_environment_1",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Target Folder Details",
+                "name": "target_folder_details",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "add_field_label": "Add a variable",
+                "control_type": "form-schema-builder",
+                "empty_schema_title": "Add variables by giving them a name, type and default value",
+                "exclude_fields": [
+                  "hint"
+                ],
+                "item_label": "variable",
+                "label": "Variables",
+                "mark_as_required": true,
+                "name": "variables",
+                "ngIf": "!input.name",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "broadcast_change_event": true,
+                    "type": "string",
+                    "name": "schema"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Target Environment 1",
+                        "name": "target_environment_1",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Target Folder Details",
+                        "name": "target_folder_details",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Data",
+                    "type": "object",
+                    "name": "data"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "variables.data.target_environment_1",
+              "variables",
+              "variables.schema",
+              "variables.data.target_environment_2",
+              "variables.data",
+              "variables.data.target_folder_details",
+              "variables.data.asset_info",
+              "variables.data.asset_id",
+              "variables.data.environment_type"
+            ],
+            "uuid": "1c03ae2d-85a1-4cd1-830f-b3ed85f44890",
+            "skip": false
+          },
+          {
+            "number": 4,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "#{_('data.workato_recipe_function.4d94ee94.result.environments.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.4d94ee94.result.environments')}",
+                  "rhs": "0",
+                  "uuid": "condition-c23c7904-27e5-48bc-b2ad-c1106fae11fd"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 5,
+                "provider": "slack_bot",
+                "name": "block_kit_modals",
+                "as": "09cd792f",
+                "title": null,
+                "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "view.submit_view.bot_command": "workato configure project"
+                },
+                "toggleCfg": {
+                  "modal_action_type": true
+                },
+                "input": {
+                  "modal_action_type": "open",
+                  "view": {
+                    "modal_title": "Configure Target (4/4)",
+                    "submit_view": {
+                      "continue_flow": "true",
+                      "close_text": "Close",
+                      "submit_text": "Submit",
+                      "notify_on_close": "true"
+                    },
+                    "blocks": [
+                      {
+                        "block_type": "section_with_text",
+                        "section_text": ":exclamation: *No possible targets to configure.*"
+                      }
+                    ]
+                  },
+                  "trigger_id": "#{_('data.workato_recipe_function.83e2f583.parameters.trigger_id')}"
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Modal cancelled",
+                    "name": "view_cancelled",
+                    "toggle_field": {
+                      "label": "Modal cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "view_cancelled"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "boolean",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    }
+                  }
+                ],
+                "visible_config_fields": [
+                  "modal_action_type",
+                  "view_id",
+                  "view.blocks",
+                  "view.blocks.block_type",
+                  "view.blocks.section_text",
+                  "view.blocks.image_url",
+                  "view.blocks.alt_text",
+                  "view.blocks.button_title",
+                  "view.blocks.url",
+                  "view.blocks.bot_command",
+                  "view.blocks.params",
+                  "view.blocks.style",
+                  "view.blocks.attachment_fields",
+                  "view.blocks.attachment_fields.value",
+                  "view.blocks.placeholder_text",
+                  "view.blocks.menu_type",
+                  "view.blocks.dynamic_menu_recipe",
+                  "view.blocks.field_name",
+                  "view.blocks.options",
+                  "view.blocks.options.title",
+                  "view.blocks.options.bot_command",
+                  "view.blocks.options.params",
+                  "view.blocks.options.init_value",
+                  "view.blocks.init_option",
+                  "view.blocks.options.value",
+                  "view.blocks.init_options",
+                  "view.blocks.initial_date",
+                  "view.blocks.image_title",
+                  "view.blocks.elements",
+                  "view.blocks.elements.type",
+                  "view.blocks.elements.text",
+                  "view.blocks.elements.image_url",
+                  "view.blocks.elements.alt_text",
+                  "view.blocks.actions",
+                  "view.blocks.actions.type",
+                  "view.blocks.actions.button_title",
+                  "view.blocks.actions.url",
+                  "view.blocks.actions.bot_command",
+                  "view.blocks.actions.params",
+                  "view.blocks.actions.style",
+                  "view.blocks.actions.placeholder_text",
+                  "view.blocks.actions.initial_date",
+                  "view.blocks.actions.field_name",
+                  "view.blocks.actions.options",
+                  "view.blocks.actions.options.params",
+                  "view.blocks.actions.menu_type",
+                  "view.blocks.actions.dynamic_menu_recipe",
+                  "view.blocks.label_text",
+                  "view.blocks.hint_text",
+                  "view.blocks.optional",
+                  "view.blocks.initial_value",
+                  "view.blocks.objects",
+                  "view.blocks.objects.blocks",
+                  "view.blocks.objects.blocks.block_type",
+                  "view.blocks.objects.blocks.section_text",
+                  "view.blocks.objects.blocks.image_url",
+                  "view.blocks.objects.blocks.alt_text",
+                  "view.blocks.objects.blocks.button_title",
+                  "view.blocks.objects.blocks.url",
+                  "view.blocks.objects.blocks.bot_command",
+                  "view.blocks.objects.blocks.params",
+                  "view.blocks.objects.blocks.style",
+                  "view.blocks.objects.blocks.attachment_fields",
+                  "view.blocks.objects.blocks.attachment_fields.value",
+                  "view.blocks.objects.blocks.placeholder_text",
+                  "view.blocks.objects.blocks.menu_type",
+                  "view.blocks.objects.blocks.dynamic_menu_recipe",
+                  "view.blocks.objects.blocks.field_name",
+                  "view.blocks.objects.blocks.options",
+                  "view.blocks.objects.blocks.options.title",
+                  "view.blocks.objects.blocks.options.bot_command",
+                  "view.blocks.objects.blocks.options.params",
+                  "view.blocks.objects.blocks.options.init_value",
+                  "view.blocks.objects.blocks.init_option",
+                  "view.blocks.objects.blocks.initial_date",
+                  "view.blocks.objects.blocks.image_title",
+                  "view.blocks.objects.blocks.elements",
+                  "view.blocks.objects.blocks.elements.type",
+                  "view.blocks.objects.blocks.elements.text",
+                  "view.blocks.objects.blocks.elements.image_url",
+                  "view.blocks.objects.blocks.elements.alt_text",
+                  "view.blocks.objects.blocks.actions",
+                  "view.blocks.objects.blocks.actions.type",
+                  "view.blocks.objects.blocks.actions.button_title",
+                  "view.blocks.objects.blocks.actions.url",
+                  "view.blocks.objects.blocks.actions.bot_command",
+                  "view.blocks.objects.blocks.actions.params",
+                  "view.blocks.objects.blocks.actions.style",
+                  "view.blocks.objects.blocks.actions.placeholder_text",
+                  "view.blocks.objects.blocks.actions.initial_date",
+                  "view.blocks.objects.blocks.actions.field_name",
+                  "view.blocks.objects.blocks.actions.options",
+                  "view.blocks.objects.blocks.actions.options.params",
+                  "view.blocks.objects.blocks.actions.menu_type",
+                  "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+                  "view.submit_view.continue_flow",
+                  "view.submit_view.bot_command",
+                  "view.submit_view.params",
+                  "view.submit_view.submit_text",
+                  "view.submit_view.close_text",
+                  "trigger_id",
+                  "view",
+                  "view.modal_title",
+                  "view.submit_view",
+                  "view.submit_view.notify_on_close"
+                ],
+                "uuid": "430204d7-c8a8-4621-ae7d-507430dd3619"
+              },
+              {
+                "number": 6,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "is_true",
+                      "lhs": "#{_('data.slack_bot.09cd792f.view_cancelled')}",
+                      "rhs": "",
+                      "uuid": "condition-9c094037-4edd-4dd7-a4dc-360ce3a28724"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 7,
+                    "provider": "workato_recipe_function",
+                    "name": "return_result",
+                    "as": "68b31a82",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "result.modal_cancelled": true
+                    },
+                    "input": {
+                      "result": {
+                        "target_folder_details": "=_('data.workato_variable.7af8a3b8.target_folder_details').presence",
+                        "modal_cancelled": "true"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target folder details",
+                            "name": "target_folder_details",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target folder details",
+                            "name": "target_folder_details",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "97030286-081a-43e8-9358-70ed0ad571ba"
+                  }
+                ],
+                "uuid": "27ab8eaf-80c0-4853-9471-1203b7cbce07"
+              },
+              {
+                "number": 8,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "a99340d9",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                  "result.modal_cancelled": true
+                },
+                "input": {
+                  "result": {
+                    "target_folder_details": "=_('data.workato_variable.7af8a3b8.target_folder_details').presence",
+                    "modal_cancelled": "false"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Target folder details",
+                        "name": "target_folder_details",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Modal cancelled",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Modal cancelled",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "modal_cancelled",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "modal_cancelled",
+                        "type": "boolean",
+                        "optional": false,
+                        "default": "false"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Target folder details",
+                        "name": "target_folder_details",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Modal cancelled",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Modal cancelled",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "modal_cancelled",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "modal_cancelled",
+                        "type": "boolean",
+                        "optional": false,
+                        "default": "false"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "dd190127-b645-40f5-a2cb-eeb4474c0093"
+              }
+            ],
+            "uuid": "fb4b3a0b-0ff1-492e-b521-34f87bb3385d"
+          },
+          {
+            "number": 9,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "e2678d77",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | List Environment Folders</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | List Environment Folders"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Functions/CICD for Workato/cicd_func_list_environment_folders.recipe.json",
+                "name": "CICD | FUNC | List Environment Folders",
+                "folder": "Functions/CICD for Workato"
+              },
+              "parameters": {
+                "environment": "#{_('data.workato_variable.7af8a3b8.target_environment_1')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "folders_list",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Folders list",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Folder name",
+                        "name": "folder_name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Folder ID",
+                        "name": "folder_id",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "environment",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Parent folder ID",
+                    "name": "parent_folder_id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "29a00747-636f-40db-b6c4-e4d1a44e971d"
+          },
+          {
+            "number": 10,
+            "provider": "workato_variable",
+            "name": "declare_list",
+            "as": "79900a8a",
+            "title": " Create Folders: Target Environment 1  list",
+            "description": "Create <span class=\"provider\">Folders: Target Environment 1 </span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "Folders: Target Environment 1 ",
+              "list_item_schema_json": "[{\"name\":\"folder_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Folder ID\"},{\"name\":\"folder_name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Folder name\"}]",
+              "list_items": {
+                "____source": "#{_('data.workato_recipe_function.e2678d77.result.folders_list')}",
+                "folder_id": "#{_('data.workato_recipe_function.e2678d77.result.folders_list.first.folder_id')}",
+                "folder_name": "#{_('data.workato_recipe_function.e2678d77.result.folders_list.first.folder_name')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "hint": "",
+                "label": "Folders: Target Environment 1 ",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                "label": "Items",
+                "name": "list_items",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "7b37d9b8-8303-4a8b-9325-8cb840abad10"
+          },
+          {
+            "number": 11,
+            "provider": "workato_variable",
+            "name": "insert_to_list",
+            "as": "c0250b93",
+            "title": "Add item to Folders: Target Environment 1  list",
+            "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Folders: Target Environment 1 </span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Folders: Target Environment 1  (step 21)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "start",
+              "name": "7b37d9b8-8303-4a8b-9325-8cb840abad10:79900a8a",
+              "list_item": {
+                "folder_id": "##AC##",
+                "folder_name": "<< Auto Create >>"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List item",
+                "name": "list_item",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "f4ca2d46-ad9f-4a24-84bb-932263ce7145"
+          },
+          {
+            "number": 12,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "greater_than",
+                  "lhs": "#{_('data.workato_recipe_function.4d94ee94.result.environments.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.4d94ee94.result.environments')}",
+                  "rhs": "1",
+                  "uuid": "condition-957225b5-3aae-4b0b-897c-00af99df1cac"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 13,
+                "provider": "workato_variable",
+                "name": "declare_variable",
+                "as": "4b71a306",
+                "title": "  Create variable Target Environment 2",
+                "description": "Create variable <span class=\"provider\">Target Environment 2</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "variables": {
+                    "schema": "[{\"name\":\"target_environment_2\",\"type\":\"string\",\"optional\":true,\"label\":\"Target Environment 2\",\"control_type\":\"text\"}]",
+                    "data": {
+                      "target_environment_2": "=_('data.workato_recipe_function.4d94ee94.result.environments')[1][:name]"
+                    }
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "text",
+                    "label": "Target Environment 2",
+                    "name": "target_environment_2",
+                    "optional": true,
+                    "type": "string"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "add_field_label": "Add a variable",
+                    "control_type": "form-schema-builder",
+                    "empty_schema_title": "Add variables by giving them a name, type and default value",
+                    "exclude_fields": [
+                      "hint"
+                    ],
+                    "item_label": "variable",
+                    "label": "Variables",
+                    "mark_as_required": true,
+                    "name": "variables",
+                    "ngIf": "!input.name",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Schema",
+                        "extends_schema": true,
+                        "broadcast_change_event": true,
+                        "type": "string",
+                        "name": "schema"
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target Environment 2",
+                            "name": "target_environment_2",
+                            "type": "string",
+                            "optional": true,
+                            "hint": "Defaults to nil if not supplied.",
+                            "sticky": true
+                          }
+                        ],
+                        "label": "Data",
+                        "type": "object",
+                        "name": "data"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "variables.data.target_environment_1",
+                  "variables",
+                  "variables.schema",
+                  "variables.data.target_environment_2"
+                ],
+                "uuid": "39d82642-361e-4591-8b9f-1a893ea583d9"
+              },
+              {
+                "number": 14,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "14334122",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | List Environment Folders</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUN | List Environment Folders"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Functions/CICD for Workato/cicd_func_list_environment_folders.recipe.json",
+                    "name": "CICD | FUNC | List Environment Folders",
+                    "folder": "Functions/CICD for Workato"
+                  },
+                  "parameters": {
+                    "environment": "#{_('data.workato_variable.4b71a306.target_environment_2')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "name": "folders_list",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Folders list",
+                        "optional": false,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Folder name",
+                            "name": "folder_name",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Folder ID",
+                            "name": "folder_id",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Environment",
+                        "name": "environment",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Parent folder ID",
+                        "name": "parent_folder_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "fde66faf-6aae-4793-b517-0e5bc5ba90d5"
+              },
+              {
+                "number": 15,
+                "provider": "workato_variable",
+                "name": "declare_list",
+                "as": "4d5ba355",
+                "title": " Create Folders: Target Environment 2 list",
+                "description": "Create <span class=\"provider\">Folders: Target Environment 2</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "name": "Folders: Target Environment 2",
+                  "list_item_schema_json": "[{\"name\":\"folder_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Folder ID\"},{\"name\":\"folder_name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Folder name\"}]",
+                  "list_items": {
+                    "____source": "#{_('data.workato_recipe_function.14334122.result.folders_list')}",
+                    "folder_id": "#{_('data.workato_recipe_function.14334122.result.folders_list.first.folder_id')}",
+                    "folder_name": "#{_('data.workato_recipe_function.14334122.result.folders_list.first.folder_name')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "hint": "",
+                    "label": "Folders: Target Environment 2",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Folder ID",
+                        "name": "folder_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Folder name",
+                        "name": "folder_name",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                    "label": "Items",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Folder ID",
+                        "name": "folder_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Folder name",
+                        "name": "folder_name",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "uuid": "cfcf3f62-d32e-4e77-817d-f11f998de66a"
+              },
+              {
+                "number": 16,
+                "provider": "workato_variable",
+                "name": "insert_to_list",
+                "as": "d4b11f37",
+                "title": "Add item to Folders: Target Environment 2 list",
+                "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Folders: Target Environment 2</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Folders: Target Environment 2 (step 26)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "start",
+                  "name": "cfcf3f62-d32e-4e77-817d-f11f998de66a:4d5ba355",
+                  "list_item": {
+                    "folder_id": "##AC##",
+                    "folder_name": "<< Auto Create >>"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List item",
+                    "name": "list_item",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Folder ID",
+                        "name": "folder_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Folder name",
+                        "name": "folder_name",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "96e96168-5d3e-44a6-89b1-cdbde51b4eb0"
+              },
+              {
+                "number": 17,
+                "provider": "slack_bot",
+                "name": "block_kit_modals",
+                "as": "b34ffe06",
+                "title": null,
+                "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "view.submit_view.bot_command": "workato configure project"
+                },
+                "toggleCfg": {
+                  "modal_action_type": true,
+                  "view.submit_view.bot_command": true,
+                  "view.blocks.2.options.init_value": false,
+                  "view.blocks.4.options.init_value": false
+                },
+                "input": {
+                  "modal_action_type": "open",
+                  "view": {
+                    "modal_title": "Configure Target (4/4)",
+                    "submit_view": {
+                      "continue_flow": "true",
+                      "bot_command": "CICD configure project",
+                      "submit_text": "Submit",
+                      "close_text": "Cancel",
+                      "notify_on_close": "true"
+                    },
+                    "blocks": [
+                      {
+                        "block_type": "context",
+                        "elements": [
+                          {
+                            "type": "text",
+                            "text": "Supports upto 2 target environments"
+                          }
+                        ]
+                      },
+                      {
+                        "block_type": "divider"
+                      },
+                      {
+                        "block_type": "select_menu_input",
+                        "label_text": "#{_('data.workato_variable.7af8a3b8.target_environment_1')}",
+                        "block_id": "target_env_1",
+                        "optional": "false",
+                        "menu_type": "static_select",
+                        "options": {
+                          "____source": "#{_('data.workato_variable.79900a8a.list_items')}",
+                          "title": "#{_('data.workato_variable.79900a8a.list_items.first.folder_name')}",
+                          "value": "#{_('data.workato_variable.79900a8a.list_items.first.folder_id')}",
+                          "init_value": "=_('data.workato_recipe_function.83e2f583.parameters.target_details').present? ? (_('data.workato_recipe_function.83e2f583.parameters.target_details').where(target_env: \"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\").first.present? && (_('data.workato_recipe_function.83e2f583.parameters.target_details').where(target_env: \"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\").first)[:folder_id] == _('data.workato_variable.79900a8a.list_items.first.folder_id') ? true : false) : (_('data.workato_variable.79900a8a.list_items.first.folder_id') == \"##AC##\" ? true : false)"
+                        },
+                        "placeholder_text": "Target Folder",
+                        "hint_text": "Select target folder for \"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\" environment."
+                      },
+                      {
+                        "block_type": "divider"
+                      },
+                      {
+                        "block_type": "select_menu_input",
+                        "label_text": "#{_('data.workato_variable.4b71a306.target_environment_2')}",
+                        "hint_text": "Select target folder for \"#{_('data.workato_variable.4b71a306.target_environment_2')}\" environment.",
+                        "optional": "false",
+                        "block_id": "target_env_2",
+                        "placeholder_text": "Target Folder",
+                        "menu_type": "static_select",
+                        "options": {
+                          "____source": "#{_('data.workato_variable.4d5ba355.list_items')}",
+                          "title": "#{_('data.workato_variable.4d5ba355.list_items.first.folder_name')}",
+                          "value": "#{_('data.workato_variable.4d5ba355.list_items.first.folder_id')}",
+                          "init_value": "=_('data.workato_recipe_function.83e2f583.parameters.target_details').present? && _('data.workato_recipe_function.83e2f583.parameters.target_details').where(target_env: \"#{_('data.workato_variable.4b71a306.target_environment_2')}\").first.present? && (_('data.workato_recipe_function.83e2f583.parameters.target_details').where(target_env: \"#{_('data.workato_variable.4b71a306.target_environment_2')}\").first)[:folder_id] == _('data.workato_variable.79900a8a.list_items.first.folder_id') ? true : (_('data.workato_variable.4d5ba355.list_items.first.folder_id') == \"##AC##\" ? true : false)"
+                        }
+                      }
+                    ]
+                  },
+                  "trigger_id": "#{_('data.workato_recipe_function.83e2f583.parameters.trigger_id')}"
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Modal cancelled",
+                    "name": "view_cancelled",
+                    "toggle_field": {
+                      "label": "Modal cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "view_cancelled"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "boolean",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    }
+                  },
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Target env 1",
+                        "name": "target_env_1",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Target env 2",
+                        "name": "target_env_2",
+                        "type": "string"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "modal_action_type",
+                  "view_id",
+                  "view",
+                  "view.modal_title",
+                  "view.blocks",
+                  "view.blocks.block_type",
+                  "view.blocks.section_text",
+                  "view.blocks.image_url",
+                  "view.blocks.alt_text",
+                  "view.blocks.button_title",
+                  "view.blocks.url",
+                  "view.blocks.bot_command",
+                  "view.blocks.params",
+                  "view.blocks.style",
+                  "view.blocks.attachment_fields",
+                  "view.blocks.attachment_fields.value",
+                  "view.blocks.placeholder_text",
+                  "view.blocks.menu_type",
+                  "view.blocks.dynamic_menu_recipe",
+                  "view.blocks.field_name",
+                  "view.blocks.options",
+                  "view.blocks.options.title",
+                  "view.blocks.options.bot_command",
+                  "view.blocks.options.params",
+                  "view.blocks.options.init_value",
+                  "view.blocks.init_option",
+                  "view.blocks.options.value",
+                  "view.blocks.init_options",
+                  "view.blocks.initial_date",
+                  "view.blocks.image_title",
+                  "view.blocks.elements",
+                  "view.blocks.elements.type",
+                  "view.blocks.elements.text",
+                  "view.blocks.elements.image_url",
+                  "view.blocks.elements.alt_text",
+                  "view.blocks.actions",
+                  "view.blocks.actions.type",
+                  "view.blocks.actions.button_title",
+                  "view.blocks.actions.url",
+                  "view.blocks.actions.bot_command",
+                  "view.blocks.actions.params",
+                  "view.blocks.actions.style",
+                  "view.blocks.actions.placeholder_text",
+                  "view.blocks.actions.initial_date",
+                  "view.blocks.actions.field_name",
+                  "view.blocks.actions.options",
+                  "view.blocks.actions.options.params",
+                  "view.blocks.actions.menu_type",
+                  "view.blocks.actions.dynamic_menu_recipe",
+                  "view.blocks.label_text",
+                  "view.blocks.hint_text",
+                  "view.blocks.optional",
+                  "view.blocks.initial_value",
+                  "view.blocks.objects",
+                  "view.blocks.objects.blocks",
+                  "view.blocks.objects.blocks.block_type",
+                  "view.blocks.objects.blocks.section_text",
+                  "view.blocks.objects.blocks.image_url",
+                  "view.blocks.objects.blocks.alt_text",
+                  "view.blocks.objects.blocks.button_title",
+                  "view.blocks.objects.blocks.url",
+                  "view.blocks.objects.blocks.bot_command",
+                  "view.blocks.objects.blocks.params",
+                  "view.blocks.objects.blocks.style",
+                  "view.blocks.objects.blocks.attachment_fields",
+                  "view.blocks.objects.blocks.attachment_fields.value",
+                  "view.blocks.objects.blocks.placeholder_text",
+                  "view.blocks.objects.blocks.menu_type",
+                  "view.blocks.objects.blocks.dynamic_menu_recipe",
+                  "view.blocks.objects.blocks.field_name",
+                  "view.blocks.objects.blocks.options",
+                  "view.blocks.objects.blocks.options.title",
+                  "view.blocks.objects.blocks.options.bot_command",
+                  "view.blocks.objects.blocks.options.params",
+                  "view.blocks.objects.blocks.options.init_value",
+                  "view.blocks.objects.blocks.init_option",
+                  "view.blocks.objects.blocks.initial_date",
+                  "view.blocks.objects.blocks.image_title",
+                  "view.blocks.objects.blocks.elements",
+                  "view.blocks.objects.blocks.elements.type",
+                  "view.blocks.objects.blocks.elements.text",
+                  "view.blocks.objects.blocks.elements.image_url",
+                  "view.blocks.objects.blocks.elements.alt_text",
+                  "view.blocks.objects.blocks.actions",
+                  "view.blocks.objects.blocks.actions.type",
+                  "view.blocks.objects.blocks.actions.button_title",
+                  "view.blocks.objects.blocks.actions.url",
+                  "view.blocks.objects.blocks.actions.bot_command",
+                  "view.blocks.objects.blocks.actions.params",
+                  "view.blocks.objects.blocks.actions.style",
+                  "view.blocks.objects.blocks.actions.placeholder_text",
+                  "view.blocks.objects.blocks.actions.initial_date",
+                  "view.blocks.objects.blocks.actions.field_name",
+                  "view.blocks.objects.blocks.actions.options",
+                  "view.blocks.objects.blocks.actions.options.params",
+                  "view.blocks.objects.blocks.actions.menu_type",
+                  "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+                  "view.submit_view",
+                  "view.submit_view.continue_flow",
+                  "view.submit_view.bot_command",
+                  "view.submit_view.params",
+                  "view.submit_view.submit_text",
+                  "view.submit_view.close_text",
+                  "trigger_id",
+                  "view.submit_view.notify_on_close"
+                ],
+                "uuid": "7ca3a21f-380c-4d3e-8ca5-2b18a094ed68"
+              },
+              {
+                "number": 18,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "is_true",
+                      "lhs": "#{_('data.slack_bot.b34ffe06.view_cancelled')}",
+                      "rhs": "",
+                      "uuid": "condition-9c094037-4edd-4dd7-a4dc-360ce3a28724"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 19,
+                    "provider": "workato_recipe_function",
+                    "name": "return_result",
+                    "as": "3d4c5ba0",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "result.modal_cancelled": true
+                    },
+                    "input": {
+                      "result": {
+                        "target_folder_details": "=_('data.workato_variable.7af8a3b8.target_folder_details').presence",
+                        "modal_cancelled": "true"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target folder details",
+                            "name": "target_folder_details",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target folder details",
+                            "name": "target_folder_details",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "27efa020-9381-4259-b8cc-d25e94512f91"
+                  }
+                ],
+                "uuid": "a4975b77-2adc-4c02-922c-b5fadfb2b92b"
+              },
+              {
+                "number": 20,
+                "keyword": "else",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 21,
+                    "provider": "slack_bot",
+                    "name": "block_kit_modals",
+                    "as": "07fe5aa2",
+                    "title": null,
+                    "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "view.submit_view.bot_command": "workato configure project"
+                    },
+                    "toggleCfg": {
+                      "modal_action_type": true,
+                      "view.submit_view.bot_command": true,
+                      "view.blocks.2.options.init_value": false
+                    },
+                    "input": {
+                      "modal_action_type": "open",
+                      "view": {
+                        "modal_title": "Configure Target (4/4)",
+                        "submit_view": {
+                          "continue_flow": "true",
+                          "bot_command": "CICD configure project",
+                          "submit_text": "Submit",
+                          "close_text": "Cancel",
+                          "notify_on_close": "true"
+                        },
+                        "blocks": [
+                          {
+                            "block_type": "context",
+                            "elements": [
+                              {
+                                "type": "text",
+                                "text": "Supports upto 2 target environments"
+                              }
+                            ]
+                          },
+                          {
+                            "block_type": "divider"
+                          },
+                          {
+                            "block_type": "select_menu_input",
+                            "label_text": "#{_('data.workato_variable.7af8a3b8.target_environment_1')}",
+                            "block_id": "target_env_1",
+                            "optional": "false",
+                            "menu_type": "static_select",
+                            "options": {
+                              "____source": "#{_('data.workato_variable.79900a8a.list_items')}",
+                              "title": "#{_('data.workato_variable.79900a8a.list_items.first.folder_name')}",
+                              "value": "#{_('data.workato_variable.79900a8a.list_items.first.folder_id')}",
+                              "init_value": "=_('data.workato_recipe_function.83e2f583.parameters.target_details').present? ? (_('data.workato_recipe_function.83e2f583.parameters.target_details').where(target_env: \"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\").first.present? && (_('data.workato_recipe_function.83e2f583.parameters.target_details').where(target_env: \"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\").first)[:folder_id] == _('data.workato_variable.79900a8a.list_items.first.folder_id') ? true : false) : (_('data.workato_variable.79900a8a.list_items.first.folder_id') == \"##AC##\" ? true : false)"
+                            },
+                            "placeholder_text": "Target Folder",
+                            "hint_text": "Select target folder for \"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\" environment."
+                          }
+                        ]
+                      },
+                      "trigger_id": "#{_('data.workato_recipe_function.83e2f583.parameters.trigger_id')}"
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "checkbox",
+                        "label": "Modal cancelled",
+                        "name": "view_cancelled",
+                        "toggle_field": {
+                          "label": "Modal cancelled",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "type": "boolean",
+                          "name": "view_cancelled"
+                        },
+                        "toggle_hint": "Select from option list",
+                        "type": "boolean",
+                        "parse_output": {
+                        },
+                        "render_input": {
+                        }
+                      },
+                      {
+                        "label": "Parameters",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target env 1",
+                            "name": "target_env_1",
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "modal_action_type",
+                      "view_id",
+                      "view",
+                      "view.modal_title",
+                      "view.blocks",
+                      "view.blocks.block_type",
+                      "view.blocks.section_text",
+                      "view.blocks.image_url",
+                      "view.blocks.alt_text",
+                      "view.blocks.button_title",
+                      "view.blocks.url",
+                      "view.blocks.bot_command",
+                      "view.blocks.params",
+                      "view.blocks.style",
+                      "view.blocks.attachment_fields",
+                      "view.blocks.attachment_fields.value",
+                      "view.blocks.placeholder_text",
+                      "view.blocks.menu_type",
+                      "view.blocks.dynamic_menu_recipe",
+                      "view.blocks.field_name",
+                      "view.blocks.options",
+                      "view.blocks.options.title",
+                      "view.blocks.options.bot_command",
+                      "view.blocks.options.params",
+                      "view.blocks.options.init_value",
+                      "view.blocks.init_option",
+                      "view.blocks.options.value",
+                      "view.blocks.init_options",
+                      "view.blocks.initial_date",
+                      "view.blocks.image_title",
+                      "view.blocks.elements",
+                      "view.blocks.elements.type",
+                      "view.blocks.elements.text",
+                      "view.blocks.elements.image_url",
+                      "view.blocks.elements.alt_text",
+                      "view.blocks.actions",
+                      "view.blocks.actions.type",
+                      "view.blocks.actions.button_title",
+                      "view.blocks.actions.url",
+                      "view.blocks.actions.bot_command",
+                      "view.blocks.actions.params",
+                      "view.blocks.actions.style",
+                      "view.blocks.actions.placeholder_text",
+                      "view.blocks.actions.initial_date",
+                      "view.blocks.actions.field_name",
+                      "view.blocks.actions.options",
+                      "view.blocks.actions.options.params",
+                      "view.blocks.actions.menu_type",
+                      "view.blocks.actions.dynamic_menu_recipe",
+                      "view.blocks.label_text",
+                      "view.blocks.hint_text",
+                      "view.blocks.optional",
+                      "view.blocks.initial_value",
+                      "view.blocks.objects",
+                      "view.blocks.objects.blocks",
+                      "view.blocks.objects.blocks.block_type",
+                      "view.blocks.objects.blocks.section_text",
+                      "view.blocks.objects.blocks.image_url",
+                      "view.blocks.objects.blocks.alt_text",
+                      "view.blocks.objects.blocks.button_title",
+                      "view.blocks.objects.blocks.url",
+                      "view.blocks.objects.blocks.bot_command",
+                      "view.blocks.objects.blocks.params",
+                      "view.blocks.objects.blocks.style",
+                      "view.blocks.objects.blocks.attachment_fields",
+                      "view.blocks.objects.blocks.attachment_fields.value",
+                      "view.blocks.objects.blocks.placeholder_text",
+                      "view.blocks.objects.blocks.menu_type",
+                      "view.blocks.objects.blocks.dynamic_menu_recipe",
+                      "view.blocks.objects.blocks.field_name",
+                      "view.blocks.objects.blocks.options",
+                      "view.blocks.objects.blocks.options.title",
+                      "view.blocks.objects.blocks.options.bot_command",
+                      "view.blocks.objects.blocks.options.params",
+                      "view.blocks.objects.blocks.options.init_value",
+                      "view.blocks.objects.blocks.init_option",
+                      "view.blocks.objects.blocks.initial_date",
+                      "view.blocks.objects.blocks.image_title",
+                      "view.blocks.objects.blocks.elements",
+                      "view.blocks.objects.blocks.elements.type",
+                      "view.blocks.objects.blocks.elements.text",
+                      "view.blocks.objects.blocks.elements.image_url",
+                      "view.blocks.objects.blocks.elements.alt_text",
+                      "view.blocks.objects.blocks.actions",
+                      "view.blocks.objects.blocks.actions.type",
+                      "view.blocks.objects.blocks.actions.button_title",
+                      "view.blocks.objects.blocks.actions.url",
+                      "view.blocks.objects.blocks.actions.bot_command",
+                      "view.blocks.objects.blocks.actions.params",
+                      "view.blocks.objects.blocks.actions.style",
+                      "view.blocks.objects.blocks.actions.placeholder_text",
+                      "view.blocks.objects.blocks.actions.initial_date",
+                      "view.blocks.objects.blocks.actions.field_name",
+                      "view.blocks.objects.blocks.actions.options",
+                      "view.blocks.objects.blocks.actions.options.params",
+                      "view.blocks.objects.blocks.actions.menu_type",
+                      "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+                      "view.submit_view",
+                      "view.submit_view.continue_flow",
+                      "view.submit_view.bot_command",
+                      "view.submit_view.params",
+                      "view.submit_view.submit_text",
+                      "view.submit_view.close_text",
+                      "trigger_id",
+                      "view.submit_view.notify_on_close"
+                    ],
+                    "uuid": "343f55bc-3d96-470b-93de-e8e69d276b74"
+                  },
+                  {
+                    "number": 22,
+                    "keyword": "if",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "type": "compound",
+                      "operand": "and",
+                      "conditions": [
+                        {
+                          "operand": "is_true",
+                          "lhs": "#{_('data.slack_bot.07fe5aa2.view_cancelled')}",
+                          "rhs": "",
+                          "uuid": "condition-9c094037-4edd-4dd7-a4dc-360ce3a28724"
+                        }
+                      ]
+                    },
+                    "block": [
+                      {
+                        "number": 23,
+                        "provider": "workato_recipe_function",
+                        "name": "return_result",
+                        "as": "da73dc49",
+                        "title": null,
+                        "description": null,
+                        "keyword": "action",
+                        "dynamicPickListSelection": {
+                        },
+                        "toggleCfg": {
+                          "result.modal_cancelled": true
+                        },
+                        "input": {
+                          "result": {
+                            "target_folder_details": "=_('data.workato_variable.7af8a3b8.target_folder_details').presence",
+                            "modal_cancelled": "true"
+                          }
+                        },
+                        "extended_output_schema": [
+                          {
+                            "label": "Result",
+                            "name": "result",
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "Target folder details",
+                                "name": "target_folder_details",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "checkbox",
+                                "label": "Modal cancelled",
+                                "render_input": {
+                                },
+                                "parse_output": {
+                                },
+                                "toggle_hint": "Select from option list",
+                                "toggle_field": {
+                                  "label": "Modal cancelled",
+                                  "control_type": "text",
+                                  "toggle_hint": "Use custom value",
+                                  "name": "modal_cancelled",
+                                  "type": "boolean",
+                                  "optional": false
+                                },
+                                "name": "modal_cancelled",
+                                "type": "boolean",
+                                "optional": false,
+                                "default": "false"
+                              }
+                            ],
+                            "type": "object"
+                          }
+                        ],
+                        "extended_input_schema": [
+                          {
+                            "label": "Result",
+                            "name": "result",
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "Target folder details",
+                                "name": "target_folder_details",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "checkbox",
+                                "label": "Modal cancelled",
+                                "render_input": {
+                                },
+                                "parse_output": {
+                                },
+                                "toggle_hint": "Select from option list",
+                                "toggle_field": {
+                                  "label": "Modal cancelled",
+                                  "control_type": "text",
+                                  "toggle_hint": "Use custom value",
+                                  "name": "modal_cancelled",
+                                  "type": "boolean",
+                                  "optional": false
+                                },
+                                "name": "modal_cancelled",
+                                "type": "boolean",
+                                "optional": false,
+                                "default": "false"
+                              }
+                            ],
+                            "type": "object"
+                          }
+                        ],
+                        "uuid": "2cc39908-e1df-47e2-aa1f-4ef254a93d3f"
+                      }
+                    ],
+                    "uuid": "82cea5aa-6eb5-42e3-92dc-a8c44775ae05"
+                  }
+                ],
+                "uuid": "b3effa85-780c-42e5-9221-7abccc186f76"
+              }
+            ],
+            "uuid": "af26370d-2c7d-494e-b3c8-337f9794f30d"
+          },
+          {
+            "number": 24,
+            "provider": "workato_variable",
+            "name": "declare_variable",
+            "as": "78cb2477",
+            "title": "  Create variables Target Environment 1 Folder ID, Target Environment 2 Folder ID",
+            "description": "Create variables <span class=\"provider\">Target Environment 1 Folder ID</span>, <span class=\"provider\">Target Environment 2 Folder ID</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "variables": {
+                "schema": "[{\"name\":\"target_environment_1_folder_id\",\"type\":\"string\",\"optional\":true,\"label\":\"Target Environment 1 Folder ID\",\"control_type\":\"text\"},{\"name\":\"target_environment_2_folder_id\",\"type\":\"string\",\"optional\":true,\"label\":\"Target Environment 2 Folder ID\",\"control_type\":\"text\"}]",
+                "data": {
+                  "target_environment_1_folder_id": "=_('data.slack_bot.b34ffe06.parameters.target_env_1').present? ? _('data.slack_bot.b34ffe06.parameters.target_env_1') : _('data.slack_bot.07fe5aa2.parameters.target_env_1')",
+                  "target_environment_2_folder_id": "#{_('data.slack_bot.b34ffe06.parameters.target_env_2')}"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "text",
+                "label": "Target Environment 1 Folder ID",
+                "name": "target_environment_1_folder_id",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Target Environment 2 Folder ID",
+                "name": "target_environment_2_folder_id",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "add_field_label": "Add a variable",
+                "control_type": "form-schema-builder",
+                "empty_schema_title": "Add variables by giving them a name, type and default value",
+                "exclude_fields": [
+                  "hint"
+                ],
+                "item_label": "variable",
+                "label": "Variables",
+                "mark_as_required": true,
+                "name": "variables",
+                "ngIf": "!input.name",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "broadcast_change_event": true,
+                    "type": "string",
+                    "name": "schema"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Target Environment 1 Folder ID",
+                        "name": "target_environment_1_folder_id",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Target Environment 2 Folder ID",
+                        "name": "target_environment_2_folder_id",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Data",
+                    "type": "object",
+                    "name": "data"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "variables.data.target_environment_1_folder_id",
+              "variables",
+              "variables.schema",
+              "variables.data.target_environment_2_folder_id"
+            ],
+            "uuid": "958ed2f3-9085-4a94-a136-7ec741c813bc"
+          },
+          {
+            "number": 25,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "#{_('data.workato_variable.78cb2477.target_environment_1_folder_id')}",
+                  "rhs": "##AC##",
+                  "uuid": "condition-c080708b-0aca-443e-8358-033aa99e0586"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 26,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "cec5c4e0",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | Create Environment Folder</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUN | Create Environment Folder"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Functions/CICD for Workato/cicd_func_create_environment_folder.recipe.json",
+                    "name": "CICD | FUNC | Create Environment Folder",
+                    "folder": "Functions/CICD for Workato"
+                  },
+                  "parameters": {
+                    "environment": "#{_('data.workato_variable.7af8a3b8.target_environment_1')}",
+                    "folder_name": "#{_('data.workato_recipe_function.83e2f583.parameters.project_name')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "ID",
+                            "name": "id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Name",
+                            "name": "name",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Parent ID",
+                            "name": "parent_id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Created at",
+                            "name": "created_at",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Updated at",
+                            "name": "updated_at",
+                            "type": "string"
+                          }
+                        ],
+                        "label": "Folder",
+                        "name": "folder",
+                        "type": "object",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Environment",
+                        "name": "environment",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Folder Name",
+                        "name": "folder_name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Parent Folder ID",
+                        "name": "parent_folder_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "544d1a6c-1c43-4837-809d-83f074883f38"
+              },
+              {
+                "number": 27,
+                "provider": "workato_variable",
+                "name": "update_variables",
+                "as": "b02ffa48",
+                "title": null,
+                "description": "Update variables <span class=\"provider\">Target Environment 1 Folder ID</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": [
+                    {
+                      "label": "Target Environment 1 Folder ID (step 31)",
+                      "value": "958ed2f3-9085-4a94-a136-7ec741c813bc:78cb2477:target_environment_1_folder_id"
+                    }
+                  ]
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "name": "958ed2f3-9085-4a94-a136-7ec741c813bc:78cb2477:target_environment_1_folder_id",
+                  "target_environment_1_folder_id": "#{_('data.workato_recipe_function.cec5c4e0.result.folder.id')}"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Target Environment 1 Folder ID",
+                    "name": "target_environment_1_folder_id",
+                    "optional": true,
+                    "sticky": true,
+                    "type": "string",
+                    "strip_interpolation": true
+                  }
+                ],
+                "uuid": "121d119d-2fb1-432c-9542-e82b4a68348c"
+              }
+            ],
+            "uuid": "5d783911-fb5c-4519-8ceb-1f92226542fa"
+          },
+          {
+            "number": 28,
+            "provider": "workato_variable",
+            "name": "update_variables",
+            "as": "77c6719b",
+            "title": null,
+            "description": "Update variables <span class=\"provider\">Target Folder Details</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": [
+                {
+                  "label": "Target Folder Details (step 19)",
+                  "value": "1c03ae2d-85a1-4cd1-830f-b3ed85f44890:7af8a3b8:target_folder_details"
+                }
+              ]
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "1c03ae2d-85a1-4cd1-830f-b3ed85f44890:7af8a3b8:target_folder_details",
+              "target_folder_details": "[{\"target_env\":\"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\",\"folder_id\":\"#{_('data.workato_variable.78cb2477.target_environment_1_folder_id')}\"}]"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "text",
+                "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                "label": "Target Folder Details",
+                "name": "target_folder_details",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "strip_interpolation": true
+              }
+            ],
+            "uuid": "6eeb703a-6e0c-4f8c-b6ff-e9c15a18018b"
+          },
+          {
+            "number": 29,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "present",
+                  "lhs": "#{_('data.workato_variable.78cb2477.target_environment_2_folder_id')}",
+                  "rhs": "#AC#",
+                  "uuid": "condition-c080708b-0aca-443e-8358-033aa99e0586"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 30,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "equals_to",
+                      "lhs": "#{_('data.workato_variable.78cb2477.target_environment_2_folder_id')}",
+                      "rhs": "##AC##",
+                      "uuid": "condition-2f877b33-8f28-4213-b39d-c3f7b3325968"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 31,
+                    "provider": "workato_recipe_function",
+                    "name": "call_recipe",
+                    "as": "a4322429",
+                    "title": null,
+                    "description": "Call <span class=\"provider\">CICD | FUNC | Create Environment Folder</span>",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "flow_id": "CICD | FUN | Create Environment Folder"
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "flow_id": {
+                        "zip_name": "Functions/CICD for Workato/cicd_func_create_environment_folder.recipe.json",
+                        "name": "CICD | FUNC | Create Environment Folder",
+                        "folder": "Functions/CICD for Workato"
+                      },
+                      "parameters": {
+                        "environment": "#{_('data.workato_variable.4b71a306.target_environment_2')}",
+                        "folder_name": "#{_('data.workato_recipe_function.83e2f583.parameters.project_name')}"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "ID",
+                                "name": "id",
+                                "type": "string"
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Name",
+                                "name": "name",
+                                "type": "string"
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Parent ID",
+                                "name": "parent_id",
+                                "type": "string"
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Created at",
+                                "name": "created_at",
+                                "type": "string"
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Updated at",
+                                "name": "updated_at",
+                                "type": "string"
+                              }
+                            ],
+                            "label": "Folder",
+                            "name": "folder",
+                            "type": "object",
+                            "optional": false
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Parameters",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Environment",
+                            "name": "environment",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Folder Name",
+                            "name": "folder_name",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Parent Folder ID",
+                            "name": "parent_folder_id",
+                            "type": "string",
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "b3ba2e7a-17e7-43b9-8e48-97379eba9b2e"
+                  },
+                  {
+                    "number": 32,
+                    "provider": "workato_variable",
+                    "name": "update_variables",
+                    "as": "f3996553",
+                    "title": null,
+                    "description": "Update variables <span class=\"provider\">Target Environment 2 Folder ID</span>",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "name": [
+                        {
+                          "label": "Target Environment 2 Folder ID (step 31)",
+                          "value": "958ed2f3-9085-4a94-a136-7ec741c813bc:78cb2477:target_environment_2_folder_id"
+                        }
+                      ]
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "target_environment_2_folder_id": "#{_('data.workato_recipe_function.a4322429.result.folder.id')}",
+                      "name": "958ed2f3-9085-4a94-a136-7ec741c813bc:78cb2477:target_environment_2_folder_id"
+                    },
+                    "extended_input_schema": [
+                      {
+                        "control_type": "text",
+                        "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                        "label": "Target Environment 2 Folder ID",
+                        "name": "target_environment_2_folder_id",
+                        "optional": true,
+                        "sticky": true,
+                        "type": "string",
+                        "strip_interpolation": true
+                      }
+                    ],
+                    "uuid": "3ada9637-8843-455a-a657-98b2861b842a"
+                  }
+                ],
+                "uuid": "aa4d5ec7-6a58-4e8c-8f79-fe6902306343"
+              },
+              {
+                "number": 33,
+                "provider": "workato_variable",
+                "name": "update_variables",
+                "as": "f7297f6a",
+                "title": null,
+                "description": "Update variables <span class=\"provider\">Target Folder Details</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": [
+                    {
+                      "label": "Target Folder Details (step 19)",
+                      "value": "1c03ae2d-85a1-4cd1-830f-b3ed85f44890:7af8a3b8:target_folder_details"
+                    }
+                  ]
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "name": "1c03ae2d-85a1-4cd1-830f-b3ed85f44890:7af8a3b8:target_folder_details",
+                  "target_folder_details": "[{\"target_env\":\"#{_('data.workato_variable.7af8a3b8.target_environment_1')}\",\"folder_id\":\"#{_('data.workato_variable.78cb2477.target_environment_1_folder_id')}\"},{\"target_env\":\"#{_('data.workato_variable.4b71a306.target_environment_2')}\",\"folder_id\":\"#{_('data.workato_variable.78cb2477.target_environment_2_folder_id')}\"}]"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Target Folder Details",
+                    "name": "target_folder_details",
+                    "optional": true,
+                    "sticky": true,
+                    "type": "string",
+                    "strip_interpolation": true
+                  }
+                ],
+                "uuid": "9320e020-6665-4c48-903b-47ccdd34a529"
+              }
+            ],
+            "uuid": "a704919c-44c1-402d-b83a-baf3f1a573f2"
+          },
+          {
+            "number": 34,
+            "keyword": "else",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+            },
+            "block": [
+              {
+                "number": 35,
+                "provider": "slack_bot",
+                "name": "block_kit_modals",
+                "as": "10b68e2b",
+                "title": null,
+                "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "view.submit_view.bot_command": "workato cicd start"
+                },
+                "toggleCfg": {
+                  "modal_action_type": true
+                },
+                "input": {
+                  "modal_action_type": "open",
+                  "view": {
+                    "modal_title": "Configure Target (4/4)",
+                    "submit_view": {
+                      "continue_flow": "true",
+                      "submit_text": "Submit",
+                      "close_text": "Cancel",
+                      "notify_on_close": "true"
+                    },
+                    "blocks": [
+                      {
+                        "block_type": "section_with_text",
+                        "section_text": ":white_check_mark: No configuration needed."
+                      }
+                    ]
+                  },
+                  "trigger_id": "#{_('data.workato_recipe_function.83e2f583.parameters.trigger_id')}"
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Modal cancelled",
+                    "name": "view_cancelled",
+                    "toggle_field": {
+                      "label": "Modal cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "view_cancelled"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "boolean",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    }
+                  }
+                ],
+                "visible_config_fields": [
+                  "modal_action_type",
+                  "view_id",
+                  "view.blocks",
+                  "view.blocks.block_type",
+                  "view.blocks.section_text",
+                  "view.blocks.image_url",
+                  "view.blocks.alt_text",
+                  "view.blocks.button_title",
+                  "view.blocks.url",
+                  "view.blocks.bot_command",
+                  "view.blocks.params",
+                  "view.blocks.style",
+                  "view.blocks.attachment_fields",
+                  "view.blocks.attachment_fields.value",
+                  "view.blocks.placeholder_text",
+                  "view.blocks.menu_type",
+                  "view.blocks.dynamic_menu_recipe",
+                  "view.blocks.field_name",
+                  "view.blocks.options",
+                  "view.blocks.options.title",
+                  "view.blocks.options.bot_command",
+                  "view.blocks.options.params",
+                  "view.blocks.options.init_value",
+                  "view.blocks.init_option",
+                  "view.blocks.options.value",
+                  "view.blocks.init_options",
+                  "view.blocks.initial_date",
+                  "view.blocks.image_title",
+                  "view.blocks.elements",
+                  "view.blocks.elements.type",
+                  "view.blocks.elements.text",
+                  "view.blocks.elements.image_url",
+                  "view.blocks.elements.alt_text",
+                  "view.blocks.actions",
+                  "view.blocks.actions.type",
+                  "view.blocks.actions.button_title",
+                  "view.blocks.actions.url",
+                  "view.blocks.actions.bot_command",
+                  "view.blocks.actions.params",
+                  "view.blocks.actions.style",
+                  "view.blocks.actions.placeholder_text",
+                  "view.blocks.actions.initial_date",
+                  "view.blocks.actions.field_name",
+                  "view.blocks.actions.options",
+                  "view.blocks.actions.options.params",
+                  "view.blocks.actions.menu_type",
+                  "view.blocks.actions.dynamic_menu_recipe",
+                  "view.blocks.label_text",
+                  "view.blocks.hint_text",
+                  "view.blocks.optional",
+                  "view.blocks.initial_value",
+                  "view.blocks.objects",
+                  "view.blocks.objects.blocks",
+                  "view.blocks.objects.blocks.block_type",
+                  "view.blocks.objects.blocks.section_text",
+                  "view.blocks.objects.blocks.image_url",
+                  "view.blocks.objects.blocks.alt_text",
+                  "view.blocks.objects.blocks.button_title",
+                  "view.blocks.objects.blocks.url",
+                  "view.blocks.objects.blocks.bot_command",
+                  "view.blocks.objects.blocks.params",
+                  "view.blocks.objects.blocks.style",
+                  "view.blocks.objects.blocks.attachment_fields",
+                  "view.blocks.objects.blocks.attachment_fields.value",
+                  "view.blocks.objects.blocks.placeholder_text",
+                  "view.blocks.objects.blocks.menu_type",
+                  "view.blocks.objects.blocks.dynamic_menu_recipe",
+                  "view.blocks.objects.blocks.field_name",
+                  "view.blocks.objects.blocks.options",
+                  "view.blocks.objects.blocks.options.title",
+                  "view.blocks.objects.blocks.options.bot_command",
+                  "view.blocks.objects.blocks.options.params",
+                  "view.blocks.objects.blocks.options.init_value",
+                  "view.blocks.objects.blocks.init_option",
+                  "view.blocks.objects.blocks.initial_date",
+                  "view.blocks.objects.blocks.image_title",
+                  "view.blocks.objects.blocks.elements",
+                  "view.blocks.objects.blocks.elements.type",
+                  "view.blocks.objects.blocks.elements.text",
+                  "view.blocks.objects.blocks.elements.image_url",
+                  "view.blocks.objects.blocks.elements.alt_text",
+                  "view.blocks.objects.blocks.actions",
+                  "view.blocks.objects.blocks.actions.type",
+                  "view.blocks.objects.blocks.actions.button_title",
+                  "view.blocks.objects.blocks.actions.url",
+                  "view.blocks.objects.blocks.actions.bot_command",
+                  "view.blocks.objects.blocks.actions.params",
+                  "view.blocks.objects.blocks.actions.style",
+                  "view.blocks.objects.blocks.actions.placeholder_text",
+                  "view.blocks.objects.blocks.actions.initial_date",
+                  "view.blocks.objects.blocks.actions.field_name",
+                  "view.blocks.objects.blocks.actions.options",
+                  "view.blocks.objects.blocks.actions.options.params",
+                  "view.blocks.objects.blocks.actions.menu_type",
+                  "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+                  "view.submit_view.continue_flow",
+                  "view.submit_view.bot_command",
+                  "view.submit_view.params",
+                  "view.submit_view.submit_text",
+                  "view.submit_view.close_text",
+                  "trigger_id",
+                  "view",
+                  "view.modal_title",
+                  "view.submit_view",
+                  "view.submit_view.notify_on_close"
+                ],
+                "uuid": "dfaa18a6-c651-4b01-be00-0a6e689899ec"
+              },
+              {
+                "number": 36,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "is_true",
+                      "lhs": "#{_('data.slack_bot.10b68e2b.view_cancelled')}",
+                      "rhs": "",
+                      "uuid": "condition-9c094037-4edd-4dd7-a4dc-360ce3a28724"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 37,
+                    "provider": "workato_recipe_function",
+                    "name": "return_result",
+                    "as": "7a2a8d05",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "result.modal_cancelled": true
+                    },
+                    "input": {
+                      "result": {
+                        "target_folder_details": "=_('data.workato_variable.7af8a3b8.target_folder_details').presence",
+                        "modal_cancelled": "true"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target folder details",
+                            "name": "target_folder_details",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target folder details",
+                            "name": "target_folder_details",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "0c8bda07-dc61-4cad-a496-021c543c5028"
+                  }
+                ],
+                "uuid": "6ea3c537-19a8-4770-bb25-b43d83c57e6c"
+              }
+            ],
+            "uuid": "bf712baa-9744-4cd7-a2bc-f6188ff502a6"
+          }
+        ],
+        "uuid": "b0476a47-80d0-4d73-9905-27f51beeb337"
+      },
+      {
+        "number": 38,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "bbe529d6",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.modal_cancelled": true
+        },
+        "input": {
+          "result": {
+            "target_folder_details": "=_('data.workato_variable.7af8a3b8.target_folder_details').presence",
+            "modal_cancelled": "false"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Target folder details",
+                "name": "target_folder_details",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Modal cancelled",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Modal cancelled",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "modal_cancelled",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "modal_cancelled",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Target folder details",
+                "name": "target_folder_details",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Modal cancelled",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Modal cancelled",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "modal_cancelled",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "modal_cancelled",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "e78a0bed-8580-4580-a1ff-588c844ea8c0"
+      }
+    ],
+    "comment": "Define how users should command Workbot from Slack",
+    "uuid": "76398f2d-7794-4d9c-821f-c42636759590"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

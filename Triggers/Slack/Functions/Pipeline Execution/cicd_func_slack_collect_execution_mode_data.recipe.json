@@ -1,0 +1,936 @@
+{
+  "name": "CICD | FUNC | (Slack) Collect Execution Mode Data",
+  "description": "When there is a function call, do action",
+  "version": 23,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "190d1480",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Trigger ID\"},{\"name\":\"build_steps\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Build steps\"}]",
+      "result_schema_json": "[{\"control_type\":\"text\",\"label\":\"Execution mode\",\"name\":\"execution_mode\",\"type\":\"string\",\"optional\":false},{\"name\":\"package_version\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Package version\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Name\",\"name\":\"name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Value\",\"name\":\"value\",\"type\":\"string\",\"optional\":false}]},{\"control_type\":\"text\",\"label\":\"Trigger ID\",\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"checkbox\",\"label\":\"Modal cancelled\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Modal cancelled\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"modal_cancelled\",\"type\":\"boolean\",\"optional\":false},\"name\":\"modal_cancelled\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Trigger ID",
+            "name": "trigger_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Build steps",
+            "name": "build_steps",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "json_parser",
+        "name": "parse_json",
+        "as": "a5fe1975",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "sample_document": "{\"aqs_check\":false,\"build_config\":\"build_only\"}",
+          "document": "=_('data.workato_recipe_function.190d1480.parameters.build_steps').presence || \"{}\""
+        },
+        "extended_output_schema": [
+          {
+            "label": "Document",
+            "name": "document",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Aqs check",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Aqs check",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "type": "boolean",
+                  "name": "aqs_check"
+                },
+                "type": "boolean",
+                "name": "aqs_check"
+              },
+              {
+                "control_type": "text",
+                "label": "Build config",
+                "type": "string",
+                "name": "build_config"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "c2c14e0e-c3ac-4a21-831f-38cf92e9c744"
+      },
+      {
+        "number": 2,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "f2e76347",
+        "title": " Create Execution Modes list",
+        "description": "Create <span class=\"provider\">Execution Modes</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Execution Modes",
+          "list_item_schema_json": "[{\"name\":\"name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Name\"}]",
+          "list_items": [
+            {
+              "name": "direct"
+            }
+          ]
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Execution Modes",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "57ad20d3-d1fe-43ce-a4cd-5c26079de209"
+      },
+      {
+        "number": 3,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "d34b5c2a",
+        "title": " Create Package Version list",
+        "description": "Create <span class=\"provider\">Package Version</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Package Version",
+          "list_item_schema_json": "[{\"name\":\"name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Name\"},{\"name\":\"value\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Value\"}]"
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Package Version",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "db0d87fa-da56-4464-83e4-f9f35d26b888"
+      },
+      {
+        "number": 4,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "present",
+              "lhs": "#{_('data.json_parser.a5fe1975.document.build_config')}",
+              "rhs": "",
+              "uuid": "condition-ed438f80-e7dd-4a68-beba-045160c91cf4"
+            },
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.json_parser.a5fe1975.document.build_config')}",
+              "rhs": "build_export",
+              "uuid": "condition-795e160b-7668-41d3-8dc7-49fe1ed67baf"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 5,
+            "provider": "workato_variable",
+            "name": "insert_to_list",
+            "as": "18067b6b",
+            "title": "Add item to Execution Modes list",
+            "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Execution Modes</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Execution Modes (step 8)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "end",
+              "name": "57ad20d3-d1fe-43ce-a4cd-5c26079de209:f2e76347",
+              "list_item": {
+                "name": "promote"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List item",
+                "name": "list_item",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "2d33e0ab-0e1e-4d84-b041-781493279170"
+          },
+          {
+            "number": 6,
+            "provider": "workato_variable",
+            "name": "insert_to_list_batch",
+            "as": "812ba78c",
+            "title": "Add items to Package Version list",
+            "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Package Version</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Package Version (step 9)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "end",
+              "name": "db0d87fa-da56-4464-83e4-f9f35d26b888:d34b5c2a",
+              "list_items": [
+                {
+                  "name": "Minor",
+                  "value": "minor"
+                },
+                {
+                  "name": "Major",
+                  "value": "major"
+                },
+                {
+                  "name": "Bug Fix",
+                  "value": "bugfix"
+                }
+              ]
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List items",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Value",
+                    "name": "value",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "a7ac3191-7afa-4335-ae61-b4c31e509250"
+          }
+        ],
+        "uuid": "535a74b6-b4c2-4926-8533-8afa837cfdba"
+      },
+      {
+        "number": 7,
+        "provider": "slack_bot",
+        "name": "block_kit_modals",
+        "as": "70b669d4",
+        "title": null,
+        "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "modal_action_type": true,
+          "view.blocks.0.options.init_value": false
+        },
+        "input": {
+          "modal_action_type": "open",
+          "trigger_id": "#{_('data.workato_recipe_function.190d1480.parameters.trigger_id')}",
+          "view": {
+            "modal_title": "Pipeline Execution",
+            "submit_view": {
+              "continue_flow": "true",
+              "close_text": "Cancel",
+              "submit_text": "Next",
+              "notify_on_close": "true"
+            },
+            "blocks": [
+              {
+                "block_type": "radio_buttons_input",
+                "section_text": ":exclamation: *Please enable pipeline to continue*",
+                "label_text": "Execution Mode",
+                "hint_text": "Please select the execution mode",
+                "optional": "false",
+                "block_id": "execution_mode",
+                "options": {
+                  "____source": "#{_('data.workato_variable.f2e76347.list_items')}",
+                  "title": "=_('data.workato_variable.f2e76347.list_items.first.name').titleize",
+                  "value": "#{_('data.workato_variable.f2e76347.list_items.first.name')}",
+                  "init_value": "=_('data.workato_variable.f2e76347.list_items.first.name') == 'direct'"
+                }
+              },
+              {
+                "block_type": "divider"
+              },
+              {
+                "block_type": "context",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "*Direct*: Pipeline is triggered with a standalone input project configuration."
+                  },
+                  {
+                    "type": "text",
+                    "text": "*Promote*: Once a pipeline is executed successfully, it can further be promoted to pipeline configurations of higher environments. Not applicable for \"build only\" configurations."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "checkbox",
+            "label": "Modal cancelled",
+            "name": "view_cancelled",
+            "toggle_field": {
+              "label": "Modal cancelled",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "type": "boolean",
+              "name": "view_cancelled"
+            },
+            "toggle_hint": "Select from option list",
+            "type": "boolean",
+            "parse_output": {
+            },
+            "render_input": {
+            }
+          },
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution mode",
+                "name": "execution_mode",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "modal_action_type",
+          "view_id",
+          "view.blocks",
+          "view.blocks.block_type",
+          "view.blocks.section_text",
+          "view.blocks.image_url",
+          "view.blocks.alt_text",
+          "view.blocks.button_title",
+          "view.blocks.url",
+          "view.blocks.bot_command",
+          "view.blocks.params",
+          "view.blocks.style",
+          "view.blocks.attachment_fields",
+          "view.blocks.attachment_fields.value",
+          "view.blocks.placeholder_text",
+          "view.blocks.menu_type",
+          "view.blocks.dynamic_menu_recipe",
+          "view.blocks.field_name",
+          "view.blocks.options",
+          "view.blocks.options.title",
+          "view.blocks.options.bot_command",
+          "view.blocks.options.params",
+          "view.blocks.options.init_value",
+          "view.blocks.init_option",
+          "view.blocks.options.value",
+          "view.blocks.init_options",
+          "view.blocks.initial_date",
+          "view.blocks.image_title",
+          "view.blocks.elements",
+          "view.blocks.elements.type",
+          "view.blocks.elements.text",
+          "view.blocks.elements.image_url",
+          "view.blocks.elements.alt_text",
+          "view.blocks.actions",
+          "view.blocks.actions.type",
+          "view.blocks.actions.button_title",
+          "view.blocks.actions.url",
+          "view.blocks.actions.bot_command",
+          "view.blocks.actions.params",
+          "view.blocks.actions.style",
+          "view.blocks.actions.placeholder_text",
+          "view.blocks.actions.initial_date",
+          "view.blocks.actions.field_name",
+          "view.blocks.actions.options",
+          "view.blocks.actions.options.params",
+          "view.blocks.actions.menu_type",
+          "view.blocks.actions.dynamic_menu_recipe",
+          "view.blocks.label_text",
+          "view.blocks.hint_text",
+          "view.blocks.optional",
+          "view.blocks.initial_value",
+          "view.blocks.objects",
+          "view.blocks.objects.blocks",
+          "view.blocks.objects.blocks.block_type",
+          "view.blocks.objects.blocks.section_text",
+          "view.blocks.objects.blocks.image_url",
+          "view.blocks.objects.blocks.alt_text",
+          "view.blocks.objects.blocks.button_title",
+          "view.blocks.objects.blocks.url",
+          "view.blocks.objects.blocks.bot_command",
+          "view.blocks.objects.blocks.params",
+          "view.blocks.objects.blocks.style",
+          "view.blocks.objects.blocks.attachment_fields",
+          "view.blocks.objects.blocks.attachment_fields.value",
+          "view.blocks.objects.blocks.placeholder_text",
+          "view.blocks.objects.blocks.menu_type",
+          "view.blocks.objects.blocks.dynamic_menu_recipe",
+          "view.blocks.objects.blocks.field_name",
+          "view.blocks.objects.blocks.options",
+          "view.blocks.objects.blocks.options.title",
+          "view.blocks.objects.blocks.options.bot_command",
+          "view.blocks.objects.blocks.options.params",
+          "view.blocks.objects.blocks.options.init_value",
+          "view.blocks.objects.blocks.init_option",
+          "view.blocks.objects.blocks.initial_date",
+          "view.blocks.objects.blocks.image_title",
+          "view.blocks.objects.blocks.elements",
+          "view.blocks.objects.blocks.elements.type",
+          "view.blocks.objects.blocks.elements.text",
+          "view.blocks.objects.blocks.elements.image_url",
+          "view.blocks.objects.blocks.elements.alt_text",
+          "view.blocks.objects.blocks.actions",
+          "view.blocks.objects.blocks.actions.type",
+          "view.blocks.objects.blocks.actions.button_title",
+          "view.blocks.objects.blocks.actions.url",
+          "view.blocks.objects.blocks.actions.bot_command",
+          "view.blocks.objects.blocks.actions.params",
+          "view.blocks.objects.blocks.actions.style",
+          "view.blocks.objects.blocks.actions.placeholder_text",
+          "view.blocks.objects.blocks.actions.initial_date",
+          "view.blocks.objects.blocks.actions.field_name",
+          "view.blocks.objects.blocks.actions.options",
+          "view.blocks.objects.blocks.actions.options.params",
+          "view.blocks.objects.blocks.actions.menu_type",
+          "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+          "view.submit_view.continue_flow",
+          "view.submit_view.bot_command",
+          "view.submit_view.params",
+          "view.submit_view.submit_text",
+          "view.submit_view.close_text",
+          "trigger_id",
+          "view",
+          "view.modal_title",
+          "view.submit_view",
+          "view.submit_view.notify_on_close"
+        ],
+        "uuid": "f193ee2b-84a9-4656-a451-39696a2d7ced"
+      },
+      {
+        "number": 8,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "#{_('data.slack_bot.70b669d4.view_cancelled')}",
+              "rhs": "",
+              "uuid": "condition-9c094037-4edd-4dd7-a4dc-360ce3a28724"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 9,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "96138d90",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "result.modal_cancelled": true
+            },
+            "input": {
+              "result": {
+                "execution_mode": "#{_('data.slack_bot.70b669d4.parameters.execution_mode')}",
+                "package_version": {
+                  "____source": "#{_('data.workato_variable.d34b5c2a.list_items')}",
+                  "name": "#{_('data.workato_variable.d34b5c2a.list_items.first.name')}",
+                  "value": "#{_('data.workato_variable.d34b5c2a.list_items.first.value')}"
+                },
+                "trigger_id": "#{_('data.slack_bot.70b669d4.trigger_id')}",
+                "modal_cancelled": "true"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution mode",
+                    "name": "execution_mode",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "package_version",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Package version",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Modal cancelled",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Modal cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "modal_cancelled",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "modal_cancelled",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution mode",
+                    "name": "execution_mode",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "package_version",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Package version",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Modal cancelled",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Modal cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "modal_cancelled",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "modal_cancelled",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "03a6724a-c54f-4d3d-9518-38597492b8f9"
+          }
+        ],
+        "uuid": "a846c756-920b-41e8-80ff-f6b446711f3b"
+      },
+      {
+        "number": 10,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "d59b88db",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.modal_cancelled": true
+        },
+        "input": {
+          "result": {
+            "execution_mode": "#{_('data.slack_bot.70b669d4.parameters.execution_mode')}",
+            "package_version": {
+              "____source": "#{_('data.workato_variable.d34b5c2a.list_items')}",
+              "name": "#{_('data.workato_variable.d34b5c2a.list_items.first.name')}",
+              "value": "#{_('data.workato_variable.d34b5c2a.list_items.first.value')}"
+            },
+            "trigger_id": "#{_('data.slack_bot.70b669d4.trigger_id')}",
+            "modal_cancelled": "false"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution mode",
+                "name": "execution_mode",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "package_version",
+                "type": "array",
+                "of": "object",
+                "label": "Package version",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Value",
+                    "name": "value",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              },
+              {
+                "control_type": "text",
+                "label": "Trigger ID",
+                "name": "trigger_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Modal cancelled",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Modal cancelled",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "modal_cancelled",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "modal_cancelled",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution mode",
+                "name": "execution_mode",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "package_version",
+                "type": "array",
+                "of": "object",
+                "label": "Package version",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Value",
+                    "name": "value",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              },
+              {
+                "control_type": "text",
+                "label": "Trigger ID",
+                "name": "trigger_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Modal cancelled",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Modal cancelled",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "modal_cancelled",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "modal_cancelled",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "bb6ba960-0075-4cd7-96d3-a214b479cba1"
+      }
+    ],
+    "uuid": "a17111bc-8425-49f6-ba8d-e5f8ef583a9e"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

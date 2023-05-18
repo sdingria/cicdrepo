@@ -1,0 +1,539 @@
+{
+  "name": "CICD | FUNC | Build Package",
+  "description": "When there is a function call, do action",
+  "version": 21,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "a29774bd",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Source Environment\",\"name\":\"source_env\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Source Deployment Mode\",\"name\":\"source_deployment_mode\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Source Reference\",\"name\":\"source_reference\",\"type\":\"string\",\"optional\":false}]",
+      "result_schema_json": "[{\"control_type\":\"integer\",\"label\":\"ID\",\"name\":\"id\",\"type\":\"integer\",\"optional\":true,\"parse_output\":\"integer_conversion\"},{\"control_type\":\"text\",\"label\":\"Status\",\"name\":\"status\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Deployment mode\",\"name\":\"deployment_mode\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Workato environment\",\"name\":\"workato_environment\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Source reference\",\"name\":\"source_reference\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Download URL\",\"name\":\"download_url\",\"type\":\"string\",\"optional\":true}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Source Environment",
+            "name": "source_env",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Source Deployment Mode",
+            "name": "source_deployment_mode",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Source Reference",
+            "name": "source_reference",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_list",
+        "name": "create_list",
+        "as": "b143fcd7",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "size": "36"
+        },
+        "uuid": "1b6df933-7525-41ee-837b-2f3103f8c3f5"
+      },
+      {
+        "number": 2,
+        "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+        "name": "build_package_async",
+        "as": "d85768d5",
+        "title": null,
+        "description": "Build <span class=\"provider\">package</span> from Workato <span class=\"provider\">Environment</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "deployment_mode": false,
+          "workato_environment": false
+        },
+        "input": {
+          "deployment_mode": "#{_('data.workato_recipe_function.a29774bd.parameters.source_deployment_mode')}",
+          "id": "#{_('data.workato_recipe_function.a29774bd.parameters.source_reference')}",
+          "workato_environment": "#{_('data.workato_recipe_function.a29774bd.parameters.source_env')}"
+        },
+        "extended_input_schema": [
+          {
+            "control_type": "select",
+            "label": "Deployment Mode",
+            "name": "deployment_mode",
+            "optional": false,
+            "pick_list": "deployment_mode",
+            "toggle_field": {
+              "name": "deployment_mode",
+              "label": "Deployment Mode",
+              "type": "string",
+              "control_type": "text",
+              "optional": false,
+              "toggle_hint": "Use Deployment Mode"
+            },
+            "toggle_hint": "Select from list",
+            "type": "string"
+          },
+          {
+            "control_type": "select",
+            "label": "Workato Environment",
+            "name": "workato_environment",
+            "optional": false,
+            "pick_list": "environments",
+            "toggle_field": {
+              "name": "workato_environment",
+              "label": "Workato Environment Reference",
+              "type": "string",
+              "control_type": "text",
+              "optional": false,
+              "toggle_hint": "Use Environment Name"
+            },
+            "toggle_hint": "Select from list",
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "hint": "Source manifest or project/folder ID to build.",
+            "label": "ID",
+            "name": "id",
+            "optional": false,
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "hint": "Release description for documentation.",
+            "label": "Description",
+            "name": "description",
+            "ngIf": "input.deployment_mode == 'projects'",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "uuid": "c683a0b0-5dda-4603-86de-3c1d30baf6f8"
+      },
+      {
+        "number": 3,
+        "as": "da0eb1ad",
+        "keyword": "foreach",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 4,
+            "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+            "name": "get_build_package",
+            "as": "f5351659",
+            "title": null,
+            "description": "Get a build <span class=\"provider\">package</span> from Workato <span class=\"provider\">Environment</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "deployment_mode": false,
+              "workato_environment": false
+            },
+            "input": {
+              "deployment_mode": "#{_('data.workato_recipe_function.a29774bd.parameters.source_deployment_mode')}",
+              "id": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.d85768d5.id')}",
+              "workato_environment": "#{_('data.workato_recipe_function.a29774bd.parameters.source_env')}"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "select",
+                "label": "Deployment Mode",
+                "name": "deployment_mode",
+                "optional": false,
+                "pick_list": "deployment_mode",
+                "toggle_field": {
+                  "name": "deployment_mode",
+                  "label": "Deployment Mode",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Use Deployment Mode"
+                },
+                "toggle_hint": "Select from list",
+                "type": "string"
+              },
+              {
+                "control_type": "select",
+                "label": "Workato Environment",
+                "name": "workato_environment",
+                "optional": false,
+                "pick_list": "environments",
+                "toggle_field": {
+                  "name": "workato_environment",
+                  "label": "Workato Environment Reference",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Use Environment Name"
+                },
+                "toggle_hint": "Select from list",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Build or Package ID",
+                "name": "id",
+                "optional": false,
+                "type": "string"
+              }
+            ],
+            "uuid": "65ed9309-464d-4bbd-9579-c1bab5d7f4e3"
+          },
+          {
+            "number": 5,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "or",
+              "conditions": [
+                {
+                  "operand": "not_equals_to",
+                  "lhs": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5351659.status')}",
+                  "rhs": "in_progress",
+                  "uuid": "condition-8f06dc42-6bc5-4493-8656-1fb8e0e99fde"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 6,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "5a580fd1",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "result": {
+                    "id": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5351659.id')}",
+                    "status": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5351659.status')}",
+                    "deployment_mode": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5351659.deployment_mode')}",
+                    "workato_environment": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5351659.workato_environment')}",
+                    "source_reference": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5351659.source_reference')}",
+                    "download_url": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5351659.download_url')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "integer",
+                        "label": "ID",
+                        "parse_output": "integer_conversion",
+                        "name": "id",
+                        "type": "integer",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Status",
+                        "name": "status",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment mode",
+                        "name": "deployment_mode",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Workato environment",
+                        "name": "workato_environment",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source reference",
+                        "name": "source_reference",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Download URL",
+                        "name": "download_url",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "integer",
+                        "label": "ID",
+                        "parse_output": "integer_conversion",
+                        "name": "id",
+                        "type": "integer",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Status",
+                        "name": "status",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment mode",
+                        "name": "deployment_mode",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Workato environment",
+                        "name": "workato_environment",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source reference",
+                        "name": "source_reference",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Download URL",
+                        "name": "download_url",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "f24852e7-cf97-4fa3-8516-1d6690910974"
+              }
+            ],
+            "uuid": "a17eeca1-b457-4a5b-b396-fed77fb78968"
+          },
+          {
+            "number": 7,
+            "provider": "clock",
+            "name": "wait_for_interval",
+            "as": "99c2cbe3",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "interval": false
+            },
+            "input": {
+              "interval": "5"
+            },
+            "uuid": "7fe96c35-791f-41b6-b2cd-f2154fb88ae6"
+          }
+        ],
+        "source": "#{_('data.workato_list.b143fcd7.list')}",
+        "uuid": "b816c88f-2390-4532-9351-3aa6c9adfd77"
+      },
+      {
+        "number": 8,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "1970a7c6",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "result": {
+            "status": "failure",
+            "deployment_mode": "#{_('data.workato_recipe_function.a29774bd.parameters.source_deployment_mode')}",
+            "workato_environment": "#{_('data.workato_recipe_function.a29774bd.parameters.source_env')}",
+            "source_reference": "#{_('data.workato_recipe_function.a29774bd.parameters.source_reference')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "integer",
+                "label": "ID",
+                "parse_output": "integer_conversion",
+                "name": "id",
+                "type": "integer",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Status",
+                "name": "status",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Deployment mode",
+                "name": "deployment_mode",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Workato environment",
+                "name": "workato_environment",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Source reference",
+                "name": "source_reference",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Download URL",
+                "name": "download_url",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "integer",
+                "label": "ID",
+                "parse_output": "integer_conversion",
+                "name": "id",
+                "type": "integer",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Status",
+                "name": "status",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Deployment mode",
+                "name": "deployment_mode",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Workato environment",
+                "name": "workato_environment",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Source reference",
+                "name": "source_reference",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Download URL",
+                "name": "download_url",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "ecb0533b-aba9-4a65-9777-2844aff44a61"
+      }
+    ],
+    "uuid": "5845d930-6afe-4100-b058-429ff5a17f86"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_cicd_for_workato_v3.connection.json",
+        "name": "CICD | CON | CICD for Workato V3",
+        "folder": "Connections",
+        "custom": true
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "clock",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_list",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

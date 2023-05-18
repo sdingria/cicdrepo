@@ -1,0 +1,312 @@
+{
+  "name": "CICD | FUNC | Upload Code to Code Repository",
+  "description": "When there is a function call, do action and other actions",
+  "version": 35,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "db45d708",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Execution Reference\",\"name\":\"execution_reference\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Execution mode\",\"name\":\"execution_mode\",\"type\":\"string\",\"optional\":true},{\"label\":\"Is dependency\",\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Is dependency\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"is_dependency\",\"type\":\"boolean\",\"optional\":false},\"name\":\"is_dependency\",\"type\":\"boolean\",\"optional\":true,\"control_type\":\"checkbox\",\"render_input\":{},\"parse_output\":{}},{\"control_type\":\"text\",\"label\":\"External ID\",\"name\":\"external_id\",\"type\":\"string\",\"optional\":true},{\"name\":\"comments\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Comments\"},{\"name\":\"user_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User ID\"}]",
+      "result_schema_json": "[{\"control_type\":\"text\",\"label\":\"Pr number\",\"name\":\"pr_number\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Pr request link\",\"name\":\"pr_request_link\",\"type\":\"string\",\"optional\":true}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Execution Reference",
+            "name": "execution_reference",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "Execution mode",
+            "name": "execution_mode",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Is dependency",
+            "render_input": {
+            },
+            "parse_output": {
+            },
+            "toggle_hint": "Select from option list",
+            "toggle_field": {
+              "label": "Is dependency",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "is_dependency",
+              "type": "boolean",
+              "optional": false
+            },
+            "name": "is_dependency",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "External ID",
+            "name": "external_id",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "Comments",
+            "name": "comments",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato.job_context.account_properties.Accl_CICD_source_code_repository', 'account_property', 'Accl.CICD.source_code_repository').downcase",
+              "rhs": "github",
+              "uuid": "condition-ed58c81e-1b1a-4dae-b2a9-c11c43a1149a"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "e0038c0e",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | Upload Code to GitHub and Create Pull Request</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | Upload Code to GitHub and Create Pull Request"
+            },
+            "toggleCfg": {
+              "parameters.is_dependency": false
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Extensions/Code Repository/GitHub/cicd_func_upload_code_to_github_and_create_pull_request.recipe.json",
+                "name": "CICD | FUNC | Upload Code to GitHub and Create Pull Request",
+                "folder": "Extensions/Code Repository/GitHub"
+              },
+              "parameters": {
+                "external_id": "#{_('data.workato_recipe_function.db45d708.parameters.external_id')}",
+                "execution_reference": "#{_('data.workato_recipe_function.db45d708.parameters.execution_reference')}",
+                "execution_mode": "#{_('data.workato_recipe_function.db45d708.parameters.execution_mode')}",
+                "is_dependency": "#{_('data.workato_recipe_function.db45d708.parameters.is_dependency')}",
+                "comments": "#{_('data.workato_recipe_function.db45d708.parameters.comments')}",
+                "user_id": "#{_('data.workato_recipe_function.db45d708.parameters.user_id')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pr number",
+                    "name": "pr_number",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pr request link",
+                    "name": "pr_request_link",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution Reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution mode",
+                    "name": "execution_mode",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is dependency",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is dependency",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_dependency",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_dependency",
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "External ID",
+                    "name": "external_id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "comments",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "94992ab7-9551-4b76-9734-542582e969a9"
+          },
+          {
+            "number": 3,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "67759cad",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "result": {
+                "pr_number": "#{_('data.workato_recipe_function.e0038c0e.result.pr_number')}",
+                "pr_request_link": "#{_('data.workato_recipe_function.e0038c0e.result.pr_request_link')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pr number",
+                    "name": "pr_number",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pr request link",
+                    "name": "pr_request_link",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pr number",
+                    "name": "pr_number",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pr request link",
+                    "name": "pr_request_link",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "result.pr_link",
+              "result.pr_number",
+              "result",
+              "result.pr_request_link"
+            ],
+            "uuid": "cc8abd28-d6cb-4749-bf2f-d9f4c436b0cb"
+          }
+        ],
+        "uuid": "01b3f0e3-d042-4e2c-bf7f-3360f833b714"
+      }
+    ],
+    "uuid": "e663f817-da28-42fd-ac6b-82e688462670"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

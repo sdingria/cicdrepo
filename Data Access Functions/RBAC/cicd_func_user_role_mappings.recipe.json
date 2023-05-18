@@ -1,0 +1,1412 @@
+{
+  "name": "CICD | FUNC | User Role Mappings",
+  "description": "When there is a function call, do action",
+  "version": 11,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "1d1202b1",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Table\",\"type\":\"string\",\"name\":\"table\",\"optional\":true,\"default\":\"CICD | User Role Mappings\"},{\"control_type\":\"select\",\"label\":\"Method\",\"type\":\"string\",\"name\":\"method\",\"optional\":false,\"hint\":\"GET, POST, PUT or DELETE.  For PUT method, \\\"user\\\" is mandatory.\",\"pick_list\":[[\"GET\",\"GET\"],[\"POST\",\"POST\"],[\"PUT\",\"PUT\"],[\"DELETE\",\"DELETE\"]],\"toggle_hint\":\"Select from list\",\"toggle_field\":{\"name\":\"method\",\"label\":\"Method\",\"type\":\"string\",\"control_type\":\"text\",\"optional\":false,\"toggle_hint\":\"Enter Value\",\"hint\":\"Map Method\"}},{\"name\":\"entries\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Entries\",\"optional\":true,\"properties\":[{\"control_type\":\"text\",\"label\":\"User\",\"name\":\"user\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Roles\",\"name\":\"roles\",\"type\":\"string\",\"optional\":true}]}]",
+      "result_schema_json": "[{\"control_type\":\"text\",\"label\":\"Table\",\"type\":\"string\",\"name\":\"table\"},{\"control_type\":\"text\",\"label\":\"Method\",\"type\":\"string\",\"name\":\"method\"},{\"control_type\":\"integer\",\"label\":\"Count\",\"type\":\"integer\",\"name\":\"count\",\"optional\":false,\"parse_output\":\"integer_conversion\"},{\"name\":\"entries\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Entries\",\"optional\":true,\"properties\":[{\"control_type\":\"text\",\"label\":\"User\",\"name\":\"user\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Roles\",\"name\":\"roles\",\"type\":\"string\",\"optional\":false}]}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Table",
+            "type": "string",
+            "name": "table",
+            "optional": true,
+            "default": "CICD | User Role Mappings"
+          },
+          {
+            "control_type": "select",
+            "label": "Method",
+            "type": "string",
+            "name": "method",
+            "optional": false,
+            "hint": "GET, POST, PUT or DELETE.  For PUT method, \"user\" is mandatory.",
+            "pick_list": [
+              [
+                "GET",
+                "GET"
+              ],
+              [
+                "POST",
+                "POST"
+              ],
+              [
+                "PUT",
+                "PUT"
+              ],
+              [
+                "DELETE",
+                "DELETE"
+              ]
+            ],
+            "toggle_hint": "Select from list",
+            "toggle_field": {
+              "name": "method",
+              "label": "Method",
+              "type": "string",
+              "control_type": "text",
+              "optional": false,
+              "toggle_hint": "Enter Value",
+              "hint": "Map Method"
+            }
+          },
+          {
+            "name": "entries",
+            "type": "array",
+            "of": "object",
+            "label": "Entries",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "User",
+                "name": "user",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Roles",
+                "name": "roles",
+                "type": "string",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato_recipe_function.1d1202b1.parameters.method').upcase",
+              "rhs": "GET",
+              "uuid": "condition-e2b36497-e1a0-48bb-87bc-258ea7fc4ddd"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "#{_('data.workato_recipe_function.1d1202b1.parameters.entries.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.1d1202b1.parameters.entries')}",
+                  "rhs": "0",
+                  "uuid": "condition-b477a7b5-c300-4ee8-b9e0-9122a2ba65fd"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 3,
+                "provider": "lookup_table",
+                "name": "get_entries",
+                "as": "29fe8d9a",
+                "title": null,
+                "description": "\n      Get all\n      <span class=\"provider\">entries</span>\n      from\n      <span class=\"provider\">CICD | LT | User Role Mappings</span>\n      lookup table\n    ",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "lookup_table_id": "CICD | LT | User Role Mappings"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "lookup_table_id": {
+                    "zip_name": "cicd_lt_user_role_mappings.lookup_table.json",
+                    "name": "CICD | LT | User Role Mappings",
+                    "folder": ""
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Entries",
+                    "name": "entries",
+                    "of": "object",
+                    "properties": [
+                      {
+                        "control_type": "number",
+                        "label": "Entry ID",
+                        "parse_output": "integer_conversion",
+                        "type": "integer",
+                        "name": "id"
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "User",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Roles",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true
+                          }
+                        ],
+                        "label": "Entry",
+                        "type": "object",
+                        "name": "entry"
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "uuid": "0a8f1a78-363c-4023-ac49-2654d21bed30"
+              },
+              {
+                "number": 4,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "68c4733a",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "result": {
+                    "table": "#{_('data.workato_recipe_function.1d1202b1.parameters.table')}",
+                    "method": "#{_('data.workato_recipe_function.1d1202b1.parameters.method')}",
+                    "entries": {
+                      "____source": "#{_('data.lookup_table.29fe8d9a.entries')}",
+                      "user": "#{_('data.lookup_table.29fe8d9a.entries.first.entry.col1')}",
+                      "roles": "#{_('data.lookup_table.29fe8d9a.entries.first.entry.col2')}"
+                    },
+                    "count": "#{_('data.lookup_table.29fe8d9a.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.29fe8d9a.entries')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Table",
+                        "type": "string",
+                        "name": "table"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Method",
+                        "type": "string",
+                        "name": "method"
+                      },
+                      {
+                        "control_type": "integer",
+                        "label": "Count",
+                        "parse_output": "integer_conversion",
+                        "type": "integer",
+                        "name": "count",
+                        "optional": false
+                      },
+                      {
+                        "name": "entries",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Entries",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "User",
+                            "name": "user",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Roles",
+                            "name": "roles",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Table",
+                        "type": "string",
+                        "name": "table"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Method",
+                        "type": "string",
+                        "name": "method"
+                      },
+                      {
+                        "control_type": "integer",
+                        "label": "Count",
+                        "parse_output": "integer_conversion",
+                        "type": "integer",
+                        "name": "count",
+                        "optional": false
+                      },
+                      {
+                        "name": "entries",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Entries",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "User",
+                            "name": "user",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Roles",
+                            "name": "roles",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "result.entries.id",
+                  "result.entries.application",
+                  "result.entries.userId",
+                  "result.entries.userEmail",
+                  "result.entries.fieldName",
+                  "result.entries.value",
+                  "result.entries.licenseName",
+                  "result.entries.createDate",
+                  "result.entries.purgeDate",
+                  "result",
+                  "result.table",
+                  "result.method",
+                  "result.count",
+                  "result.entries",
+                  "result.entries.approvedBy",
+                  "result.entries.approvalDate",
+                  "result.entries.licenseType",
+                  "result.entries.pricingStartDate",
+                  "result.entries.pricingEndDate",
+                  "result.entries.yearlyCost",
+                  "result.entries.monthlyCost",
+                  "result.entries.minScore",
+                  "result.entries.isApprovalRequired",
+                  "result.entries.createdDate",
+                  "result.entries.createdBy",
+                  "result.entries.level",
+                  "result.entries.priceBookId",
+                  "result.entries.is_active",
+                  "result.entries.permissions",
+                  "result.entries.role"
+                ],
+                "uuid": "926c3f35-5e72-4e6c-a5c5-a05649d9fa6d"
+              },
+              {
+                "number": 5,
+                "keyword": "else",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 6,
+                    "provider": "lookup_table",
+                    "name": "search_entries",
+                    "as": "8acf5701",
+                    "title": null,
+                    "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | User Role Mappings</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | User Role Mappings"
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_user_role_mappings.lookup_table.json",
+                        "name": "CICD | LT | User Role Mappings",
+                        "folder": ""
+                      },
+                      "parameters": {
+                        "col1": "=_('data.workato_recipe_function.1d1202b1.parameters.entries.first.user').presence",
+                        "col2": "=_('data.workato_recipe_function.1d1202b1.parameters.entries.first.roles').presence"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Entries",
+                        "name": "entries",
+                        "of": "object",
+                        "properties": [
+                          {
+                            "control_type": "number",
+                            "label": "Entry ID",
+                            "parse_output": "integer_conversion",
+                            "type": "integer",
+                            "name": "id"
+                          },
+                          {
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "User",
+                                "name": "col1",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Roles",
+                                "name": "col2",
+                                "type": "string",
+                                "sticky": true
+                              }
+                            ],
+                            "label": "Entry",
+                            "type": "object",
+                            "name": "entry"
+                          }
+                        ],
+                        "type": "array"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Provide one or more entry fields to search the entry",
+                        "label": "Search by",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "User",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Roles",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "83de28e7-cf9d-4568-ac44-019501560745",
+                    "skip": false
+                  },
+                  {
+                    "number": 7,
+                    "provider": "workato_recipe_function",
+                    "name": "return_result",
+                    "as": "b2fcafc6",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "result": {
+                        "table": "#{_('data.workato_recipe_function.1d1202b1.parameters.table')}",
+                        "method": "#{_('data.workato_recipe_function.1d1202b1.parameters.method')}",
+                        "entries": {
+                          "____source": "#{_('data.lookup_table.8acf5701.entries')}",
+                          "user": "#{_('data.lookup_table.8acf5701.entries.first.entry.col1')}",
+                          "roles": "#{_('data.lookup_table.8acf5701.entries.first.entry.col2')}"
+                        },
+                        "count": "#{_('data.lookup_table.8acf5701.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.8acf5701.entries')}"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Table",
+                            "type": "string",
+                            "name": "table"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Method",
+                            "type": "string",
+                            "name": "method"
+                          },
+                          {
+                            "control_type": "integer",
+                            "label": "Count",
+                            "parse_output": "integer_conversion",
+                            "type": "integer",
+                            "name": "count",
+                            "optional": false
+                          },
+                          {
+                            "name": "entries",
+                            "type": "array",
+                            "of": "object",
+                            "label": "Entries",
+                            "optional": true,
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "User",
+                                "name": "user",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Roles",
+                                "name": "roles",
+                                "type": "string",
+                                "optional": false
+                              }
+                            ]
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Table",
+                            "type": "string",
+                            "name": "table"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Method",
+                            "type": "string",
+                            "name": "method"
+                          },
+                          {
+                            "control_type": "integer",
+                            "label": "Count",
+                            "parse_output": "integer_conversion",
+                            "type": "integer",
+                            "name": "count",
+                            "optional": false
+                          },
+                          {
+                            "name": "entries",
+                            "type": "array",
+                            "of": "object",
+                            "label": "Entries",
+                            "optional": true,
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "User",
+                                "name": "user",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Roles",
+                                "name": "roles",
+                                "type": "string",
+                                "optional": false
+                              }
+                            ]
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "result.entries.id",
+                      "result.entries.application",
+                      "result.entries.userId",
+                      "result.entries.userEmail",
+                      "result.entries.fieldName",
+                      "result.entries.value",
+                      "result.entries.licenseName",
+                      "result.entries.createDate",
+                      "result.entries.purgeDate",
+                      "result",
+                      "result.table",
+                      "result.method",
+                      "result.count",
+                      "result.entries",
+                      "result.entries.approvedBy",
+                      "result.entries.approvalDate",
+                      "result.entries.licenseType",
+                      "result.entries.pricingStartDate",
+                      "result.entries.pricingEndDate",
+                      "result.entries.yearlyCost",
+                      "result.entries.monthlyCost",
+                      "result.entries.minScore",
+                      "result.entries.isApprovalRequired",
+                      "result.entries.createdDate",
+                      "result.entries.createdBy",
+                      "result.entries.priceBookId",
+                      "result.entries.level",
+                      "result.entries.role",
+                      "result.entries.permissions",
+                      "result.entries.is_active"
+                    ],
+                    "uuid": "f615097a-b0bb-47c9-9ab8-dc761c6588f4",
+                    "skip": false
+                  }
+                ],
+                "comment": "Get entries that matches the input",
+                "uuid": "889168fe-058e-4249-bd91-da2abb66bd81"
+              }
+            ],
+            "comment": "Get All Entries",
+            "uuid": "cdbfe18f-d489-4038-beef-9115baeb0f0a"
+          }
+        ],
+        "comment": "Search and Get entries",
+        "uuid": "28ba9ac1-7629-4f55-b1c9-112833e871ce"
+      },
+      {
+        "number": 8,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato_recipe_function.1d1202b1.parameters.method').upcase",
+              "rhs": "POST",
+              "uuid": "condition-e27552c9-2a5f-4d7c-844e-240287723b6c"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 9,
+            "provider": "lookup_table",
+            "name": "add_batch_of_entries",
+            "as": "ecb96858",
+            "title": null,
+            "description": "\n      Add\n      <span class=\"provider\">entries</span>\n      to\n      <span class=\"provider\">CICD | LT | User Role Mappings</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | User Role Mappings"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_user_role_mappings.lookup_table.json",
+                "name": "CICD | LT | User Role Mappings",
+                "folder": ""
+              },
+              "entries": {
+                "____source": "#{_('data.workato_recipe_function.1d1202b1.parameters.entries')}",
+                "parameters": {
+                  "col1": "#{_('data.workato_recipe_function.1d1202b1.parameters.entries.first.user')}",
+                  "col2": "#{_('data.workato_recipe_function.1d1202b1.parameters.entries.first.roles')}"
+                }
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "Provide an array of entries",
+                "label": "Entries",
+                "name": "entries",
+                "of": "object",
+                "properties": [
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      }
+                    ],
+                    "label": "Entry fields",
+                    "hint": "Fill the fields for the new entry",
+                    "type": "object",
+                    "name": "parameters"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "007a76e3-5420-4b3e-b35a-6fe05abdc00e"
+          },
+          {
+            "number": 10,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "c73394e0",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "result": {
+                "table": "#{_('data.workato_recipe_function.1d1202b1.parameters.table')}",
+                "method": "#{_('data.workato_recipe_function.1d1202b1.parameters.method')}",
+                "count": "#{_('data.lookup_table.ecb96858.count')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Table",
+                    "type": "string",
+                    "name": "table"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Method",
+                    "type": "string",
+                    "name": "method"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Count",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "count",
+                    "optional": false
+                  },
+                  {
+                    "name": "entries",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Entries",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "user",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "roles",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Table",
+                    "type": "string",
+                    "name": "table"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Method",
+                    "type": "string",
+                    "name": "method"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Count",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "count",
+                    "optional": false
+                  },
+                  {
+                    "name": "entries",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Entries",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "user",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "roles",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "0e280d3e-9a66-4805-852d-ab535262d35e"
+          }
+        ],
+        "comment": "Add new entries",
+        "uuid": "f146793d-5181-4c98-9c0c-d595fccd4e73"
+      },
+      {
+        "number": 11,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato_recipe_function.1d1202b1.parameters.method').upcase",
+              "rhs": "PUT",
+              "uuid": "condition-05a82e4e-20a7-47a9-b7c2-fd446793094f"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 12,
+            "provider": "lookup_table",
+            "name": "search_entries",
+            "as": "9b76f805",
+            "title": null,
+            "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | User Role Mappings</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | User Role Mappings"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_user_role_mappings.lookup_table.json",
+                "name": "CICD | LT | User Role Mappings",
+                "folder": ""
+              },
+              "parameters": {
+                "col1": "=_('data.workato_recipe_function.1d1202b1.parameters.entries').pluck('user') ",
+                "col2": "="
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Entries",
+                "name": "entries",
+                "of": "object",
+                "properties": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "id"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Entry",
+                    "type": "object",
+                    "name": "entry"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search the entry",
+                "label": "Search by",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Roles",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "afad1b17-3452-4d42-8469-78f6bb3c7fb1"
+          },
+          {
+            "number": 13,
+            "as": "4d904547",
+            "keyword": "foreach",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "repeat_mode": "simple",
+            "clear_scope": "false",
+            "input": {
+            },
+            "block": [
+              {
+                "number": 14,
+                "provider": "lookup_table",
+                "name": "update_entry",
+                "as": "cbc80386",
+                "title": null,
+                "description": "\n      Update\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | User Role Mappings</span>\n      lookup table\n    ",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "lookup_table_id": "CICD | LT | User Role Mappings"
+                },
+                "toggleCfg": {
+                  "ignore_not_found": true
+                },
+                "input": {
+                  "ignore_not_found": "false",
+                  "lookup_table_id": {
+                    "zip_name": "cicd_lt_user_role_mappings.lookup_table.json",
+                    "name": "CICD | LT | User Role Mappings",
+                    "folder": ""
+                  },
+                  "id": "#{_('data.foreach.4d904547.id')}",
+                  "parameters": {
+                    "col2": "#{_('data.workato_recipe_function.1d1202b1.parameters.entries.first.roles')}",
+                    "col1": "#{_('data.workato_recipe_function.1d1202b1.parameters.entries.first.user')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "name": "id",
+                    "type": "integer",
+                    "parse_output": "integer_conversion"
+                  },
+                  {
+                    "label": "Entry",
+                    "name": "entry",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "hint": "Fill the fields you want to update",
+                    "label": "Entry fields",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "3b693273-5e88-47dd-8964-1727af831a78"
+              }
+            ],
+            "source": "#{_('data.lookup_table.9b76f805.entries')}",
+            "uuid": "456fa710-51bb-4ef9-9ef1-94b63ce977a8"
+          },
+          {
+            "number": 15,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "b6e67078",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "result": {
+                "table": "#{_('data.workato_recipe_function.1d1202b1.parameters.table')}",
+                "method": "#{_('data.workato_recipe_function.1d1202b1.parameters.method')}",
+                "count": "#{_('data.lookup_table.9b76f805.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.9b76f805.entries')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Table",
+                    "type": "string",
+                    "name": "table"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Method",
+                    "type": "string",
+                    "name": "method"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Count",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "count",
+                    "optional": false
+                  },
+                  {
+                    "name": "entries",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Entries",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "user",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "roles",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Table",
+                    "type": "string",
+                    "name": "table"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Method",
+                    "type": "string",
+                    "name": "method"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Count",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "count",
+                    "optional": false
+                  },
+                  {
+                    "name": "entries",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Entries",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "user",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "roles",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "cdb09253-5a71-417b-ac76-22d53368c963"
+          }
+        ],
+        "comment": "Update based on Permission",
+        "uuid": "9025cd72-8c8f-4dbe-b4b1-79a638e20322"
+      },
+      {
+        "number": 16,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato_recipe_function.1d1202b1.parameters.method').upcase",
+              "rhs": "DELETE",
+              "uuid": "condition-486b513d-eed4-46fb-a464-ed5193c370eb"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 17,
+            "provider": "lookup_table",
+            "name": "delete_entries",
+            "as": "62c417f2",
+            "title": null,
+            "description": "\n      Delete multiple\n      <span class=\"provider\">entries</span>\n      from\n      <span class=\"provider\">CICD | LT | User Role Mappings</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | User Role Mappings"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_user_role_mappings.lookup_table.json",
+                "name": "CICD | LT | User Role Mappings",
+                "folder": ""
+              },
+              "delete_options": "search_delete",
+              "parameters": {
+                "col1": "=_('data.workato_recipe_function.1d1202b1.parameters.entries').pluck('user').smart_join(\"\").present? ? _('data.workato_recipe_function.1d1202b1.parameters.entries').pluck('user') : nil",
+                "col2": "=_('data.workato_recipe_function.1d1202b1.parameters.entries').pluck('roles').smart_join(\"\").present? ? _('data.workato_recipe_function.1d1202b1.parameters.entries').pluck('roles') : nil"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search for and delete",
+                "label": "Delete entries",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Roles",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "2733be8b-7b65-4c0b-afa5-4aca26638a7f"
+          },
+          {
+            "number": 18,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "1bd9c347",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "result": {
+                "table": "#{_('data.workato_recipe_function.1d1202b1.parameters.table')}",
+                "method": "#{_('data.workato_recipe_function.1d1202b1.parameters.method')}",
+                "count": "#{_('data.lookup_table.62c417f2.count')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Table",
+                    "type": "string",
+                    "name": "table"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Method",
+                    "type": "string",
+                    "name": "method"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Count",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "count",
+                    "optional": false
+                  },
+                  {
+                    "name": "entries",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Entries",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "user",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "roles",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Table",
+                    "type": "string",
+                    "name": "table"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Method",
+                    "type": "string",
+                    "name": "method"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Count",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "count",
+                    "optional": false
+                  },
+                  {
+                    "name": "entries",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Entries",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "User",
+                        "name": "user",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Roles",
+                        "name": "roles",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "aa905fa4-e6c7-428a-aeab-c6881a715553"
+          }
+        ],
+        "comment": "Delete entries that matches conditions",
+        "uuid": "800d5f9e-a7cd-49c4-81ad-4dab681d155e",
+        "skip": false
+      }
+    ],
+    "uuid": "89ea2df1-f11e-43c4-83dd-7e84c63d155e"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

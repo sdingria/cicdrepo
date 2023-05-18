@@ -1,0 +1,867 @@
+{
+  "name": "CICD | FUNC | Gather folder list for a Project",
+  "description": "When there is a trigger event, do action",
+  "version": 11,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "634efed4",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"environment\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Environment\"},{\"name\":\"project_folder_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Project folder ID\"}]",
+      "result_schema_json": "[{\"name\":\"folder_list\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Folder list\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Folder name\",\"name\":\"folder_name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Folder ID\",\"name\":\"folder_id\",\"type\":\"string\",\"optional\":false}]}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Environment",
+            "name": "environment",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Project folder ID",
+            "name": "project_folder_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "parameters_schema": "[\n  {\n    \"label\": \"Folder Levels to Gather\",\n    \"name\": \"folder_levels\",\n    \"type\": \"integer\",\n    \"control_type\": \"text\",\n    \"default\": 5,\n    \"hint\": \"Please enter number of levels (excluding parent level) to collect. Supports upto 15 levels.\"\n  }]",
+    "param": {
+      "folder_levels": "5"
+    },
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "6a5ac8a3",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUN | List Environment Folders</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | List Environment Folders"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/CICD for Workato/cicd_func_list_environment_folders.recipe.json",
+            "name": "CICD | FUNC | List Environment Folders",
+            "folder": "Functions/CICD for Workato"
+          },
+          "parameters": {
+            "environment": "#{_('data.workato_recipe_function.634efed4.parameters.environment')}",
+            "parent_folder_id": "#{_('data.workato_recipe_function.634efed4.parameters.project_folder_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "folders_list",
+                "type": "array",
+                "of": "object",
+                "label": "Folders list",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "environment",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Parent folder ID",
+                "name": "parent_folder_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters",
+          "parameters.environment",
+          "parameters.parent_folder_id"
+        ],
+        "comment": "Get Parent Folder list (Level 0)",
+        "uuid": "9256d101-579b-4ccd-9bd1-f82368e266e3"
+      },
+      {
+        "number": 2,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "d6b9b03a",
+        "title": " Create Folder List list",
+        "description": "Create <span class=\"provider\">Folder List</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Folder List",
+          "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Folder name\",\"name\":\"folder_name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Folder ID\",\"name\":\"folder_id\",\"type\":\"string\",\"optional\":false}]",
+          "list_items": {
+            "____source": "#{_('data.workato_recipe_function.6a5ac8a3.result.folders_list')}",
+            "folder_name": "#{_('data.workato_recipe_function.6a5ac8a3.result.folders_list.first.folder_name')}",
+            "folder_id": "#{_('data.workato_recipe_function.6a5ac8a3.result.folders_list.first.folder_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Folder List",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Folder name",
+                "name": "folder_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Folder name",
+                "name": "folder_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "9fb0773e-ab67-4ce5-9005-02ec40ded6dd"
+      },
+      {
+        "number": 3,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "3fb74057",
+        "title": " Create Processing Folder List (Temp) list",
+        "description": "Create <span class=\"provider\">Processing Folder List (Temp)</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Processing Folder List (Temp)",
+          "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Folder name\",\"name\":\"folder_name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Folder ID\",\"name\":\"folder_id\",\"type\":\"string\",\"optional\":false}]",
+          "list_items": {
+            "____source": "#{_('data.workato_recipe_function.6a5ac8a3.result.folders_list')}",
+            "folder_name": "#{_('data.workato_recipe_function.6a5ac8a3.result.folders_list.first.folder_name')}",
+            "folder_id": "#{_('data.workato_recipe_function.6a5ac8a3.result.folders_list.first.folder_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Processing Folder List (Temp)",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Folder name",
+                "name": "folder_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Folder name",
+                "name": "folder_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "comment": "Copy Parent Folder List (Initializing)",
+        "uuid": "0fe68056-a441-4df5-8336-062de62e77d2"
+      },
+      {
+        "number": 4,
+        "provider": "workato_list",
+        "name": "create_list",
+        "as": "e00c0be7",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "size": "=_('data.workato.job_context.parameters.folder_levels').present? ? (_('data.workato.job_context.parameters.folder_levels').to_i < 16 ? _('data.workato.job_context.parameters.folder_levels').to_i : 15) : 5"
+        },
+        "uuid": "9f5a9365-c79c-40cb-a695-a91b055662e9"
+      },
+      {
+        "number": 5,
+        "as": "eb419859",
+        "keyword": "foreach",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 6,
+            "provider": "workato_variable",
+            "name": "declare_list",
+            "as": "4fc20067",
+            "title": " Create Level Folder List list",
+            "description": "Create <span class=\"provider\">Level Folder List</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "Level Folder List",
+              "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Folder name\",\"name\":\"folder_name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Folder ID\",\"name\":\"folder_id\",\"type\":\"string\",\"optional\":false}]"
+            },
+            "extended_output_schema": [
+              {
+                "hint": "",
+                "label": "Level Folder List",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                "label": "Items",
+                "name": "list_items",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "3e536c28-20f7-4dc0-9cdb-d080386964a5"
+          },
+          {
+            "number": 7,
+            "as": "95a773b4",
+            "keyword": "foreach",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "repeat_mode": "simple",
+            "clear_scope": "false",
+            "input": {
+            },
+            "block": [
+              {
+                "number": 8,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "f92ead2b",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUN | List Environment Folders</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUN | List Environment Folders"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Functions/CICD for Workato/cicd_func_list_environment_folders.recipe.json",
+                    "name": "CICD | FUNC | List Environment Folders",
+                    "folder": "Functions/CICD for Workato"
+                  },
+                  "parameters": {
+                    "environment": "#{_('data.workato_recipe_function.634efed4.parameters.environment')}",
+                    "parent_folder_id": "#{_('data.foreach.95a773b4.folder_id')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "name": "folders_list",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Folders list",
+                        "optional": false,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Folder name",
+                            "name": "folder_name",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Folder ID",
+                            "name": "folder_id",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Environment",
+                        "name": "environment",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Parent folder ID",
+                        "name": "parent_folder_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "flow_id",
+                  "parameters.parent_folder_id"
+                ],
+                "uuid": "15639f63-c048-4cce-8f3b-0d77b1785be8"
+              },
+              {
+                "number": 9,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "greater_than",
+                      "lhs": "#{_('data.workato_recipe_function.f92ead2b.result.folders_list.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.f92ead2b.result.folders_list')}",
+                      "rhs": "0",
+                      "uuid": "condition-c013dff8-2135-4f59-bd02-bdc267b727ca"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 10,
+                    "provider": "workato_variable",
+                    "name": "insert_to_list_batch",
+                    "as": "e166613a",
+                    "title": "Add items to Level Folder List list",
+                    "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Level Folder List</span> list",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "name": "Level Folder List (step 7)"
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "location": "end",
+                      "name": "3e536c28-20f7-4dc0-9cdb-d080386964a5:4fc20067",
+                      "list_items": {
+                        "____source": "#{_('data.workato_recipe_function.f92ead2b.result.folders_list')}",
+                        "folder_name": "#{_('data.workato_recipe_function.f92ead2b.result.folders_list.first.folder_name')}",
+                        "folder_id": "#{_('data.workato_recipe_function.f92ead2b.result.folders_list.first.folder_id')}"
+                      }
+                    },
+                    "extended_input_schema": [
+                      {
+                        "hint": "",
+                        "label": "List items",
+                        "name": "list_items",
+                        "of": "object",
+                        "optional": false,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Folder name",
+                            "name": "folder_name",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Folder ID",
+                            "name": "folder_id",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "type": "array"
+                      }
+                    ],
+                    "uuid": "984f9937-0331-464f-ad77-6fed40727426"
+                  }
+                ],
+                "uuid": "bb6d5b2b-0560-45ba-86d8-6a1f6a4c8b5e"
+              }
+            ],
+            "source": "#{_('data.workato_variable.3fb74057.list_items')}",
+            "uuid": "ad820343-ef92-4bf0-9b7c-4c47054c2e61"
+          },
+          {
+            "number": 11,
+            "provider": "workato_variable",
+            "name": "clear_list",
+            "as": "566ba978",
+            "title": "Clear all items from Processing Folder List (Temp) list",
+            "description": "Clear all <span class=\"provider\">items</span> from <span class=\"provider\">Processing Folder List (Temp)</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Processing Folder List (Temp) (step 4)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "0fe68056-a441-4df5-8336-062de62e77d2:3fb74057"
+            },
+            "uuid": "3d5256c3-1798-4bba-b3ab-518d9b74b7db"
+          },
+          {
+            "number": 12,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "greater_than",
+                  "lhs": "#{_('data.workato_variable.4fc20067.list_items.first.____Size', 'list_meta', '____Size', 'data.workato_variable.4fc20067.list_items')}",
+                  "rhs": "0",
+                  "uuid": "condition-c013dff8-2135-4f59-bd02-bdc267b727ca"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 13,
+                "provider": "workato_variable",
+                "name": "insert_to_list_batch",
+                "as": "a21d0960",
+                "title": "Add items to Folder List list",
+                "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Folder List</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Folder List (step 3)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "end",
+                  "name": "9fb0773e-ab67-4ce5-9005-02ec40ded6dd:d6b9b03a",
+                  "list_items": {
+                    "____source": "#{_('data.workato_variable.4fc20067.list_items')}",
+                    "folder_name": "#{_('data.workato_variable.4fc20067.list_items.first.folder_name')}",
+                    "folder_id": "#{_('data.workato_variable.4fc20067.list_items.first.folder_id')}"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List items",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Folder name",
+                        "name": "folder_name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Folder ID",
+                        "name": "folder_id",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "uuid": "f6c0321f-04df-4815-8a2e-e3275eaeb1f3"
+              },
+              {
+                "number": 14,
+                "provider": "workato_variable",
+                "name": "insert_to_list_batch",
+                "as": "e1d8fb0e",
+                "title": "Add items to Processing Folder List (Temp) list",
+                "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Processing Folder List (Temp)</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Processing Folder List (Temp) (step 4)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "end",
+                  "name": "0fe68056-a441-4df5-8336-062de62e77d2:3fb74057",
+                  "list_items": {
+                    "____source": "#{_('data.workato_variable.4fc20067.list_items')}",
+                    "folder_name": "#{_('data.workato_variable.4fc20067.list_items.first.folder_name')}",
+                    "folder_id": "#{_('data.workato_variable.4fc20067.list_items.first.folder_id')}"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List items",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Folder name",
+                        "name": "folder_name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Folder ID",
+                        "name": "folder_id",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "uuid": "3c11caa6-1eb8-424e-8625-683b639f838b"
+              }
+            ],
+            "uuid": "6f4f8b79-b44d-4f8c-97b5-762280e2585d"
+          }
+        ],
+        "source": "#{_('data.workato_list.e00c0be7.list')}",
+        "uuid": "b27ca6d5-0cde-47ea-948c-c9be7f2d1ee0"
+      },
+      {
+        "number": 15,
+        "provider": "workato_variable",
+        "name": "insert_to_list",
+        "as": "a0be2d47",
+        "title": "Add item to Folder List list",
+        "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Folder List</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "name": "Folder List (step 3)"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "location": "end",
+          "name": "9fb0773e-ab67-4ce5-9005-02ec40ded6dd:d6b9b03a",
+          "list_item": {
+            "folder_name": "Project Root Folder",
+            "folder_id": "#{_('data.workato_recipe_function.634efed4.parameters.project_folder_id')}"
+          }
+        },
+        "extended_input_schema": [
+          {
+            "hint": "",
+            "label": "List item",
+            "name": "list_item",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Folder name",
+                "name": "folder_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "comment": "Append Parent Folder ID",
+        "uuid": "e11ee4fb-88d7-4eec-b9d2-b0610708f759"
+      },
+      {
+        "number": 16,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "df73259e",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "result": {
+            "folder_list": {
+              "____source": "#{_('data.workato_variable.d6b9b03a.list_items')}",
+              "folder_name": "#{_('data.workato_variable.d6b9b03a.list_items.first.folder_name')}",
+              "folder_id": "#{_('data.workato_variable.d6b9b03a.list_items.first.folder_id')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "folder_list",
+                "type": "array",
+                "of": "object",
+                "label": "Folder list",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "folder_list",
+                "type": "array",
+                "of": "object",
+                "label": "Folder list",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "d1509660-703f-4865-bd31-6bb28d3250b1"
+      }
+    ],
+    "uuid": "95505ad4-1dfb-470c-acb9-f62f3f4ccd94"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_list",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

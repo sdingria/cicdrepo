@@ -1,0 +1,3312 @@
+{
+  "name": "CICD | BOT | (Slack) CICD Command Router",
+  "description": "When there is a new command to Slack Workbot, do action and other actions",
+  "version": 153,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "slack_bot",
+    "name": "bot_command_v2",
+    "as": "37dbcaa0",
+    "title": null,
+    "description": "New <span class=\"provider\">Workato CICD Execute</span> command to <span class=\"provider\">Slack Workbot</span>",
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+      "domain": false,
+      "name": false,
+      "scope": false
+    },
+    "input": {
+      "allow_dialog": "true",
+      "name": "CICD",
+      "scope": "Execute",
+      "parameters": "[\n  {\n    \"control_type\": \"text\",\n    \"label\": \"Command\",\n    \"name\": \"command\",\n    \"type\": \"string\",\n    \"optional\": true,\n    \"default\": \"start\"\n  },\n  {\n    \"name\": \"param1\",\n    \"type\": \"string\",\n    \"optional\": true,\n    \"control_type\": \"text\",\n    \"prompt\": \"false\"\n  },\n  {\n    \"name\": \"param2\",\n    \"type\": \"string\",\n    \"optional\": true,\n    \"prompt\": \"false\",\n    \"control_type\": \"text\"\n  },\n  {\n    \"name\": \"param3\",\n    \"type\": \"string\",\n    \"optional\": true,\n    \"control_type\": \"text\"\n  },\n  {\n    \"name\": \"param4\",\n    \"type\": \"string\",\n    \"optional\": true,\n    \"control_type\": \"text\"\n  }\n]",
+      "domain": "Workato"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Command",
+            "name": "command",
+            "type": "string",
+            "optional": true,
+            "default": "start"
+          },
+          {
+            "control_type": "text",
+            "label": "Param 1",
+            "name": "param1",
+            "type": "string",
+            "optional": true,
+            "prompt": "false"
+          },
+          {
+            "control_type": "text",
+            "label": "Param 2",
+            "name": "param2",
+            "type": "string",
+            "optional": true,
+            "prompt": "false"
+          },
+          {
+            "control_type": "text",
+            "label": "Param 3",
+            "name": "param3",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "Param 4",
+            "name": "param4",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "or",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "start",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            },
+            {
+              "operand": "blank",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "",
+              "uuid": "condition-e8114145-b711-4c76-bb8a-c795b901e69b"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "e77320ee",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Display Command Options</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | BOT | Display Command Options"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/cicd_func_slack_display_command_options.recipe.json",
+                "name": "CICD | FUNC | (Slack) Display Command Options",
+                "folder": "Triggers/Slack/Functions"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "c91ab293-f235-4fe5-9f69-72a486c262ed"
+          },
+          {
+            "number": 3,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "53c6fb8b-a8e6-4e84-becc-8c4e19b0c8f1"
+          }
+        ],
+        "comment": "\"Start\" command - Displays CICD options",
+        "uuid": "3b3b60fd-631f-4026-a4fb-ace0c267ed5d"
+      },
+      {
+        "number": 4,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "or",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "new_pipeline_config",
+              "uuid": "condition-56dda290-295e-4338-9f30-d0f9c80a84a9"
+            },
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "edit_pipeline_config",
+              "uuid": "condition-131c535b-cd6b-4189-84eb-423305836f4a"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 5,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "c1f8e763",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Collect Pipeline Configuration</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | BOT | Collect Pipeline Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Configuration/cicd_func_slack_collect_pipeline_configuration.recipe.json",
+                "name": "CICD | FUNC | (Slack) Collect Pipeline Configuration",
+                "folder": "Triggers/Slack/Functions/Pipeline Configuration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}",
+                "pipeline_id": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline ID",
+                    "name": "pipeline_id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.trigger_Id",
+              "parameters.user_name",
+              "parameters.project_config_id",
+              "parameters.pipeline_id"
+            ],
+            "uuid": "38b27202-af96-4ef7-91c3-6f3f30d3a394"
+          },
+          {
+            "number": 6,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "f3694950-1623-4446-ad58-47259bf05f40"
+          }
+        ],
+        "uuid": "bf6e0ae0-1473-4483-8ec5-7ce972eef21b"
+      },
+      {
+        "number": 7,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "or",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "new_project_config",
+              "uuid": "condition-56dda290-295e-4338-9f30-d0f9c80a84a9"
+            },
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "edit_project_config",
+              "uuid": "condition-131c535b-cd6b-4189-84eb-423305836f4a"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 8,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "a8bfd518",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Collect Project Configuration</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | BOT | Collect Project Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Project Configuration/cicd_func_slack_collect_project_configuration.recipe.json",
+                "name": "CICD | FUNC | (Slack) Collect Project Configuration",
+                "folder": "Triggers/Slack/Functions/Project Configuration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}",
+                "trigger_Id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "project_config_id": "=_('data.slack_bot.37dbcaa0.parameters.param1').presence"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_Id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project config ID",
+                    "name": "project_config_id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.trigger_Id",
+              "parameters.user_name",
+              "parameters.project_config_id"
+            ],
+            "uuid": "aac75b2a-dbc9-4a0f-ba42-abf5a1dbb9b6"
+          },
+          {
+            "number": 9,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "53cf940d-e996-4029-8a37-ea470f017189"
+          }
+        ],
+        "uuid": "c60047f8-f629-4b6e-a755-b671f42c3169"
+      },
+      {
+        "number": 10,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "list_project_config",
+              "uuid": "condition-09433242-470c-4c42-878c-cd563db7fe85"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 11,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "9e849d9c",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) List Project Configurations</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | List Project Configurations"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Project Configuration/cicd_func_slack_list_project_configurations.recipe.json",
+                "name": "CICD | FUNC | (Slack) List Project Configurations",
+                "folder": "Triggers/Slack/Functions/Project Configuration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "project_config_id": "=_('data.slack_bot.37dbcaa0.parameters.param1').presence"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project config ID",
+                    "name": "project_config_id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.project_config_id"
+            ],
+            "uuid": "952b110c-2592-40f7-b0c1-2c348ee878a2"
+          },
+          {
+            "number": 12,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "fd778b68-f7a2-41fd-854f-27b484293b91"
+          }
+        ],
+        "uuid": "5ccee4ca-c0d4-4236-8e5d-c7b4546bb728"
+      },
+      {
+        "number": 13,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "pipeline_config_status",
+              "uuid": "condition-09433242-470c-4c42-878c-cd563db7fe85"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 14,
+            "provider": "slack_bot",
+            "name": "post_bot_reply_v2",
+            "as": "126f640b",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "delete_original": "true"
+            },
+            "visible_config_fields": [
+              "blocks",
+              "blocks.block_type",
+              "blocks.section_text",
+              "blocks.image_url",
+              "blocks.alt_text",
+              "blocks.button_title",
+              "blocks.url",
+              "blocks.bot_command",
+              "blocks.params",
+              "blocks.style",
+              "blocks.attachment_fields",
+              "blocks.attachment_fields.value",
+              "blocks.placeholder_text",
+              "blocks.menu_type",
+              "blocks.dynamic_menu_recipe",
+              "blocks.field_name",
+              "blocks.options",
+              "blocks.options.title",
+              "blocks.options.bot_command",
+              "blocks.options.params",
+              "blocks.options.init_value",
+              "blocks.init_option",
+              "blocks.initial_date",
+              "blocks.options.value",
+              "blocks.init_options",
+              "blocks.image_title",
+              "blocks.external_id",
+              "blocks.elements",
+              "blocks.elements.type",
+              "blocks.elements.text",
+              "blocks.elements.image_url",
+              "blocks.elements.alt_text",
+              "blocks.actions",
+              "blocks.actions.type",
+              "blocks.actions.button_title",
+              "blocks.actions.url",
+              "blocks.actions.bot_command",
+              "blocks.actions.params",
+              "blocks.actions.style",
+              "blocks.actions.placeholder_text",
+              "blocks.actions.initial_date",
+              "blocks.actions.field_name",
+              "blocks.actions.options",
+              "blocks.actions.options.params",
+              "blocks.actions.menu_type",
+              "blocks.actions.dynamic_menu_recipe",
+              "blocks.objects",
+              "blocks.objects.blocks",
+              "blocks.objects.blocks.block_type",
+              "blocks.objects.blocks.section_text",
+              "blocks.objects.blocks.image_url",
+              "blocks.objects.blocks.alt_text",
+              "blocks.objects.blocks.button_title",
+              "blocks.objects.blocks.url",
+              "blocks.objects.blocks.bot_command",
+              "blocks.objects.blocks.params",
+              "blocks.objects.blocks.style",
+              "blocks.objects.blocks.attachment_fields",
+              "blocks.objects.blocks.attachment_fields.value",
+              "blocks.objects.blocks.placeholder_text",
+              "blocks.objects.blocks.menu_type",
+              "blocks.objects.blocks.dynamic_menu_recipe",
+              "blocks.objects.blocks.field_name",
+              "blocks.objects.blocks.options",
+              "blocks.objects.blocks.options.title",
+              "blocks.objects.blocks.options.bot_command",
+              "blocks.objects.blocks.options.params",
+              "blocks.objects.blocks.options.init_value",
+              "blocks.objects.blocks.init_option",
+              "blocks.objects.blocks.initial_date",
+              "blocks.objects.blocks.image_title",
+              "blocks.objects.blocks.elements",
+              "blocks.objects.blocks.elements.type",
+              "blocks.objects.blocks.elements.text",
+              "blocks.objects.blocks.elements.image_url",
+              "blocks.objects.blocks.elements.alt_text",
+              "blocks.objects.blocks.actions",
+              "blocks.objects.blocks.actions.type",
+              "blocks.objects.blocks.actions.button_title",
+              "blocks.objects.blocks.actions.url",
+              "blocks.objects.blocks.actions.bot_command",
+              "blocks.objects.blocks.actions.params",
+              "blocks.objects.blocks.actions.style",
+              "blocks.objects.blocks.actions.placeholder_text",
+              "blocks.objects.blocks.actions.initial_date",
+              "blocks.objects.blocks.actions.field_name",
+              "blocks.objects.blocks.actions.options",
+              "blocks.objects.blocks.actions.options.params",
+              "blocks.objects.blocks.actions.menu_type",
+              "blocks.objects.blocks.actions.dynamic_menu_recipe",
+              "text",
+              "message.title",
+              "message.title_link",
+              "message.attachment_text",
+              "message.color",
+              "attachment_fields",
+              "attachment_buttons",
+              "attachment_items.message.title",
+              "attachment_items.message.title_link",
+              "attachment_items.message.attachment_text",
+              "attachment_items.message.color",
+              "attachment_items.attachment_fields",
+              "attachment_items.attachment_buttons",
+              "replace_original",
+              "message",
+              "delete_original"
+            ],
+            "uuid": "10c28e02-60bf-46af-ae8b-8bfe3121dd7f",
+            "skip": false
+          },
+          {
+            "number": 15,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "ca5edb0c",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Toggle Pipeline Configuration Status</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Toggle Pipeline Configuration Status"
+            },
+            "toggleCfg": {
+              "parameters.requested_status": false
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Configuration/cicd_func_slack_toggle_pipeline_configuration_status.recipe.json",
+                "name": "CICD | FUNC | (Slack) Toggle Pipeline Configuration Status",
+                "folder": "Triggers/Slack/Functions/Pipeline Configuration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "pipeline_config_id": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "requested_status": "=_('data.slack_bot.37dbcaa0.parameters.param2').is_not_true?",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline config ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Requested status",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Requested status",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "requested_status",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "requested_status",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "f4e96444-4167-479a-b842-40d374271902"
+          },
+          {
+            "number": 16,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "51b9eeb8-0888-45a1-b1f6-263137ee1ba4"
+          }
+        ],
+        "uuid": "f0fed312-d340-4648-b6d1-5cb2cf20411a"
+      },
+      {
+        "number": 17,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "deploy_release",
+              "uuid": "condition-bac26c5d-8d03-4b78-82cc-a7d97041bc6b"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 18,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "bb0fd52d",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Deploy a release</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | (Slack) Deploy a release"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Execution/cicd_func_slack_deploy_a_release.recipe.json",
+                "name": "CICD | FUNC | (Slack) Deploy a release",
+                "folder": "Triggers/Slack/Functions/Pipeline Execution"
+              },
+              "parameters": {
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "20a2e913-3a41-4a4e-9cbb-23cad2c347bf"
+          },
+          {
+            "number": 19,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "5fc218de-90cc-4017-95c0-ca612c1051da"
+          }
+        ],
+        "uuid": "82602c07-69cf-46ab-901e-409f2a40afdc"
+      },
+      {
+        "number": 20,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "deploy_unreleased_package",
+              "uuid": "condition-bac26c5d-8d03-4b78-82cc-a7d97041bc6b"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 21,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "a733d82b",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Deploy an unreleased package</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | (Slack) Redeploy an unreleased package"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Execution/cicd_func_slack_deploy_an_unreleased_package.recipe.json",
+                "name": "CICD | FUNC | (Slack) Deploy an unreleased package",
+                "folder": "Triggers/Slack/Functions/Pipeline Execution"
+              },
+              "parameters": {
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "d8ef1d7b-e2da-40bc-9e07-4d415bfacf8c"
+          },
+          {
+            "number": 22,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "9587e0b1-c56b-45eb-8b49-7aee76d5bae4"
+          }
+        ],
+        "uuid": "9e18cf07-a8ac-4bf0-9546-8d5078589b98"
+      },
+      {
+        "number": 23,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "list_pipeline_config",
+              "uuid": "condition-bac26c5d-8d03-4b78-82cc-a7d97041bc6b"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 24,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "8419c1cd",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) List Pipeline Configurations</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | List Pipeline Configurations"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Configuration/cicd_func_slack_list_pipeline_configurations.recipe.json",
+                "name": "CICD | FUNC | (Slack) List Pipeline Configurations",
+                "folder": "Triggers/Slack/Functions/Pipeline Configuration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "pipeline_config_id": "=_('data.slack_bot.37dbcaa0.parameters.param1').presence"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline config ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.pipeline_config_id"
+            ],
+            "uuid": "30367751-2aed-4e9f-ab09-44b5ec8a9f2c"
+          },
+          {
+            "number": 25,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "c7b729a4-fdbd-4226-9f0a-705f11ba6e8c"
+          }
+        ],
+        "uuid": "64630bdb-323d-424b-bcfe-8101477b279f"
+      },
+      {
+        "number": 26,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "remove_pipeline_config",
+              "uuid": "condition-09433242-470c-4c42-878c-cd563db7fe85"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 27,
+            "provider": "slack_bot",
+            "name": "post_bot_reply_v2",
+            "as": "6d4dfc29",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "delete_original": "true"
+            },
+            "visible_config_fields": [
+              "blocks",
+              "blocks.block_type",
+              "blocks.section_text",
+              "blocks.image_url",
+              "blocks.alt_text",
+              "blocks.button_title",
+              "blocks.url",
+              "blocks.bot_command",
+              "blocks.params",
+              "blocks.style",
+              "blocks.attachment_fields",
+              "blocks.attachment_fields.value",
+              "blocks.placeholder_text",
+              "blocks.menu_type",
+              "blocks.dynamic_menu_recipe",
+              "blocks.field_name",
+              "blocks.options",
+              "blocks.options.title",
+              "blocks.options.bot_command",
+              "blocks.options.params",
+              "blocks.options.init_value",
+              "blocks.init_option",
+              "blocks.initial_date",
+              "blocks.options.value",
+              "blocks.init_options",
+              "blocks.image_title",
+              "blocks.external_id",
+              "blocks.elements",
+              "blocks.elements.type",
+              "blocks.elements.text",
+              "blocks.elements.image_url",
+              "blocks.elements.alt_text",
+              "blocks.actions",
+              "blocks.actions.type",
+              "blocks.actions.button_title",
+              "blocks.actions.url",
+              "blocks.actions.bot_command",
+              "blocks.actions.params",
+              "blocks.actions.style",
+              "blocks.actions.placeholder_text",
+              "blocks.actions.initial_date",
+              "blocks.actions.field_name",
+              "blocks.actions.options",
+              "blocks.actions.options.params",
+              "blocks.actions.menu_type",
+              "blocks.actions.dynamic_menu_recipe",
+              "blocks.objects",
+              "blocks.objects.blocks",
+              "blocks.objects.blocks.block_type",
+              "blocks.objects.blocks.section_text",
+              "blocks.objects.blocks.image_url",
+              "blocks.objects.blocks.alt_text",
+              "blocks.objects.blocks.button_title",
+              "blocks.objects.blocks.url",
+              "blocks.objects.blocks.bot_command",
+              "blocks.objects.blocks.params",
+              "blocks.objects.blocks.style",
+              "blocks.objects.blocks.attachment_fields",
+              "blocks.objects.blocks.attachment_fields.value",
+              "blocks.objects.blocks.placeholder_text",
+              "blocks.objects.blocks.menu_type",
+              "blocks.objects.blocks.dynamic_menu_recipe",
+              "blocks.objects.blocks.field_name",
+              "blocks.objects.blocks.options",
+              "blocks.objects.blocks.options.title",
+              "blocks.objects.blocks.options.bot_command",
+              "blocks.objects.blocks.options.params",
+              "blocks.objects.blocks.options.init_value",
+              "blocks.objects.blocks.init_option",
+              "blocks.objects.blocks.initial_date",
+              "blocks.objects.blocks.image_title",
+              "blocks.objects.blocks.elements",
+              "blocks.objects.blocks.elements.type",
+              "blocks.objects.blocks.elements.text",
+              "blocks.objects.blocks.elements.image_url",
+              "blocks.objects.blocks.elements.alt_text",
+              "blocks.objects.blocks.actions",
+              "blocks.objects.blocks.actions.type",
+              "blocks.objects.blocks.actions.button_title",
+              "blocks.objects.blocks.actions.url",
+              "blocks.objects.blocks.actions.bot_command",
+              "blocks.objects.blocks.actions.params",
+              "blocks.objects.blocks.actions.style",
+              "blocks.objects.blocks.actions.placeholder_text",
+              "blocks.objects.blocks.actions.initial_date",
+              "blocks.objects.blocks.actions.field_name",
+              "blocks.objects.blocks.actions.options",
+              "blocks.objects.blocks.actions.options.params",
+              "blocks.objects.blocks.actions.menu_type",
+              "blocks.objects.blocks.actions.dynamic_menu_recipe",
+              "text",
+              "message.title",
+              "message.title_link",
+              "message.attachment_text",
+              "message.color",
+              "attachment_fields",
+              "attachment_buttons",
+              "attachment_items.message.title",
+              "attachment_items.message.title_link",
+              "attachment_items.message.attachment_text",
+              "attachment_items.message.color",
+              "attachment_items.attachment_fields",
+              "attachment_items.attachment_buttons",
+              "replace_original",
+              "message",
+              "delete_original"
+            ],
+            "uuid": "4e401d1b-ef0a-4ecd-b876-7bd6d371aea3"
+          },
+          {
+            "number": 28,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "f279f466",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Remove Pipeline Configuration</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Remove Pipeline Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Configuration/cicd_func_slack_remove_pipeline_configuration.recipe.json",
+                "name": "CICD | FUNC | (Slack) Remove Pipeline Configuration",
+                "folder": "Triggers/Slack/Functions/Pipeline Configuration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "pipeline_config_id": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline config ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "7529e68d-7b86-47cf-a5b1-76221f2f9602"
+          },
+          {
+            "number": 29,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "afadcdb5-8f34-42a2-8702-247b1112f745"
+          }
+        ],
+        "uuid": "0eaf7b5e-99a6-43cd-8c08-1fade9160f16"
+      },
+      {
+        "number": 30,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "remove_project_config",
+              "uuid": "condition-09433242-470c-4c42-878c-cd563db7fe85"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 31,
+            "provider": "slack_bot",
+            "name": "post_bot_reply_v2",
+            "as": "b4924335",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "delete_original": "true"
+            },
+            "visible_config_fields": [
+              "blocks",
+              "blocks.block_type",
+              "blocks.section_text",
+              "blocks.image_url",
+              "blocks.alt_text",
+              "blocks.button_title",
+              "blocks.url",
+              "blocks.bot_command",
+              "blocks.params",
+              "blocks.style",
+              "blocks.attachment_fields",
+              "blocks.attachment_fields.value",
+              "blocks.placeholder_text",
+              "blocks.menu_type",
+              "blocks.dynamic_menu_recipe",
+              "blocks.field_name",
+              "blocks.options",
+              "blocks.options.title",
+              "blocks.options.bot_command",
+              "blocks.options.params",
+              "blocks.options.init_value",
+              "blocks.init_option",
+              "blocks.initial_date",
+              "blocks.options.value",
+              "blocks.init_options",
+              "blocks.image_title",
+              "blocks.external_id",
+              "blocks.elements",
+              "blocks.elements.type",
+              "blocks.elements.text",
+              "blocks.elements.image_url",
+              "blocks.elements.alt_text",
+              "blocks.actions",
+              "blocks.actions.type",
+              "blocks.actions.button_title",
+              "blocks.actions.url",
+              "blocks.actions.bot_command",
+              "blocks.actions.params",
+              "blocks.actions.style",
+              "blocks.actions.placeholder_text",
+              "blocks.actions.initial_date",
+              "blocks.actions.field_name",
+              "blocks.actions.options",
+              "blocks.actions.options.params",
+              "blocks.actions.menu_type",
+              "blocks.actions.dynamic_menu_recipe",
+              "blocks.objects",
+              "blocks.objects.blocks",
+              "blocks.objects.blocks.block_type",
+              "blocks.objects.blocks.section_text",
+              "blocks.objects.blocks.image_url",
+              "blocks.objects.blocks.alt_text",
+              "blocks.objects.blocks.button_title",
+              "blocks.objects.blocks.url",
+              "blocks.objects.blocks.bot_command",
+              "blocks.objects.blocks.params",
+              "blocks.objects.blocks.style",
+              "blocks.objects.blocks.attachment_fields",
+              "blocks.objects.blocks.attachment_fields.value",
+              "blocks.objects.blocks.placeholder_text",
+              "blocks.objects.blocks.menu_type",
+              "blocks.objects.blocks.dynamic_menu_recipe",
+              "blocks.objects.blocks.field_name",
+              "blocks.objects.blocks.options",
+              "blocks.objects.blocks.options.title",
+              "blocks.objects.blocks.options.bot_command",
+              "blocks.objects.blocks.options.params",
+              "blocks.objects.blocks.options.init_value",
+              "blocks.objects.blocks.init_option",
+              "blocks.objects.blocks.initial_date",
+              "blocks.objects.blocks.image_title",
+              "blocks.objects.blocks.elements",
+              "blocks.objects.blocks.elements.type",
+              "blocks.objects.blocks.elements.text",
+              "blocks.objects.blocks.elements.image_url",
+              "blocks.objects.blocks.elements.alt_text",
+              "blocks.objects.blocks.actions",
+              "blocks.objects.blocks.actions.type",
+              "blocks.objects.blocks.actions.button_title",
+              "blocks.objects.blocks.actions.url",
+              "blocks.objects.blocks.actions.bot_command",
+              "blocks.objects.blocks.actions.params",
+              "blocks.objects.blocks.actions.style",
+              "blocks.objects.blocks.actions.placeholder_text",
+              "blocks.objects.blocks.actions.initial_date",
+              "blocks.objects.blocks.actions.field_name",
+              "blocks.objects.blocks.actions.options",
+              "blocks.objects.blocks.actions.options.params",
+              "blocks.objects.blocks.actions.menu_type",
+              "blocks.objects.blocks.actions.dynamic_menu_recipe",
+              "text",
+              "message.title",
+              "message.title_link",
+              "message.attachment_text",
+              "message.color",
+              "attachment_fields",
+              "attachment_buttons",
+              "attachment_items.message.title",
+              "attachment_items.message.title_link",
+              "attachment_items.message.attachment_text",
+              "attachment_items.message.color",
+              "attachment_items.attachment_fields",
+              "attachment_items.attachment_buttons",
+              "replace_original",
+              "message",
+              "delete_original"
+            ],
+            "uuid": "813b1765-14f3-408a-8102-20b31fbbefde"
+          },
+          {
+            "number": 32,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "be173c98",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Remove Project Configuration</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Remove Project Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Project Configuration/cicd_func_slack_remove_project_configuration.recipe.json",
+                "name": "CICD | FUNC | (Slack) Remove Project Configuration",
+                "folder": "Triggers/Slack/Functions/Project Configuration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "project_config_id": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Project config ID",
+                    "name": "project_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "272454fa-8fa9-484f-ac00-a2e7d5a4d769"
+          },
+          {
+            "number": 33,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "56d20fe7-8485-4b45-a86c-0daa2bd8b34a"
+          }
+        ],
+        "uuid": "9f60695b-dbc9-4709-9bb6-c930e00d9c22"
+      },
+      {
+        "number": 34,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "collect_pipeline_execution",
+              "uuid": "condition-a3a76c62-6c70-491f-a6f6-1a048b806cac"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 35,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "38a88175",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Execute Pipeline Configuration</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Collect Pipeline Execution Data"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Execution/cicd_func_slack_execute_pipeline_configuration.recipe.json",
+                "name": "CICD | FUNC | (Slack) Execute Pipeline Configuration",
+                "folder": "Triggers/Slack/Functions/Pipeline Execution"
+              },
+              "parameters": {
+                "pipeline_config_id": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}",
+                "user_email": "#{_('data.slack_bot.37dbcaa0.context.user_email')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline config ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User email",
+                    "name": "user_email",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.pipeline_config_id",
+              "parameters.user_id",
+              "parameters.trigger_id",
+              "parameters.user_name",
+              "parameters.user_email"
+            ],
+            "uuid": "93a22c1e-2faa-4305-8e2f-f12f17791ce2"
+          },
+          {
+            "number": 36,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "1069f0e7-4d8b-49f3-9cd5-30abb5edd2c1"
+          }
+        ],
+        "uuid": "59cea7f6-1705-429d-842c-f33352d287d5"
+      },
+      {
+        "number": 37,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "list_pipeline_executions",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 38,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "82249948",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) List Pipeline Executions</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | List Pipeline Executions"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Execution/cicd_func_slack_list_pipeline_executions.recipe.json",
+                "name": "CICD | FUNC | (Slack) List Pipeline Executions",
+                "folder": "Triggers/Slack/Functions/Pipeline Execution"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "execution_status": "=_('data.slack_bot.37dbcaa0.parameters.param4').presence || _('data.slack_bot.37dbcaa0.parameters.param1')",
+                "execution_reference": "#{_('data.slack_bot.37dbcaa0.parameters.param2')}",
+                "thread_id": "=_('data.slack_bot.37dbcaa0.parameters.param2').present? ? _('data.slack_bot.37dbcaa0.ts') : nil",
+                "project_configuration_id": "=_('data.slack_bot.37dbcaa0.parameters.param3').presence"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution Reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution Status",
+                    "name": "execution_status",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Thread ID",
+                    "name": "thread_id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project configuration ID",
+                    "name": "project_configuration_id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.execution_status",
+              "parameters.execution_reference",
+              "parameters.thread_id",
+              "parameters.project_configuration_id"
+            ],
+            "uuid": "297d5f00-7150-4c95-98a2-d55c7a39747c"
+          },
+          {
+            "number": 39,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "fa72a478-16fd-4631-8c1f-690747abba5c"
+          }
+        ],
+        "comment": "",
+        "uuid": "5aca063f-33dd-4e2f-8cce-394d1e6baa19"
+      },
+      {
+        "number": 40,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "list_deployments",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 41,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "ac1405e5",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) List all deployments</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | (Slack) List all deployments"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/cicd_func_slack_list_all_deployments.recipe.json",
+                "name": "CICD | FUNC | (Slack) List all deployments",
+                "folder": "Triggers/Slack/Functions"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "environment": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "environment",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.user_name",
+              "parameters.execution_reference",
+              "parameters.approval_action",
+              "parameters.trigger_id",
+              "parameters.thread_id",
+              "parameters.response_url"
+            ],
+            "uuid": "9f78e23b-30d2-4e79-9786-8410d57ae894"
+          },
+          {
+            "number": 42,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "ab7d437f-3d4e-415d-822a-273fdc304f47"
+          }
+        ],
+        "comment": "Process Approval Requests",
+        "uuid": "26871c5a-e398-4b1e-bea0-40571f739e30"
+      },
+      {
+        "number": 43,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "process_approval",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 44,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "44d660ca",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Process Approval Requests</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Process Approval Requests"
+            },
+            "toggleCfg": {
+              "parameters.approval_action": false
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Approval Requests/cicd_func_slack_process_approval_requests.recipe.json",
+                "name": "CICD | FUNC | (Slack) Process Approval Requests",
+                "folder": "Triggers/Slack/Functions/Approval Requests"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}",
+                "execution_reference": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "approval_action": "#{_('data.slack_bot.37dbcaa0.parameters.param2')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "thread_id": "#{_('data.slack_bot.37dbcaa0.ts')}",
+                "response_url": "#{_('data.slack_bot.37dbcaa0.context.response_url')}",
+                "original_message_json": "#{_('data.slack_bot.37dbcaa0.context.original_message_json')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Approval action",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Approval action",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "approval_action",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "approval_action",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Thread ID",
+                    "name": "thread_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Response URL",
+                    "name": "response_url",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Original message json",
+                    "name": "original_message_json",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.user_name",
+              "parameters.execution_reference",
+              "parameters.approval_action",
+              "parameters.trigger_id",
+              "parameters.thread_id",
+              "parameters.response_url",
+              "parameters.original_message_json",
+              "parameters.run_approval_only"
+            ],
+            "uuid": "57ea1cda-3294-40bc-abc4-f4192957da54"
+          },
+          {
+            "number": 45,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "d7811d0b-a6a4-4f9b-9146-0a09985654fa"
+          }
+        ],
+        "comment": "Process Approval Requests",
+        "uuid": "7f310a85-762f-4dd6-8bd4-f89577ad0fc1"
+      },
+      {
+        "number": 46,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "manage_recipes",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 47,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "b2db7761",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Recipe Management</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Recipe Management"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/cicd_func_slack_recipe_management.recipe.json",
+                "name": "CICD | FUNC | (Slack) Recipe Management",
+                "folder": "Triggers/Slack/Functions"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.execution_status",
+              "parameters.execution_reference"
+            ],
+            "uuid": "0e62cedb-a9fa-45df-8f83-c84c2bd14eda"
+          },
+          {
+            "number": 48,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "06dc6bb8-63bf-480a-bed6-732fac489fe6"
+          }
+        ],
+        "comment": "",
+        "uuid": "edf42c3a-fd26-4261-a7c7-35785abd873a"
+      },
+      {
+        "number": 49,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "migrate_properties",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 50,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "present",
+                  "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                  "rhs": "",
+                  "uuid": "condition-32676e5d-87d1-407b-9a0d-9bfdbe1bb1f8"
+                },
+                {
+                  "operand": "present",
+                  "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.param2')}",
+                  "rhs": "",
+                  "uuid": "condition-fd9ebf6e-515c-46f7-9aa2-7cc036625f15"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 51,
+                "provider": "slack_bot",
+                "name": "post_bot_reply_v2",
+                "as": "f346460f",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "delete_original": "true"
+                },
+                "visible_config_fields": [
+                  "blocks",
+                  "blocks.block_type",
+                  "blocks.section_text",
+                  "blocks.image_url",
+                  "blocks.alt_text",
+                  "blocks.button_title",
+                  "blocks.url",
+                  "blocks.bot_command",
+                  "blocks.params",
+                  "blocks.style",
+                  "blocks.attachment_fields",
+                  "blocks.attachment_fields.value",
+                  "blocks.placeholder_text",
+                  "blocks.menu_type",
+                  "blocks.dynamic_menu_recipe",
+                  "blocks.field_name",
+                  "blocks.options",
+                  "blocks.options.title",
+                  "blocks.options.bot_command",
+                  "blocks.options.params",
+                  "blocks.options.init_value",
+                  "blocks.init_option",
+                  "blocks.initial_date",
+                  "blocks.options.value",
+                  "blocks.init_options",
+                  "blocks.image_title",
+                  "blocks.external_id",
+                  "blocks.elements",
+                  "blocks.elements.type",
+                  "blocks.elements.text",
+                  "blocks.elements.image_url",
+                  "blocks.elements.alt_text",
+                  "blocks.actions",
+                  "blocks.actions.type",
+                  "blocks.actions.button_title",
+                  "blocks.actions.url",
+                  "blocks.actions.bot_command",
+                  "blocks.actions.params",
+                  "blocks.actions.style",
+                  "blocks.actions.placeholder_text",
+                  "blocks.actions.initial_date",
+                  "blocks.actions.field_name",
+                  "blocks.actions.options",
+                  "blocks.actions.options.params",
+                  "blocks.actions.menu_type",
+                  "blocks.actions.dynamic_menu_recipe",
+                  "blocks.objects",
+                  "blocks.objects.blocks",
+                  "blocks.objects.blocks.block_type",
+                  "blocks.objects.blocks.section_text",
+                  "blocks.objects.blocks.image_url",
+                  "blocks.objects.blocks.alt_text",
+                  "blocks.objects.blocks.button_title",
+                  "blocks.objects.blocks.url",
+                  "blocks.objects.blocks.bot_command",
+                  "blocks.objects.blocks.params",
+                  "blocks.objects.blocks.style",
+                  "blocks.objects.blocks.attachment_fields",
+                  "blocks.objects.blocks.attachment_fields.value",
+                  "blocks.objects.blocks.placeholder_text",
+                  "blocks.objects.blocks.menu_type",
+                  "blocks.objects.blocks.dynamic_menu_recipe",
+                  "blocks.objects.blocks.field_name",
+                  "blocks.objects.blocks.options",
+                  "blocks.objects.blocks.options.title",
+                  "blocks.objects.blocks.options.bot_command",
+                  "blocks.objects.blocks.options.params",
+                  "blocks.objects.blocks.options.init_value",
+                  "blocks.objects.blocks.init_option",
+                  "blocks.objects.blocks.initial_date",
+                  "blocks.objects.blocks.image_title",
+                  "blocks.objects.blocks.elements",
+                  "blocks.objects.blocks.elements.type",
+                  "blocks.objects.blocks.elements.text",
+                  "blocks.objects.blocks.elements.image_url",
+                  "blocks.objects.blocks.elements.alt_text",
+                  "blocks.objects.blocks.actions",
+                  "blocks.objects.blocks.actions.type",
+                  "blocks.objects.blocks.actions.button_title",
+                  "blocks.objects.blocks.actions.url",
+                  "blocks.objects.blocks.actions.bot_command",
+                  "blocks.objects.blocks.actions.params",
+                  "blocks.objects.blocks.actions.style",
+                  "blocks.objects.blocks.actions.placeholder_text",
+                  "blocks.objects.blocks.actions.initial_date",
+                  "blocks.objects.blocks.actions.field_name",
+                  "blocks.objects.blocks.actions.options",
+                  "blocks.objects.blocks.actions.options.params",
+                  "blocks.objects.blocks.actions.menu_type",
+                  "blocks.objects.blocks.actions.dynamic_menu_recipe",
+                  "text",
+                  "message.title",
+                  "message.title_link",
+                  "message.attachment_text",
+                  "message.color",
+                  "attachment_fields",
+                  "attachment_buttons",
+                  "attachment_items.message.title",
+                  "attachment_items.message.title_link",
+                  "attachment_items.message.attachment_text",
+                  "attachment_items.message.color",
+                  "attachment_items.attachment_fields",
+                  "attachment_items.attachment_buttons",
+                  "delete_original"
+                ],
+                "uuid": "6b1631b0-18af-463b-b9f0-05632457b22f",
+                "skip": false
+              }
+            ],
+            "uuid": "8553fee2-6671-4490-89ae-7d4e0badc581"
+          },
+          {
+            "number": 52,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "70e3f38d",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Migrate Properties</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Migrate Properties"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Property Migration/cicd_func_slack_migrate_properties.recipe.json",
+                "name": "CICD | FUNC | (Slack) Migrate Properties",
+                "folder": "Triggers/Slack/Functions/Property Migration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "environment": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "project_config": "#{_('data.slack_bot.37dbcaa0.parameters.param2')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "environment",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project config",
+                    "name": "project_config",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.execution_status",
+              "parameters.execution_reference",
+              "parameters.trigger_id",
+              "parameters.project_config",
+              "parameters.environment"
+            ],
+            "uuid": "57759448-816a-48ac-b3d5-f94354e1ac36"
+          },
+          {
+            "number": 53,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "d9e10f78-fed8-4a79-b794-f66eb6f50083"
+          }
+        ],
+        "comment": "",
+        "uuid": "7065d503-320e-4a0e-bc6f-a749db145e4e"
+      },
+      {
+        "number": 54,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "list_migrate_properties",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 55,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "d0c7b62e",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) List Property Migration Configuration</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | List Property Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Property Migration/cicd_func_slack_list_property_migration_configuration.recipe.json",
+                "name": "CICD | FUNC | (Slack) List Property Migration Configuration",
+                "folder": "Triggers/Slack/Functions/Property Migration"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.execution_status",
+              "parameters.execution_reference",
+              "parameters.trigger_id",
+              "parameters.project_config",
+              "parameters.environment"
+            ],
+            "uuid": "aaef608b-a0da-4edd-a64d-4eec4bee2e0e"
+          },
+          {
+            "number": 56,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "4f244768-d8f0-4403-adc6-a0cbb4acb897"
+          }
+        ],
+        "comment": "",
+        "uuid": "b4e7d7b0-74ac-4821-9ce8-5f4510607891"
+      },
+      {
+        "number": 57,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "project_config_package_info",
+              "uuid": "condition-56c0b2c5-f4fb-49ae-b1a6-a42d54b9f3de"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 58,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "2086f351",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Get Project Configuration Package Info</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | (Slack) Get Project Configuration Package Info"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Project Configuration/cicd_func_slack_get_project_configuration_package_info.recipe.json",
+                "name": "CICD | FUNC | (Slack) Get Project Configuration Package Info",
+                "folder": "Triggers/Slack/Functions/Project Configuration"
+              },
+              "parameters": {
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "project_config_id": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project config ID",
+                    "name": "project_config_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.execution_status",
+              "parameters.execution_reference",
+              "parameters.trigger_id",
+              "parameters.project_config",
+              "parameters.environment"
+            ],
+            "uuid": "bdda31f9-f8ac-4615-a013-a43725c4c692"
+          },
+          {
+            "number": 59,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "6321ce2f-3088-4991-b3ea-5b131f01e772"
+          }
+        ],
+        "comment": "",
+        "uuid": "dd57704e-07e6-4402-9c48-b5d00320b31f"
+      },
+      {
+        "number": 60,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "display_quality_check_results",
+              "uuid": "condition-39e12234-cf09-487e-981f-b73990c8921d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 61,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "acccac54",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Display Quality Check Results</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | Display Quality Check Results"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Quality Check/cicd_func_slack_display_quality_check_results.recipe.json",
+                "name": "CICD | FUNC | (Slack) Display Quality Check Results",
+                "folder": "Triggers/Slack/Functions/Quality Check"
+              },
+              "parameters": {
+                "aqs_execution_id": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "thread_id": "#{_('data.slack_bot.37dbcaa0.ts')}",
+                "execution_reference": "#{_('data.slack_bot.37dbcaa0.parameters.param2')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Aqs execution ID",
+                    "name": "aqs_execution_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Thread ID",
+                    "name": "thread_id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.aqs_execution_id",
+              "parameters.thread_id"
+            ],
+            "uuid": "70668826-a274-4d72-bed1-9f60d678f4b9"
+          },
+          {
+            "number": 62,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "fe509260-b216-4f27-b89e-b24b4251e22a"
+          }
+        ],
+        "uuid": "e74df9b0-8738-4d84-a5f0-169c263f513f"
+      },
+      {
+        "number": 63,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "manage_permissions",
+              "uuid": "condition-39e12234-cf09-487e-981f-b73990c8921d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 64,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "ebf39861",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Manage Permissions</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | (Slack) List Permissions"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/RBAC/cicd_func_slack_manage_permissions.recipe.json",
+                "name": "CICD | FUNC | (Slack) Manage Permissions",
+                "folder": "Triggers/Slack/Functions/RBAC"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.aqs_execution_id",
+              "parameters.thread_id"
+            ],
+            "uuid": "2fc571e9-785d-453f-854b-708b6c34ac44"
+          },
+          {
+            "number": 65,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "66352ed4-a4ee-404d-a979-eca8e6b4704a"
+          }
+        ],
+        "uuid": "a07212f6-a3e2-4bb7-a81c-301abbf3605e"
+      },
+      {
+        "number": 66,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "manage_roles",
+              "uuid": "condition-39e12234-cf09-487e-981f-b73990c8921d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 67,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "6087d0d2",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Manage User Role</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Manage User Role"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/RBAC/cicd_func_slack_manage_user_role.recipe.json",
+                "name": "CICD | FUNC | (Slack) Manage User Role",
+                "folder": "Triggers/Slack/Functions/RBAC"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.aqs_execution_id",
+              "parameters.thread_id"
+            ],
+            "uuid": "77767aa8-9067-47fc-92fc-1ced708c8eef"
+          },
+          {
+            "number": 68,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "35228c1e-4461-4acc-a063-efabaa2b7623"
+          }
+        ],
+        "uuid": "c79e582a-f470-4e19-8880-f37d38b3e151"
+      },
+      {
+        "number": 69,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "user_role_assignment",
+              "uuid": "condition-39e12234-cf09-487e-981f-b73990c8921d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 70,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "dc4e1f55",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Manage User Role Assignment</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | (Slack) Manage User Role Assignment"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/RBAC/cicd_func_slack_manage_user_role_assignment.recipe.json",
+                "name": "CICD | FUNC | (Slack) Manage User Role Assignment",
+                "folder": "Triggers/Slack/Functions/RBAC"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.aqs_execution_id",
+              "parameters.thread_id"
+            ],
+            "uuid": "3ba3f72e-9465-4b16-8c37-f03bac7c6c5c"
+          },
+          {
+            "number": 71,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "1d04ab63-2378-4257-9d40-41231923925f"
+          }
+        ],
+        "uuid": "3c107cb5-f3f4-4d82-84ca-cd6aaefdafa3"
+      },
+      {
+        "number": 72,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "permission_analyzer",
+              "uuid": "condition-39e12234-cf09-487e-981f-b73990c8921d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 73,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "b90e636a",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) User Permission Analyzer</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | (Slack) User Permission Analyzer"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/RBAC/cicd_func_slack_user_permission_analyzer.recipe.json",
+                "name": "CICD | FUNC | (Slack) User Permission Analyzer",
+                "folder": "Triggers/Slack/Functions/RBAC"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.aqs_execution_id",
+              "parameters.thread_id"
+            ],
+            "uuid": "1f12a59d-a114-4dd0-8f81-ff6e1a30a51a"
+          },
+          {
+            "number": 74,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "ddc0e10e-5bbc-4a06-a14e-2bb44f8be4e6"
+          }
+        ],
+        "uuid": "8a5960f0-8668-4547-84e8-7c6b58113f0f"
+      },
+      {
+        "number": 75,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "search_pipeline_execution",
+              "uuid": "condition-39e12234-cf09-487e-981f-b73990c8921d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 76,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "8d0d9aac",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Search Pipeline Execution</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | (Slack) Search Pipeline Execution"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Pipeline Execution/cicd_func_slack_search_pipeline_execution.recipe.json",
+                "name": "CICD | FUNC | (Slack) Search Pipeline Execution",
+                "folder": "Triggers/Slack/Functions/Pipeline Execution"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.user_id",
+              "parameters.aqs_execution_id",
+              "parameters.thread_id"
+            ],
+            "uuid": "e100dcfa-d4cd-4dc1-8510-26d7e6baf32d"
+          },
+          {
+            "number": 77,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "e4ee5e0b-abcd-41b1-84aa-0e9b7175f4bf"
+          }
+        ],
+        "uuid": "f5db5773-afb1-4763-9eac-ae659dff9523"
+      },
+      {
+        "number": 78,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "search_cicd_component",
+              "uuid": "condition-ee6a18b6-ce63-46bd-ad69-267499e06786"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 79,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "cd59ab17",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Search for CICD Components</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | Search for CICD Components"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/cicd_func_slack_search_for_cicd_components.recipe.json",
+                "name": "CICD | FUNC | (Slack) Search for CICD Components",
+                "folder": "Triggers/Slack/Functions"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "trigger_id": "#{_('data.slack_bot.37dbcaa0.context.trigger_id')}",
+                "component": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Component",
+                    "name": "component",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "acb0f1b7-4fc0-4a6e-809d-83c02c8559f7"
+          },
+          {
+            "number": 80,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "2392754a-2e5d-468d-8fb7-b150f357715b"
+          }
+        ],
+        "uuid": "f8c8660d-8bb3-4692-9aef-15fb314f74e1"
+      },
+      {
+        "number": 81,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.slack_bot.37dbcaa0.parameters.command')}",
+              "rhs": "continue_deployment",
+              "uuid": "condition-ee6a18b6-ce63-46bd-ad69-267499e06786"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 82,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "022be00d",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Continue Approved Deployment</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | (Slack) Continue Approved Deployment"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Approval Requests/cicd_func_slack_continue_approved_deployment.recipe.json",
+                "name": "CICD | FUNC | (Slack) Continue Approved Deployment",
+                "folder": "Triggers/Slack/Functions/Approval Requests"
+              },
+              "parameters": {
+                "user_id": "#{_('data.slack_bot.37dbcaa0.context.user')}",
+                "user_name": "#{_('data.slack_bot.37dbcaa0.context.user_name')}",
+                "execution_reference": "#{_('data.slack_bot.37dbcaa0.parameters.param1')}",
+                "thread_id": "#{_('data.slack_bot.37dbcaa0.ts')}",
+                "original_message_json": "#{_('data.slack_bot.37dbcaa0.context.original_message_json')}",
+                "response_url": "#{_('data.slack_bot.37dbcaa0.context.response_url')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Response URL",
+                    "name": "response_url",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Original message json",
+                    "name": "original_message_json",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Thread ID",
+                    "name": "thread_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "4859b672-e5a2-4c62-bcc5-644bf863b1b3"
+          },
+          {
+            "number": 83,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "369d9e68-e039-4d12-a2d9-a903a2bd55ca"
+          }
+        ],
+        "uuid": "7e8ed5a8-cbe0-4fa3-aec9-37daa7bf8390"
+      }
+    ],
+    "comment": "Define how users should command Workbot from Slack",
+    "uuid": "3dd1cd19-a864-43be-b195-8c741ab19f21"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

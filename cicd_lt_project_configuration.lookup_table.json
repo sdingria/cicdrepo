@@ -1,0 +1,75 @@
+{
+  "name": "CICD | LT | Project Configuration",
+  "schema": [
+    {
+      "control_type": "text",
+      "label": "Id",
+      "name": "col1",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Project Name",
+      "name": "col2",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Asset Environment",
+      "name": "col3",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Asset Id",
+      "name": "col4",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Asset Type",
+      "name": "col5",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Project Context",
+      "name": "col6",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Notification Settings",
+      "name": "col7",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Dependencies",
+      "name": "col8",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Target Folder Details",
+      "name": "col9",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Last Updated",
+      "name": "col10",
+      "type": "string",
+      "sticky": true
+    }
+  ]
+}

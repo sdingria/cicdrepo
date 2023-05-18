@@ -1,0 +1,3146 @@
+{
+  "name": "CICD | FUNC | Release Project Version in Jira",
+  "description": "When there is a function call, do action and other actions",
+  "version": 43,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "2c336478",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "result_schema_json": "[{\"name\":\"released_name\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Released name\"},{\"name\":\"released\",\"type\":\"boolean\",\"optional\":false,\"control_type\":\"checkbox\",\"label\":\"Released\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Released\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"released\",\"type\":\"boolean\",\"optional\":false}},{\"name\":\"release_id\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Release ID\"}]",
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Pipeline Configuration ID\",\"name\":\"pipeline_config_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Project Configuration ID\",\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Pipeline Execution Reference\",\"name\":\"pipeline_exec_ref\",\"type\":\"string\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Promote Source Configuration Id\",\"name\":\"promote_source_config_id\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Promote Target Folder Id\",\"name\":\"promote_target_folder_id\",\"type\":\"string\",\"optional\":true}],\"label\":\"Promote Context\",\"name\":\"promote_context\",\"type\":\"object\",\"optional\":true},{\"name\":\"released\",\"type\":\"boolean\",\"optional\":false,\"control_type\":\"checkbox\",\"label\":\"Released\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Released\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"released\",\"type\":\"boolean\",\"optional\":false}}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Pipeline Configuration ID",
+            "name": "pipeline_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Project Configuration ID",
+            "name": "project_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Pipeline Execution Reference",
+            "name": "pipeline_exec_ref",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Promote Source Configuration Id",
+                "name": "promote_source_config_id",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Promote Target Folder Id",
+                "name": "promote_target_folder_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "label": "Promote Context",
+            "name": "promote_context",
+            "type": "object",
+            "optional": true
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Released",
+            "render_input": {
+            },
+            "parse_output": {
+            },
+            "toggle_hint": "Select from option list",
+            "toggle_field": {
+              "label": "Released",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "released",
+              "type": "boolean",
+              "optional": false
+            },
+            "name": "released",
+            "type": "boolean",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "5452abbb",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Pipeline Execution</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | Pipeline Execution"
+        },
+        "toggleCfg": {
+          "parameters.method": true
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Data Access Functions/cicd_func_pipeline_execution.recipe.json",
+            "name": "CICD | FUNC | Pipeline Execution",
+            "folder": "Data Access Functions"
+          },
+          "parameters": {
+            "table": "CICD | Pipeline Execution",
+            "method": "GET",
+            "entries": {
+              "execution_reference": "#{_('data.workato_recipe_function.2c336478.parameters.pipeline_exec_ref')}",
+              "stage": "Main"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table"
+              },
+              {
+                "control_type": "text",
+                "label": "Method",
+                "type": "string",
+                "name": "method"
+              },
+              {
+                "control_type": "integer",
+                "label": "Count",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "count",
+                "optional": false
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "status",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline configuration ID",
+                    "name": "pipeline_configuration_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "comments",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project configuration ID",
+                    "name": "project_configuration_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline context",
+                    "name": "pipeline_context",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "stage",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Job URL",
+                    "name": "job_url",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Promote context",
+                    "name": "promote_context",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution audit",
+                    "name": "execution_audit",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table",
+                "optional": true,
+                "default": "CICD | Pipeline Execution"
+              },
+              {
+                "control_type": "select",
+                "label": "Method",
+                "type": "string",
+                "name": "method",
+                "optional": false,
+                "hint": "GET, POST, PUT or DELETE.",
+                "pick_list": [
+                  [
+                    "GET",
+                    "GET"
+                  ],
+                  [
+                    "POST",
+                    "POST"
+                  ],
+                  [
+                    "PUT",
+                    "PUT"
+                  ],
+                  [
+                    "DELETE",
+                    "DELETE"
+                  ]
+                ],
+                "toggle_hint": "Select from list",
+                "toggle_field": {
+                  "name": "method",
+                  "label": "Method",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Enter Value",
+                  "hint": "Map Method"
+                }
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "status",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline configuration ID",
+                    "name": "pipeline_configuration_id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "comments",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project configuration ID",
+                    "name": "project_configuration_id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline context",
+                    "name": "pipeline_context",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "stage",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Job URL",
+                    "name": "job_url",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Promote context",
+                    "name": "promote_context",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution audit",
+                    "name": "execution_audit",
+                    "type": "string",
+                    "optional": true
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters",
+          "parameters.table",
+          "parameters.entries.execution_reference",
+          "parameters.method",
+          "parameters.entries",
+          "parameters.entries.stage"
+        ],
+        "uuid": "d37bd7fa-904c-4663-847b-52dc9dbd4e56"
+      },
+      {
+        "number": 2,
+        "provider": "json_parser",
+        "name": "parse_json",
+        "as": "47c686cb",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "document": "#{_('data.workato_recipe_function.5452abbb.result.entries.first.pipeline_context')}",
+          "sample_document": "{\"project_name\":\"CICD Automation V3 Test Suite\",\"pm_release_id\":\"10001\", \"pm_release_name\":\"CICD Automation Test Suite\"}"
+        },
+        "extended_output_schema": [
+          {
+            "label": "Document",
+            "name": "document",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Project name",
+                "type": "string",
+                "name": "project_name"
+              },
+              {
+                "control_type": "text",
+                "label": "Pm release ID",
+                "type": "string",
+                "name": "pm_release_id"
+              },
+              {
+                "control_type": "text",
+                "label": "Pm release name",
+                "type": "string",
+                "name": "pm_release_name"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "comment": "Parse Pipeline Context",
+        "uuid": "ae71210e-1cde-4aa3-90e8-f673098b4b38"
+      },
+      {
+        "number": 3,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "c4e79dfe",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Project Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+            "name": "CICD | LT | Project Configuration",
+            "folder": ""
+          },
+          "parameters": {
+            "col1": "#{_('data.workato_recipe_function.2c336478.parameters.project_config_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Context",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Notification Settings",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "label": "Entry",
+                "type": "object",
+                "name": "entry"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Id",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Name",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Environment",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Id",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Type",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Context",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Notification Settings",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Dependencies",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Target Folder Details",
+                "name": "col9",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Last Updated",
+                "name": "col10",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "c627caab-a12f-46b1-b6bd-fd7980a506f0"
+      },
+      {
+        "number": 4,
+        "provider": "json_parser",
+        "name": "parse_json",
+        "as": "35845985",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "sample_document": "{\"code_repository\":\"cicdv3\",\"code_reviewer\":\"bernieabraham\",\"pm_project_key\":\"1010\"}",
+          "document": "#{_('data.lookup_table.c4e79dfe.entries.first.entry.col6')}"
+        },
+        "extended_output_schema": [
+          {
+            "label": "Document",
+            "name": "document",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Code repository",
+                "type": "string",
+                "name": "code_repository"
+              },
+              {
+                "control_type": "text",
+                "label": "Code reviewer",
+                "type": "string",
+                "name": "code_reviewer"
+              },
+              {
+                "control_type": "text",
+                "label": "Pm project key",
+                "type": "string",
+                "name": "pm_project_key"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "comment": "Parse Project Context",
+        "uuid": "1ccba178-3ad0-459c-9ad4-2bc055a48416"
+      },
+      {
+        "number": 5,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.json_parser.47c686cb.document.pm_release_id').upcase",
+              "rhs": "##AC##",
+              "uuid": "condition-a4580d83-44fa-486e-810c-65630cf1fe87"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 6,
+            "provider": "jira",
+            "name": "__adhoc_http_action",
+            "as": "74d6c719",
+            "title": "Get Project Id",
+            "description": "Get <span class=\"provider\">Project Id</span> in <span class=\"provider\">Jira</span> (Custom)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "mnemonic": "Get Project Id",
+              "verb": "get",
+              "response_type": "json",
+              "path": "/rest/api/2/project/#{_('data.json_parser.35845985.document.pm_project_key')}",
+              "output": "[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"ID\",\"type\":\"string\",\"name\":\"id\"},{\"control_type\":\"text\",\"label\":\"Key\",\"type\":\"string\",\"name\":\"key\"},{\"control_type\":\"text\",\"label\":\"Description\",\"type\":\"string\",\"name\":\"description\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"Key\",\"type\":\"string\",\"name\":\"key\"},{\"control_type\":\"text\",\"label\":\"Account ID\",\"type\":\"string\",\"name\":\"accountId\"},{\"control_type\":\"text\",\"label\":\"Account type\",\"type\":\"string\",\"name\":\"accountType\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"48 x 48\",\"type\":\"string\",\"name\":\"48x48\"},{\"control_type\":\"text\",\"label\":\"24 x 24\",\"type\":\"string\",\"name\":\"24x24\"},{\"control_type\":\"text\",\"label\":\"16 x 16\",\"type\":\"string\",\"name\":\"16x16\"},{\"control_type\":\"text\",\"label\":\"32 x 32\",\"type\":\"string\",\"name\":\"32x32\"}],\"label\":\"Avatar urls\",\"type\":\"object\",\"name\":\"avatarUrls\"},{\"control_type\":\"text\",\"label\":\"Display name\",\"type\":\"string\",\"name\":\"displayName\"},{\"control_type\":\"text\",\"label\":\"Active\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Active\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"active\"},\"type\":\"boolean\",\"name\":\"active\"}],\"label\":\"Lead\",\"type\":\"object\",\"name\":\"lead\"},{\"name\":\"components\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Components\",\"properties\":[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"ID\",\"type\":\"string\",\"name\":\"id\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"control_type\":\"text\",\"label\":\"Description\",\"type\":\"string\",\"name\":\"description\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"Key\",\"type\":\"string\",\"name\":\"key\"},{\"control_type\":\"text\",\"label\":\"Account ID\",\"type\":\"string\",\"name\":\"accountId\"},{\"control_type\":\"text\",\"label\":\"Account type\",\"type\":\"string\",\"name\":\"accountType\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"48 x 48\",\"type\":\"string\",\"name\":\"48x48\"},{\"control_type\":\"text\",\"label\":\"24 x 24\",\"type\":\"string\",\"name\":\"24x24\"},{\"control_type\":\"text\",\"label\":\"16 x 16\",\"type\":\"string\",\"name\":\"16x16\"},{\"control_type\":\"text\",\"label\":\"32 x 32\",\"type\":\"string\",\"name\":\"32x32\"}],\"label\":\"Avatar urls\",\"type\":\"object\",\"name\":\"avatarUrls\"},{\"control_type\":\"text\",\"label\":\"Display name\",\"type\":\"string\",\"name\":\"displayName\"},{\"control_type\":\"text\",\"label\":\"Active\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Active\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"active\"},\"type\":\"boolean\",\"name\":\"active\"}],\"label\":\"Lead\",\"type\":\"object\",\"name\":\"lead\"},{\"control_type\":\"text\",\"label\":\"Assignee type\",\"type\":\"string\",\"name\":\"assigneeType\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"Key\",\"type\":\"string\",\"name\":\"key\"},{\"control_type\":\"text\",\"label\":\"Account ID\",\"type\":\"string\",\"name\":\"accountId\"},{\"control_type\":\"text\",\"label\":\"Account type\",\"type\":\"string\",\"name\":\"accountType\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"48 x 48\",\"type\":\"string\",\"name\":\"48x48\"},{\"control_type\":\"text\",\"label\":\"24 x 24\",\"type\":\"string\",\"name\":\"24x24\"},{\"control_type\":\"text\",\"label\":\"16 x 16\",\"type\":\"string\",\"name\":\"16x16\"},{\"control_type\":\"text\",\"label\":\"32 x 32\",\"type\":\"string\",\"name\":\"32x32\"}],\"label\":\"Avatar urls\",\"type\":\"object\",\"name\":\"avatarUrls\"},{\"control_type\":\"text\",\"label\":\"Display name\",\"type\":\"string\",\"name\":\"displayName\"},{\"control_type\":\"text\",\"label\":\"Active\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Active\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"active\"},\"type\":\"boolean\",\"name\":\"active\"}],\"label\":\"Assignee\",\"type\":\"object\",\"name\":\"assignee\"},{\"control_type\":\"text\",\"label\":\"Real assignee type\",\"type\":\"string\",\"name\":\"realAssigneeType\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"Key\",\"type\":\"string\",\"name\":\"key\"},{\"control_type\":\"text\",\"label\":\"Account ID\",\"type\":\"string\",\"name\":\"accountId\"},{\"control_type\":\"text\",\"label\":\"Account type\",\"type\":\"string\",\"name\":\"accountType\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"48 x 48\",\"type\":\"string\",\"name\":\"48x48\"},{\"control_type\":\"text\",\"label\":\"24 x 24\",\"type\":\"string\",\"name\":\"24x24\"},{\"control_type\":\"text\",\"label\":\"16 x 16\",\"type\":\"string\",\"name\":\"16x16\"},{\"control_type\":\"text\",\"label\":\"32 x 32\",\"type\":\"string\",\"name\":\"32x32\"}],\"label\":\"Avatar urls\",\"type\":\"object\",\"name\":\"avatarUrls\"},{\"control_type\":\"text\",\"label\":\"Display name\",\"type\":\"string\",\"name\":\"displayName\"},{\"control_type\":\"text\",\"label\":\"Active\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Active\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"active\"},\"type\":\"boolean\",\"name\":\"active\"}],\"label\":\"Real assignee\",\"type\":\"object\",\"name\":\"realAssignee\"},{\"control_type\":\"text\",\"label\":\"Is assignee type valid\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Is assignee type valid\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"isAssigneeTypeValid\"},\"type\":\"boolean\",\"name\":\"isAssigneeTypeValid\"},{\"control_type\":\"text\",\"label\":\"Project\",\"type\":\"string\",\"name\":\"project\"},{\"control_type\":\"number\",\"label\":\"Project ID\",\"parse_output\":\"float_conversion\",\"type\":\"number\",\"name\":\"projectId\"}]},{\"name\":\"issueTypes\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Issue types\",\"properties\":[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"ID\",\"type\":\"string\",\"name\":\"id\"},{\"control_type\":\"text\",\"label\":\"Description\",\"type\":\"string\",\"name\":\"description\"},{\"control_type\":\"text\",\"label\":\"Icon URL\",\"type\":\"string\",\"name\":\"iconUrl\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"control_type\":\"text\",\"label\":\"Subtask\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Subtask\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"subtask\"},\"type\":\"boolean\",\"name\":\"subtask\"},{\"control_type\":\"number\",\"label\":\"Avatar ID\",\"parse_output\":\"float_conversion\",\"type\":\"number\",\"name\":\"avatarId\"},{\"control_type\":\"number\",\"label\":\"Hierarchy level\",\"parse_output\":\"float_conversion\",\"type\":\"number\",\"name\":\"hierarchyLevel\"}]},{\"control_type\":\"text\",\"label\":\"URL\",\"type\":\"string\",\"name\":\"url\"},{\"control_type\":\"text\",\"label\":\"Email\",\"type\":\"string\",\"name\":\"email\"},{\"control_type\":\"text\",\"label\":\"Assignee type\",\"type\":\"string\",\"name\":\"assigneeType\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Developers\",\"type\":\"string\",\"name\":\"Developers\"}],\"label\":\"Roles\",\"type\":\"object\",\"name\":\"roles\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"48 x 48\",\"type\":\"string\",\"name\":\"48x48\"},{\"control_type\":\"text\",\"label\":\"24 x 24\",\"type\":\"string\",\"name\":\"24x24\"},{\"control_type\":\"text\",\"label\":\"16 x 16\",\"type\":\"string\",\"name\":\"16x16\"},{\"control_type\":\"text\",\"label\":\"32 x 32\",\"type\":\"string\",\"name\":\"32x32\"}],\"label\":\"Avatar urls\",\"type\":\"object\",\"name\":\"avatarUrls\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"ID\",\"type\":\"string\",\"name\":\"id\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"control_type\":\"text\",\"label\":\"Description\",\"type\":\"string\",\"name\":\"description\"}],\"label\":\"Project category\",\"type\":\"object\",\"name\":\"projectCategory\"},{\"control_type\":\"text\",\"label\":\"Simplified\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Simplified\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"simplified\"},\"type\":\"boolean\",\"name\":\"simplified\"},{\"control_type\":\"text\",\"label\":\"Style\",\"type\":\"string\",\"name\":\"style\"},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Property key\",\"type\":\"string\",\"name\":\"propertyKey\"}],\"label\":\"Properties\",\"type\":\"object\",\"name\":\"properties\"},{\"properties\":[{\"control_type\":\"number\",\"label\":\"Total issue count\",\"parse_output\":\"float_conversion\",\"type\":\"number\",\"name\":\"totalIssueCount\"},{\"control_type\":\"text\",\"label\":\"Last issue update time\",\"render_input\":\"date_time_conversion\",\"parse_output\":\"date_time_conversion\",\"type\":\"date_time\",\"name\":\"lastIssueUpdateTime\"}],\"label\":\"Insight\",\"type\":\"object\",\"name\":\"insight\"}]"
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "text",
+                "label": "Self",
+                "name": "self",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "ID",
+                "name": "id",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Key",
+                "name": "key",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Description",
+                "name": "description",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "label": "Lead",
+                "name": "lead",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Self",
+                    "optional": true,
+                    "type": "string",
+                    "name": "self"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Key",
+                    "optional": true,
+                    "type": "string",
+                    "name": "key"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Account ID",
+                    "optional": true,
+                    "type": "string",
+                    "name": "accountId"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Account type",
+                    "optional": true,
+                    "type": "string",
+                    "name": "accountType"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "optional": true,
+                    "type": "string",
+                    "name": "name"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "48 x 48",
+                        "optional": true,
+                        "type": "string",
+                        "name": "48x48"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "24 x 24",
+                        "optional": true,
+                        "type": "string",
+                        "name": "24x24"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "16 x 16",
+                        "optional": true,
+                        "type": "string",
+                        "name": "16x16"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "32 x 32",
+                        "optional": true,
+                        "type": "string",
+                        "name": "32x32"
+                      }
+                    ],
+                    "label": "Avatar urls",
+                    "optional": true,
+                    "type": "object",
+                    "name": "avatarUrls"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Display name",
+                    "optional": true,
+                    "type": "string",
+                    "name": "displayName"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Active",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Active",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "active"
+                    },
+                    "optional": true,
+                    "type": "number",
+                    "name": "active"
+                  }
+                ],
+                "type": "object"
+              },
+              {
+                "label": "Components",
+                "name": "components",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Self",
+                    "optional": true,
+                    "type": "string",
+                    "name": "self"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "optional": true,
+                    "type": "string",
+                    "name": "id"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "optional": true,
+                    "type": "string",
+                    "name": "name"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "optional": true,
+                    "type": "string",
+                    "name": "description"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Self",
+                        "optional": true,
+                        "type": "string",
+                        "name": "self"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Key",
+                        "optional": true,
+                        "type": "string",
+                        "name": "key"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Account ID",
+                        "optional": true,
+                        "type": "string",
+                        "name": "accountId"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Account type",
+                        "optional": true,
+                        "type": "string",
+                        "name": "accountType"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "optional": true,
+                        "type": "string",
+                        "name": "name"
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "48 x 48",
+                            "optional": true,
+                            "type": "string",
+                            "name": "48x48"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "24 x 24",
+                            "optional": true,
+                            "type": "string",
+                            "name": "24x24"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "16 x 16",
+                            "optional": true,
+                            "type": "string",
+                            "name": "16x16"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "32 x 32",
+                            "optional": true,
+                            "type": "string",
+                            "name": "32x32"
+                          }
+                        ],
+                        "label": "Avatar urls",
+                        "optional": true,
+                        "type": "object",
+                        "name": "avatarUrls"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Display name",
+                        "optional": true,
+                        "type": "string",
+                        "name": "displayName"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Active",
+                        "parse_output": {
+                        },
+                        "render_input": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Active",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "type": "boolean",
+                          "name": "active"
+                        },
+                        "optional": true,
+                        "type": "number",
+                        "name": "active"
+                      }
+                    ],
+                    "label": "Lead",
+                    "optional": true,
+                    "type": "object",
+                    "name": "lead"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Assignee type",
+                    "optional": true,
+                    "type": "string",
+                    "name": "assigneeType"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Self",
+                        "optional": true,
+                        "type": "string",
+                        "name": "self"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Key",
+                        "optional": true,
+                        "type": "string",
+                        "name": "key"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Account ID",
+                        "optional": true,
+                        "type": "string",
+                        "name": "accountId"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Account type",
+                        "optional": true,
+                        "type": "string",
+                        "name": "accountType"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "optional": true,
+                        "type": "string",
+                        "name": "name"
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "48 x 48",
+                            "optional": true,
+                            "type": "string",
+                            "name": "48x48"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "24 x 24",
+                            "optional": true,
+                            "type": "string",
+                            "name": "24x24"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "16 x 16",
+                            "optional": true,
+                            "type": "string",
+                            "name": "16x16"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "32 x 32",
+                            "optional": true,
+                            "type": "string",
+                            "name": "32x32"
+                          }
+                        ],
+                        "label": "Avatar urls",
+                        "optional": true,
+                        "type": "object",
+                        "name": "avatarUrls"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Display name",
+                        "optional": true,
+                        "type": "string",
+                        "name": "displayName"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Active",
+                        "parse_output": {
+                        },
+                        "render_input": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Active",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "type": "boolean",
+                          "name": "active"
+                        },
+                        "optional": true,
+                        "type": "number",
+                        "name": "active"
+                      }
+                    ],
+                    "label": "Assignee",
+                    "optional": true,
+                    "type": "object",
+                    "name": "assignee"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Real assignee type",
+                    "optional": true,
+                    "type": "string",
+                    "name": "realAssigneeType"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Self",
+                        "optional": true,
+                        "type": "string",
+                        "name": "self"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Key",
+                        "optional": true,
+                        "type": "string",
+                        "name": "key"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Account ID",
+                        "optional": true,
+                        "type": "string",
+                        "name": "accountId"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Account type",
+                        "optional": true,
+                        "type": "string",
+                        "name": "accountType"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "optional": true,
+                        "type": "string",
+                        "name": "name"
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "48 x 48",
+                            "optional": true,
+                            "type": "string",
+                            "name": "48x48"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "24 x 24",
+                            "optional": true,
+                            "type": "string",
+                            "name": "24x24"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "16 x 16",
+                            "optional": true,
+                            "type": "string",
+                            "name": "16x16"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "32 x 32",
+                            "optional": true,
+                            "type": "string",
+                            "name": "32x32"
+                          }
+                        ],
+                        "label": "Avatar urls",
+                        "optional": true,
+                        "type": "object",
+                        "name": "avatarUrls"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Display name",
+                        "optional": true,
+                        "type": "string",
+                        "name": "displayName"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Active",
+                        "parse_output": {
+                        },
+                        "render_input": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Active",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "type": "boolean",
+                          "name": "active"
+                        },
+                        "optional": true,
+                        "type": "number",
+                        "name": "active"
+                      }
+                    ],
+                    "label": "Real assignee",
+                    "optional": true,
+                    "type": "object",
+                    "name": "realAssignee"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Is assignee type valid",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is assignee type valid",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "isAssigneeTypeValid"
+                    },
+                    "optional": true,
+                    "type": "number",
+                    "name": "isAssigneeTypeValid"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project",
+                    "optional": true,
+                    "type": "string",
+                    "name": "project"
+                  },
+                  {
+                    "control_type": "number",
+                    "label": "Project ID",
+                    "parse_output": "float_conversion",
+                    "optional": true,
+                    "type": "number",
+                    "name": "projectId"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "label": "Issue types",
+                "name": "issueTypes",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Self",
+                    "optional": true,
+                    "type": "string",
+                    "name": "self"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "optional": true,
+                    "type": "string",
+                    "name": "id"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "optional": true,
+                    "type": "string",
+                    "name": "description"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Icon URL",
+                    "optional": true,
+                    "type": "string",
+                    "name": "iconUrl"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "optional": true,
+                    "type": "string",
+                    "name": "name"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Subtask",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Subtask",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "subtask"
+                    },
+                    "optional": true,
+                    "type": "number",
+                    "name": "subtask"
+                  },
+                  {
+                    "control_type": "number",
+                    "label": "Avatar ID",
+                    "parse_output": "float_conversion",
+                    "optional": true,
+                    "type": "number",
+                    "name": "avatarId"
+                  },
+                  {
+                    "control_type": "number",
+                    "label": "Hierarchy level",
+                    "parse_output": "float_conversion",
+                    "optional": true,
+                    "type": "number",
+                    "name": "hierarchyLevel"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "control_type": "text",
+                "label": "URL",
+                "name": "url",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Email",
+                "name": "email",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Assignee type",
+                "name": "assigneeType",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "label": "Roles",
+                "name": "roles",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Developers",
+                    "optional": true,
+                    "type": "string",
+                    "name": "Developers"
+                  }
+                ],
+                "type": "object"
+              },
+              {
+                "label": "Avatar urls",
+                "name": "avatarUrls",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "48 x 48",
+                    "optional": true,
+                    "type": "string",
+                    "name": "48x48"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "24 x 24",
+                    "optional": true,
+                    "type": "string",
+                    "name": "24x24"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "16 x 16",
+                    "optional": true,
+                    "type": "string",
+                    "name": "16x16"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "32 x 32",
+                    "optional": true,
+                    "type": "string",
+                    "name": "32x32"
+                  }
+                ],
+                "type": "object"
+              },
+              {
+                "label": "Project category",
+                "name": "projectCategory",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Self",
+                    "optional": true,
+                    "type": "string",
+                    "name": "self"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "optional": true,
+                    "type": "string",
+                    "name": "id"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "optional": true,
+                    "type": "string",
+                    "name": "name"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "optional": true,
+                    "type": "string",
+                    "name": "description"
+                  }
+                ],
+                "type": "object"
+              },
+              {
+                "control_type": "text",
+                "label": "Simplified",
+                "name": "simplified",
+                "optional": true,
+                "toggle_field": {
+                  "label": "Simplified",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "type": "boolean",
+                  "name": "simplified"
+                },
+                "toggle_hint": "Select from option list",
+                "type": "number",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              },
+              {
+                "control_type": "text",
+                "label": "Style",
+                "name": "style",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "label": "Properties",
+                "name": "properties",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Property key",
+                    "optional": true,
+                    "type": "string",
+                    "name": "propertyKey"
+                  }
+                ],
+                "type": "object"
+              },
+              {
+                "label": "Insight",
+                "name": "insight",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "number",
+                    "label": "Total issue count",
+                    "parse_output": "float_conversion",
+                    "optional": true,
+                    "type": "number",
+                    "name": "totalIssueCount"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last issue update time",
+                    "render_input": "date_time_conversion",
+                    "parse_output": "date_time_conversion",
+                    "optional": true,
+                    "type": "date_time",
+                    "name": "lastIssueUpdateTime"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "control_type": "text",
+                "hint": "Base URI is <b>https://accelerators-dev.atlassian.net/rest/api/2/</b> - path will be appended to this URI. Use absolute URI to override this base URI.",
+                "label": "Path",
+                "name": "path",
+                "optional": false,
+                "type": "string"
+              },
+              {
+                "control_type": "select",
+                "default": "json",
+                "extends_schema": true,
+                "label": "Response type",
+                "name": "response_type",
+                "optional": true,
+                "pick_list": [
+                  [
+                    "JSON response",
+                    "json"
+                  ],
+                  [
+                    "Raw response",
+                    "raw"
+                  ]
+                ],
+                "sticky": false,
+                "type": "string"
+              },
+              {
+                "add_field_label": "Add URL parameter",
+                "control_type": "form-schema-builder",
+                "label": "Request URL parameters",
+                "name": "input",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "sticky": true,
+                    "optional": true,
+                    "type": "string",
+                    "name": "schema"
+                  }
+                ],
+                "sticky": true,
+                "type": "object"
+              },
+              {
+                "control_type": "key_value",
+                "empty_list_text": "Refer to the API documentation and add required headers to this HTTP request",
+                "empty_list_title": "Does this HTTP request require headers?",
+                "item_label": "Header",
+                "label": "Request headers",
+                "name": "request_headers",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "optional": true,
+                    "type": "string",
+                    "name": "name"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Value",
+                    "optional": true,
+                    "type": "string",
+                    "name": "value"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "control_type": "schema-designer",
+                "extends_schema": true,
+                "label": "Response body",
+                "name": "output",
+                "optional": true,
+                "sample_data_type": "json_http",
+                "sticky": true,
+                "type": "string",
+                "schema_neutral": true
+              },
+              {
+                "control_type": "schema-designer",
+                "extends_schema": true,
+                "label": "Response headers",
+                "name": "response_headers",
+                "optional": true,
+                "sample_data_type": "json_http",
+                "sticky": false,
+                "type": "string",
+                "schema_neutral": true
+              }
+            ],
+            "uuid": "fa8b236f-a378-4d91-a3c1-affa3713c628"
+          },
+          {
+            "number": 7,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "c5e1dae2",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | List Jira Unreleased Versions</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | List Jira Unreleased Versions"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Extensions/Project Management/Jira/cicd_func_list_jira_unreleased_versions.recipe.json",
+                "name": "CICD | FUNC | List Jira Unreleased Versions",
+                "folder": "Extensions/Project Management/Jira"
+              },
+              "parameters": {
+                "projectIdOrKey": "#{_('data.jira.74d6c719.id')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "project_versions",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Project versions",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "description",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Project ID or key",
+                    "name": "projectIdOrKey",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "71bc2e2b-7e0d-4efe-adf4-0ec2869f11d1"
+          },
+          {
+            "number": 8,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "=_('data.workato_recipe_function.c5e1dae2.result.project_versions').where(name: _('data.json_parser.47c686cb.document.project_name') + \" (LATEST)\").length",
+                  "rhs": "0",
+                  "uuid": "condition-839a3f83-af27-4937-b8e5-806ae17942bf"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 9,
+                "provider": "jira",
+                "name": "__adhoc_http_action",
+                "as": "53cd545a",
+                "title": "Create Jira Release",
+                "description": "Create <span class=\"provider\">Jira Release</span> in <span class=\"provider\">Jira</span> (Custom)",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "mnemonic": "Create Jira Release",
+                  "verb": "post",
+                  "response_type": "json",
+                  "path": "/rest/api/latest/version",
+                  "input": {
+                    "schema": "[{\"control_type\":\"text\",\"label\":\"name\",\"name\":\"name\",\"type\":\"string\",\"optional\":false},{\"name\":\"released\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Released\"},{\"name\":\"projectId\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Project ID\"}]",
+                    "data": {
+                      "name": "#{_('data.json_parser.47c686cb.document.project_name')} (LATEST)",
+                      "released": "=_('data.workato_recipe_function.2c336478.parameters.released').is_true?",
+                      "projectId": "#{_('data.jira.74d6c719.id')}"
+                    }
+                  },
+                  "output": "[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"ID\",\"type\":\"string\",\"name\":\"id\"},{\"control_type\":\"text\",\"label\":\"Description\",\"type\":\"string\",\"name\":\"description\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"control_type\":\"text\",\"label\":\"Archived\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Archived\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"archived\"},\"type\":\"boolean\",\"name\":\"archived\"},{\"control_type\":\"text\",\"label\":\"Released\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Released\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"released\"},\"type\":\"boolean\",\"name\":\"released\"},{\"control_type\":\"text\",\"label\":\"Release date\",\"type\":\"string\",\"name\":\"releaseDate\"},{\"control_type\":\"text\",\"label\":\"User release date\",\"type\":\"string\",\"name\":\"userReleaseDate\"},{\"control_type\":\"text\",\"label\":\"Project\",\"type\":\"string\",\"name\":\"project\"},{\"control_type\":\"number\",\"label\":\"Project ID\",\"parse_output\":\"float_conversion\",\"type\":\"number\",\"name\":\"projectId\"}]",
+                  "request_type": "json"
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "text",
+                    "label": "Self",
+                    "name": "self",
+                    "optional": true,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "optional": true,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "description",
+                    "optional": true,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "optional": true,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Archived",
+                    "name": "archived",
+                    "optional": true,
+                    "toggle_field": {
+                      "label": "Archived",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "archived"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "number",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    }
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Released",
+                    "name": "released",
+                    "optional": true,
+                    "toggle_field": {
+                      "label": "Released",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "released"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "number",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    }
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Release date",
+                    "name": "releaseDate",
+                    "optional": true,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User release date",
+                    "name": "userReleaseDate",
+                    "optional": true,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project",
+                    "name": "project",
+                    "optional": true,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "number",
+                    "label": "Project ID",
+                    "name": "projectId",
+                    "optional": true,
+                    "type": "number",
+                    "parse_output": "float_conversion"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "hint": "Base URI is <b>https://accelerators-dev.atlassian.net/rest/api/2/</b> - path will be appended to this URI. Use absolute URI to override this base URI.",
+                    "label": "Path",
+                    "name": "path",
+                    "optional": false,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "default": "json",
+                    "extends_schema": true,
+                    "label": "Request type",
+                    "name": "request_type",
+                    "optional": true,
+                    "pick_list": [
+                      [
+                        "JSON request body",
+                        "json"
+                      ],
+                      [
+                        "URL encoded form",
+                        "urlencoded"
+                      ],
+                      [
+                        "Multipart form",
+                        "multipart"
+                      ],
+                      [
+                        "Raw request body",
+                        "raw"
+                      ]
+                    ],
+                    "sticky": false,
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "default": "json",
+                    "extends_schema": true,
+                    "label": "Response type",
+                    "name": "response_type",
+                    "optional": true,
+                    "pick_list": [
+                      [
+                        "JSON response",
+                        "json"
+                      ],
+                      [
+                        "Raw response",
+                        "raw"
+                      ]
+                    ],
+                    "sticky": false,
+                    "type": "string"
+                  },
+                  {
+                    "label": "Input",
+                    "name": "input",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "schema-designer",
+                        "label": "Request body parameters",
+                        "extends_schema": true,
+                        "schema_neutral": true,
+                        "sample_data_type": "json_input",
+                        "sticky": true,
+                        "add_field_label": "Add request body parameter",
+                        "optional": true,
+                        "type": "string",
+                        "name": "schema"
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "name",
+                            "optional": false,
+                            "sticky": true,
+                            "type": "string",
+                            "name": "name"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Released",
+                            "optional": false,
+                            "sticky": true,
+                            "type": "string",
+                            "name": "released"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Project ID",
+                            "optional": false,
+                            "sticky": true,
+                            "type": "string",
+                            "name": "projectId"
+                          }
+                        ],
+                        "label": "Data",
+                        "optional": true,
+                        "type": "object",
+                        "name": "data"
+                      }
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "control_type": "key_value",
+                    "empty_list_text": "Refer to the API documentation and add required headers to this HTTP request",
+                    "empty_list_title": "Does this HTTP request require headers?",
+                    "item_label": "Header",
+                    "label": "Request headers",
+                    "name": "request_headers",
+                    "of": "object",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "optional": true,
+                        "type": "string",
+                        "name": "name"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Value",
+                        "optional": true,
+                        "type": "string",
+                        "name": "value"
+                      }
+                    ],
+                    "type": "array"
+                  },
+                  {
+                    "control_type": "schema-designer",
+                    "extends_schema": true,
+                    "label": "Response body",
+                    "name": "output",
+                    "optional": true,
+                    "sample_data_type": "json_http",
+                    "sticky": true,
+                    "type": "string",
+                    "schema_neutral": true
+                  },
+                  {
+                    "control_type": "schema-designer",
+                    "extends_schema": true,
+                    "label": "Response headers",
+                    "name": "response_headers",
+                    "optional": true,
+                    "sample_data_type": "json_http",
+                    "sticky": false,
+                    "type": "string",
+                    "schema_neutral": true
+                  }
+                ],
+                "visible_config_fields": [
+                  "mnemonic",
+                  "verb",
+                  "response_type",
+                  "input",
+                  "input.schema",
+                  "output",
+                  "input.data.projectIdOrKey",
+                  "path",
+                  "input.data",
+                  "input.data.status",
+                  "request_type",
+                  "input.data.releasedVersionName",
+                  "input.data.name"
+                ],
+                "uuid": "c1fc242f-be8b-4b67-bc3a-28c87d6d3e16",
+                "skip": false
+              },
+              {
+                "number": 10,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "18920950",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                  "result.released": false
+                },
+                "input": {
+                  "result": {
+                    "released": "#{_('data.jira.53cd545a.released')}",
+                    "released_name": "#{_('data.jira.53cd545a.name')}",
+                    "release_id": "#{_('data.jira.53cd545a.id')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Released name",
+                        "name": "released_name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release ID",
+                        "name": "release_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Released name",
+                        "name": "released_name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release ID",
+                        "name": "release_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "result.released_name",
+                  "result",
+                  "result.released",
+                  "result.release_id"
+                ],
+                "uuid": "0e8d376c-233b-4911-bd8b-7520979b4c1a"
+              }
+            ],
+            "uuid": "be1466f1-4b0d-4bb4-87b4-4fccc775ee95"
+          },
+          {
+            "number": 11,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "de57bd57",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "result.released": true
+            },
+            "input": {
+              "result": {
+                "released_name": "#{_('data.json_parser.47c686cb.document.project_name')} (LATEST)",
+                "release_id": "=_('data.workato_recipe_function.c5e1dae2.result.project_versions').where(name: _('data.json_parser.47c686cb.document.project_name') + \" (LATEST)\").pluck('id').first",
+                "released": "false"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Released name",
+                    "name": "released_name",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Released",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Released",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "released",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "released",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Released name",
+                    "name": "released_name",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Released",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Released",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "released",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "released",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "result.released_name",
+              "result",
+              "result.released",
+              "result.release_id"
+            ],
+            "uuid": "ec1e567c-4b3a-4b73-9705-9033a85094b3"
+          },
+          {
+            "number": 12,
+            "keyword": "else",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+            },
+            "block": [
+              {
+                "number": 13,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "is_true",
+                      "lhs": "=_('data.workato_recipe_function.2c336478.parameters.released').is_true?",
+                      "rhs": "",
+                      "uuid": "condition-c3c7fa94-3401-4b53-93c4-315d361130e2"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 14,
+                    "provider": "workato_recipe_function",
+                    "name": "call_recipe",
+                    "as": "141f0689",
+                    "title": null,
+                    "description": "Call <span class=\"provider\">CICD | FUNC | Deployment Details</span>",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "flow_id": "CICD | FUNC | Deployment Details"
+                    },
+                    "toggleCfg": {
+                      "parameters.method": true
+                    },
+                    "input": {
+                      "flow_id": {
+                        "zip_name": "Data Access Functions/cicd_func_deployment_details.recipe.json",
+                        "name": "CICD | FUNC | Deployment Details",
+                        "folder": "Data Access Functions"
+                      },
+                      "parameters": {
+                        "table": "CICD | Deployment Details",
+                        "method": "GET",
+                        "entries": {
+                          "execution_reference": "#{_('data.workato_recipe_function.2c336478.parameters.pipeline_exec_ref')}",
+                          "environment": "PROD",
+                          "project_configuration_id": "#{_('data.workato_recipe_function.2c336478.parameters.project_config_id')}"
+                        }
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Table",
+                            "type": "string",
+                            "name": "table"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Method",
+                            "type": "string",
+                            "name": "method"
+                          },
+                          {
+                            "control_type": "integer",
+                            "label": "Count",
+                            "parse_output": "integer_conversion",
+                            "type": "integer",
+                            "name": "count",
+                            "optional": false
+                          },
+                          {
+                            "name": "entries",
+                            "type": "array",
+                            "of": "object",
+                            "label": "Entries",
+                            "optional": true,
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "Execution reference",
+                                "name": "execution_reference",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Pipeline configuration ID",
+                                "name": "pipeline_configuration_id",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Environment",
+                                "name": "environment",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Project configuration ID",
+                                "name": "project_configuration_id",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Project name",
+                                "name": "project_name",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Package version",
+                                "name": "package_version",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Package ID",
+                                "name": "package_id",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Deployed on",
+                                "name": "deployed_on",
+                                "type": "string",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "checkbox",
+                                "label": "Is active",
+                                "render_input": {
+                                },
+                                "parse_output": {
+                                },
+                                "toggle_hint": "Select from option list",
+                                "toggle_field": {
+                                  "label": "Is active",
+                                  "control_type": "text",
+                                  "toggle_hint": "Use custom value",
+                                  "name": "is_active",
+                                  "type": "boolean",
+                                  "optional": false
+                                },
+                                "name": "is_active",
+                                "type": "boolean",
+                                "optional": false
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Comments",
+                                "name": "comments",
+                                "type": "string",
+                                "optional": false
+                              }
+                            ]
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Parameters",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Table",
+                            "type": "string",
+                            "name": "table",
+                            "optional": true,
+                            "default": "CICD | Deployment Details"
+                          },
+                          {
+                            "control_type": "select",
+                            "label": "Method",
+                            "type": "string",
+                            "name": "method",
+                            "optional": false,
+                            "hint": "GET, POST, PUT or DELETE.  For PUT method, \"pipeline_execution_ref\" is mandatory.",
+                            "pick_list": [
+                              [
+                                "GET",
+                                "GET"
+                              ],
+                              [
+                                "POST",
+                                "POST"
+                              ],
+                              [
+                                "PUT",
+                                "PUT"
+                              ],
+                              [
+                                "DELETE",
+                                "DELETE"
+                              ]
+                            ],
+                            "toggle_hint": "Select from list",
+                            "toggle_field": {
+                              "name": "method",
+                              "label": "Method",
+                              "type": "string",
+                              "control_type": "text",
+                              "optional": false,
+                              "toggle_hint": "Enter Value",
+                              "hint": "Map Method"
+                            }
+                          },
+                          {
+                            "name": "entries",
+                            "type": "array",
+                            "of": "object",
+                            "label": "Entries",
+                            "optional": true,
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "Execution reference",
+                                "name": "execution_reference",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Pipeline configuration ID",
+                                "name": "pipeline_configuration_id",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Environment",
+                                "name": "environment",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Project configuration ID",
+                                "name": "project_configuration_id",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Project name",
+                                "name": "project_name",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Package version",
+                                "name": "package_version",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Package ID",
+                                "name": "package_id",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Deployed on",
+                                "name": "deployed_on",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "checkbox",
+                                "label": "Is active",
+                                "render_input": {
+                                },
+                                "parse_output": {
+                                },
+                                "toggle_hint": "Select from option list",
+                                "toggle_field": {
+                                  "label": "Is active",
+                                  "control_type": "text",
+                                  "toggle_hint": "Use custom value",
+                                  "name": "is_active",
+                                  "type": "boolean",
+                                  "optional": false
+                                },
+                                "name": "is_active",
+                                "type": "boolean",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Comments",
+                                "name": "comments",
+                                "type": "string",
+                                "optional": true
+                              }
+                            ]
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "flow_id",
+                      "parameters",
+                      "parameters.table",
+                      "parameters.method",
+                      "parameters.entries.environment",
+                      "parameters.entries.project_configuration_id",
+                      "parameters.entries.execution_reference"
+                    ],
+                    "uuid": "b159b20f-01c3-4840-8f12-7e60e23d63c5"
+                  },
+                  {
+                    "number": 15,
+                    "provider": "jira",
+                    "name": "__adhoc_http_action",
+                    "as": "4547fdaf",
+                    "title": "Update Jira Version",
+                    "description": "Update <span class=\"provider\">Jira Version</span> in <span class=\"provider\">Jira</span> (Custom)",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "mnemonic": "Update Jira Version",
+                      "verb": "put",
+                      "response_type": "json",
+                      "path": "/rest/api/latest/version/#{_('data.json_parser.47c686cb.document.pm_release_id')}",
+                      "input": {
+                        "schema": "[{\"control_type\":\"text\",\"label\":\"name\",\"name\":\"name\",\"type\":\"string\",\"optional\":true},{\"name\":\"released\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Released\"}]",
+                        "data": {
+                          "name": "=_('data.json_parser.47c686cb.document.pm_release_name').include?(\"LATEST\") ? _('data.json_parser.47c686cb.document.pm_release_name').gsub(\"LATEST\", _('data.workato_recipe_function.141f0689.result.entries.first.package_version')) : _('data.json_parser.47c686cb.document.pm_release_name') + \"(\"+_('data.workato_recipe_function.141f0689.result.entries.first.package_version')+\")\"",
+                          "released": "#{_('data.workato_recipe_function.2c336478.parameters.released')}"
+                        }
+                      },
+                      "output": "[{\"control_type\":\"text\",\"label\":\"Self\",\"type\":\"string\",\"name\":\"self\"},{\"control_type\":\"text\",\"label\":\"ID\",\"type\":\"string\",\"name\":\"id\"},{\"control_type\":\"text\",\"label\":\"Description\",\"type\":\"string\",\"name\":\"description\"},{\"control_type\":\"text\",\"label\":\"Name\",\"type\":\"string\",\"name\":\"name\"},{\"control_type\":\"text\",\"label\":\"Archived\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Archived\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"archived\"},\"type\":\"boolean\",\"name\":\"archived\"},{\"control_type\":\"text\",\"label\":\"Released\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Released\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"type\":\"boolean\",\"name\":\"released\"},\"type\":\"boolean\",\"name\":\"released\"},{\"control_type\":\"text\",\"label\":\"Release date\",\"type\":\"string\",\"name\":\"releaseDate\"},{\"control_type\":\"text\",\"label\":\"User release date\",\"type\":\"string\",\"name\":\"userReleaseDate\"},{\"control_type\":\"text\",\"label\":\"Project\",\"type\":\"string\",\"name\":\"project\"},{\"control_type\":\"number\",\"label\":\"Project ID\",\"parse_output\":\"float_conversion\",\"type\":\"number\",\"name\":\"projectId\"}]",
+                      "request_type": "json"
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "text",
+                        "label": "Self",
+                        "name": "self",
+                        "optional": true,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "optional": true,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "description",
+                        "optional": true,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "optional": true,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Archived",
+                        "name": "archived",
+                        "optional": true,
+                        "toggle_field": {
+                          "label": "Archived",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "type": "boolean",
+                          "name": "archived"
+                        },
+                        "toggle_hint": "Select from option list",
+                        "type": "number",
+                        "parse_output": {
+                        },
+                        "render_input": {
+                        }
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Released",
+                        "name": "released",
+                        "optional": true,
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "type": "boolean",
+                          "name": "released"
+                        },
+                        "toggle_hint": "Select from option list",
+                        "type": "number",
+                        "parse_output": {
+                        },
+                        "render_input": {
+                        }
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release date",
+                        "name": "releaseDate",
+                        "optional": true,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "User release date",
+                        "name": "userReleaseDate",
+                        "optional": true,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Project",
+                        "name": "project",
+                        "optional": true,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "number",
+                        "label": "Project ID",
+                        "name": "projectId",
+                        "optional": true,
+                        "type": "number",
+                        "parse_output": "float_conversion"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "control_type": "text",
+                        "hint": "Base URI is <b>https://accelerators-dev.atlassian.net/rest/api/2/</b> - path will be appended to this URI. Use absolute URI to override this base URI.",
+                        "label": "Path",
+                        "name": "path",
+                        "optional": false,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "select",
+                        "default": "json",
+                        "extends_schema": true,
+                        "label": "Request type",
+                        "name": "request_type",
+                        "optional": true,
+                        "pick_list": [
+                          [
+                            "JSON request body",
+                            "json"
+                          ],
+                          [
+                            "URL encoded form",
+                            "urlencoded"
+                          ],
+                          [
+                            "Multipart form",
+                            "multipart"
+                          ],
+                          [
+                            "Raw request body",
+                            "raw"
+                          ]
+                        ],
+                        "sticky": false,
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "select",
+                        "default": "json",
+                        "extends_schema": true,
+                        "label": "Response type",
+                        "name": "response_type",
+                        "optional": true,
+                        "pick_list": [
+                          [
+                            "JSON response",
+                            "json"
+                          ],
+                          [
+                            "Raw response",
+                            "raw"
+                          ]
+                        ],
+                        "sticky": false,
+                        "type": "string"
+                      },
+                      {
+                        "label": "Input",
+                        "name": "input",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "schema-designer",
+                            "label": "Request body parameters",
+                            "extends_schema": true,
+                            "schema_neutral": true,
+                            "sample_data_type": "json_input",
+                            "sticky": true,
+                            "add_field_label": "Add request body parameter",
+                            "optional": true,
+                            "type": "string",
+                            "name": "schema"
+                          },
+                          {
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "name",
+                                "optional": true,
+                                "sticky": true,
+                                "type": "string",
+                                "name": "name"
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Released",
+                                "optional": false,
+                                "sticky": true,
+                                "type": "string",
+                                "name": "released"
+                              }
+                            ],
+                            "label": "Data",
+                            "optional": true,
+                            "type": "object",
+                            "name": "data"
+                          }
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "control_type": "key_value",
+                        "empty_list_text": "Refer to the API documentation and add required headers to this HTTP request",
+                        "empty_list_title": "Does this HTTP request require headers?",
+                        "item_label": "Header",
+                        "label": "Request headers",
+                        "name": "request_headers",
+                        "of": "object",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Name",
+                            "optional": true,
+                            "type": "string",
+                            "name": "name"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Value",
+                            "optional": true,
+                            "type": "string",
+                            "name": "value"
+                          }
+                        ],
+                        "type": "array"
+                      },
+                      {
+                        "control_type": "schema-designer",
+                        "extends_schema": true,
+                        "label": "Response body",
+                        "name": "output",
+                        "optional": true,
+                        "sample_data_type": "json_http",
+                        "sticky": true,
+                        "type": "string",
+                        "schema_neutral": true
+                      },
+                      {
+                        "control_type": "schema-designer",
+                        "extends_schema": true,
+                        "label": "Response headers",
+                        "name": "response_headers",
+                        "optional": true,
+                        "sample_data_type": "json_http",
+                        "sticky": false,
+                        "type": "string",
+                        "schema_neutral": true
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "mnemonic",
+                      "verb",
+                      "response_type",
+                      "input",
+                      "input.schema",
+                      "output",
+                      "input.data.projectIdOrKey",
+                      "path",
+                      "input.data",
+                      "input.data.status",
+                      "request_type",
+                      "input.data.releasedVersionName",
+                      "input.data.name"
+                    ],
+                    "uuid": "d33bc017-34a4-4615-8f64-40eb8abec04c",
+                    "skip": false
+                  },
+                  {
+                    "number": 16,
+                    "provider": "workato_recipe_function",
+                    "name": "return_result",
+                    "as": "a2c392a4",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "result.released": false
+                    },
+                    "input": {
+                      "result": {
+                        "released": "#{_('data.jira.4547fdaf.released')}",
+                        "released_name": "#{_('data.jira.4547fdaf.name')}",
+                        "release_id": "#{_('data.json_parser.47c686cb.document.pm_release_id')}"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Released name",
+                            "name": "released_name",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Released",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Released",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "released",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "released",
+                            "type": "boolean",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Release ID",
+                            "name": "release_id",
+                            "type": "string",
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Released name",
+                            "name": "released_name",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Released",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Released",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "released",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "released",
+                            "type": "boolean",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Release ID",
+                            "name": "release_id",
+                            "type": "string",
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "result.released_name",
+                      "result",
+                      "result.released",
+                      "result.release_id"
+                    ],
+                    "uuid": "cc5ee2e0-c201-42ed-97d9-d19748b8979c"
+                  }
+                ],
+                "uuid": "2fd7e4b4-b4a8-4f74-bd54-93b045e1c265"
+              }
+            ],
+            "uuid": "ad50f471-6480-4359-a1c2-d02074c164d1"
+          }
+        ],
+        "comment": "Auto Create Release",
+        "uuid": "2abb2bc8-4ff9-48dc-93b8-19f9ef1e23aa"
+      },
+      {
+        "number": 17,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "9a0161d6",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.released": true
+        },
+        "input": {
+          "result": {
+            "released_name": "#{_('data.json_parser.47c686cb.document.pm_release_name')}",
+            "release_id": "#{_('data.json_parser.47c686cb.document.pm_release_id')}",
+            "released": "false"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Released name",
+                "name": "released_name",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Released",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Released",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "released",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "released",
+                "type": "boolean",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Release ID",
+                "name": "release_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Released name",
+                "name": "released_name",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Released",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Released",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "released",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "released",
+                "type": "boolean",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Release ID",
+                "name": "release_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "result.released_name",
+          "result",
+          "result.released",
+          "result.release_id"
+        ],
+        "uuid": "92d517c1-bfb3-46d5-929f-eef21ce5cf14"
+      }
+    ],
+    "uuid": "19e4d21d-f902-4cc6-a76e-8b1fb09a543d"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "jira",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_jira_software.connection.json",
+        "name": "CICD | CON | Jira Software",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

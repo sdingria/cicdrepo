@@ -1,0 +1,1091 @@
+{
+  "name": "CICD | FUNC | (Slack) List Pipeline Configurations",
+  "description": "When there is a function call, do action",
+  "version": 98,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "34a7e6ed",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"user_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User ID\"},{\"name\":\"pipeline_config_id\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Pipeline config ID\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Pipeline config ID",
+            "name": "pipeline_config_id",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "c704de03",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | List Pipeline Configurations</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | List Pipeline Configurations"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/Pipeline Configuration/cicd_func_list_pipeline_configurations.recipe.json",
+            "name": "CICD | FUNC | List Pipeline Configurations",
+            "folder": "Functions/Pipeline Configuration"
+          },
+          "parameters": {
+            "pipeline_config_id": "=_('data.workato_recipe_function.34a7e6ed.parameters.pipeline_config_id').presence"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "pipeline_configurations",
+                "type": "array",
+                "of": "object",
+                "label": "Pipeline configurations",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is enabled",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is enabled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "isEnabled",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "isEnabled",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Source env",
+                    "name": "source_env",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stages",
+                    "name": "stages",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target env",
+                    "name": "target_env",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployment mode",
+                    "name": "deployment_mode",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline config ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Pipeline config ID",
+                "name": "pipeline_config_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters.pipeline_config_id"
+        ],
+        "uuid": "4f53a149-e5f6-48ad-b071-61a258398534"
+      },
+      {
+        "number": 2,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "85c241fd",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | List Environments</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | List Environments"
+        },
+        "toggleCfg": {
+          "parameters.exclude_production": true
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/CICD for Workato/cicd_func_list_environments.recipe.json",
+            "name": "CICD | FUNC | List Environments",
+            "folder": "Functions/CICD for Workato"
+          },
+          "parameters": {
+            "exclude_production": "false"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "environments",
+                "type": "array",
+                "of": "object",
+                "label": "Environments",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is production",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is production",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_production",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_production",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Level",
+                    "parse_output": "integer_conversion",
+                    "name": "level",
+                    "type": "integer",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Source environment",
+                "name": "source_environment",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "environment",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Exclude production",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Exclude production",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "exclude_production",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "exclude_production",
+                "type": "boolean",
+                "optional": true,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "d3734c20-aab8-48c7-a023-8164944d707a"
+      },
+      {
+        "number": 3,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "39e91e8d",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | User Permission Analyzer</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | User Permission Analyzer"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/RBAC/cicd_func_user_permission_analyzer.recipe.json",
+            "name": "CICD | FUNC | User Permission Analyzer",
+            "folder": "Functions/RBAC"
+          },
+          "parameters": {
+            "user": "#{_('data.workato_recipe_function.34a7e6ed.parameters.user_id')}",
+            "permissions": "=[\"manage_pipeline_configuration\", \"manage_pipeline_execution\", \"manage_pipeline_execution_(prod)\"]"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "object",
+                "label": "Permissions",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Result",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Result",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "result",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "result",
+                    "type": "boolean",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "User",
+                "name": "user",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "string",
+                "label": "Permissions",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "a65efe95-335a-4fa2-9eb8-80ade4e1990c"
+      },
+      {
+        "number": 4,
+        "provider": "workato_variable",
+        "name": "declare_variable",
+        "as": "b7a59a22",
+        "title": "  Create variables Manage Pipeline Configuration, Manage Pipeline Execution, Manage Pipeline Execution (Prod), Production Environment",
+        "description": "Create variables <span class=\"provider\">Manage Pipeline Configuration</span>, <span class=\"provider\">Manage Pipeline Execution</span>, <span class=\"provider\">Manage Pipeline Execution (Prod)</span>, <span class=\"provider\">Production Environment</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "variables.data.manage_pipeline_execution": false,
+          "variables.data.manage_pipeline_execution_prod": false,
+          "variables.data.manage_pipeline_configuration": false
+        },
+        "input": {
+          "variables": {
+            "schema": "[{\"control_type\":\"checkbox\",\"label\":\"Manage Pipeline Configuration\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Manage Pipeline Configuration\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"manage_pipeline_configuration\",\"type\":\"boolean\",\"optional\":true},\"name\":\"manage_pipeline_configuration\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Manage Pipeline Execution\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Manage Pipeline Execution\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"manage_pipeline_execution\",\"type\":\"boolean\",\"optional\":true},\"name\":\"manage_pipeline_execution\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Manage Pipeline Execution (Prod)\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Manage Pipeline Execution (Prod)\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"manage_pipeline_execution_prod\",\"type\":\"boolean\",\"optional\":true},\"name\":\"manage_pipeline_execution_prod\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Production Environment\",\"name\":\"production_environment\",\"type\":\"string\",\"optional\":true}]",
+            "data": {
+              "manage_pipeline_execution": "=_('data.workato_recipe_function.39e91e8d.result.permissions').where(name: 'manage_pipeline_execution').first[:result]",
+              "manage_pipeline_execution_prod": "=_('data.workato_recipe_function.39e91e8d.result.permissions').where(name: 'manage_pipeline_execution_(prod)').first[:result]",
+              "production_environment": "=_('data.workato_recipe_function.85c241fd.result.environments').where(is_production: true).length == 1 ? _('data.workato_recipe_function.85c241fd.result.environments').where(is_production: true).first[:name] : nil",
+              "manage_pipeline_configuration": "=_('data.workato_recipe_function.39e91e8d.result.permissions').where(name: 'manage_pipeline_configuration').first[:result]"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "checkbox",
+            "label": "Manage Pipeline Configuration",
+            "name": "manage_pipeline_configuration",
+            "optional": true,
+            "toggle_field": {
+              "label": "Manage Pipeline Configuration",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "manage_pipeline_configuration",
+              "type": "boolean",
+              "optional": true
+            },
+            "toggle_hint": "Select from option list",
+            "type": "boolean",
+            "parse_output": {
+            },
+            "render_input": {
+            }
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Manage Pipeline Execution",
+            "name": "manage_pipeline_execution",
+            "optional": true,
+            "toggle_field": {
+              "label": "Manage Pipeline Execution",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "manage_pipeline_execution",
+              "type": "boolean",
+              "optional": true
+            },
+            "toggle_hint": "Select from option list",
+            "type": "boolean",
+            "parse_output": {
+            },
+            "render_input": {
+            }
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Manage Pipeline Execution (Prod)",
+            "name": "manage_pipeline_execution_prod",
+            "optional": true,
+            "toggle_field": {
+              "label": "Manage Pipeline Execution (Prod)",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "manage_pipeline_execution_prod",
+              "type": "boolean",
+              "optional": true
+            },
+            "toggle_hint": "Select from option list",
+            "type": "boolean",
+            "parse_output": {
+            },
+            "render_input": {
+            }
+          },
+          {
+            "control_type": "text",
+            "label": "Production Environment",
+            "name": "production_environment",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "add_field_label": "Add a variable",
+            "control_type": "form-schema-builder",
+            "empty_schema_title": "Add variables by giving them a name, type and default value",
+            "exclude_fields": [
+              "hint"
+            ],
+            "item_label": "variable",
+            "label": "Variables",
+            "mark_as_required": true,
+            "name": "variables",
+            "ngIf": "!input.name",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "broadcast_change_event": true,
+                "type": "string",
+                "name": "schema"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Manage Pipeline Configuration",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Manage Pipeline Configuration",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "manage_pipeline_configuration",
+                      "type": "boolean",
+                      "optional": true
+                    },
+                    "name": "manage_pipeline_configuration",
+                    "type": "boolean",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Manage Pipeline Execution",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Manage Pipeline Execution",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "manage_pipeline_execution",
+                      "type": "boolean",
+                      "optional": true
+                    },
+                    "name": "manage_pipeline_execution",
+                    "type": "boolean",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Manage Pipeline Execution (Prod)",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Manage Pipeline Execution (Prod)",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "manage_pipeline_execution_prod",
+                      "type": "boolean",
+                      "optional": true
+                    },
+                    "name": "manage_pipeline_execution_prod",
+                    "type": "boolean",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Production Environment",
+                    "name": "production_environment",
+                    "type": "string",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  }
+                ],
+                "label": "Data",
+                "type": "object",
+                "name": "data"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "variables.data.manage_project_configuration",
+          "variables",
+          "variables.schema",
+          "variables.data",
+          "variables.data.manage_pipeline_configuration",
+          "variables.data.recipe_management",
+          "variables.data.deploy_release",
+          "variables.data.manage_user_access",
+          "variables.data.manage_pipeline_execution",
+          "variables.data.manage_pipeline_execution_prod",
+          "variables.data.production_environment"
+        ],
+        "uuid": "ed3fedca-82ba-4fb9-b029-212eda908252"
+      },
+      {
+        "number": 5,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "413677a8",
+        "title": " Create Action Configuration list",
+        "description": "Create <span class=\"provider\">Action Configuration</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Action Configuration",
+          "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Display\",\"name\":\"display\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Command\",\"name\":\"command\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Command values\",\"name\":\"command_values\",\"type\":\"string\",\"optional\":true}]"
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Action Configuration",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Display",
+                "name": "display",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Command",
+                "name": "command",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Command values",
+                "name": "command_values",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Display",
+                "name": "display",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Command",
+                "name": "command",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Command values",
+                "name": "command_values",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "3e0a64da-9402-42ef-9329-23768b4e47a6"
+      },
+      {
+        "number": 6,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "#{_('data.workato_variable.b7a59a22.manage_pipeline_configuration')}",
+              "rhs": "",
+              "uuid": "condition-6ea59d39-df5a-49cd-a328-372ec0692022"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 7,
+            "provider": "workato_variable",
+            "name": "insert_to_list_batch",
+            "as": "37a4df01",
+            "title": "Add items to Action Configuration list",
+            "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Action Configuration</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Action Configuration (step 6)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "end",
+              "name": "3e0a64da-9402-42ef-9329-23768b4e47a6:413677a8",
+              "list_items": [
+                {
+                  "display": "##Toggle_Status##",
+                  "command": "workato cicd execute",
+                  "command_values": "command: pipeline_config_status param1: ##Pipeline_ID## param2: ##Is_Enabled##"
+                },
+                {
+                  "display": ":pencil2: Edit",
+                  "command": "workato cicd execute",
+                  "command_values": "command: edit_pipeline_config param1: ##Pipeline_ID##"
+                },
+                {
+                  "display": ":x: Remove",
+                  "command": "workato cicd execute",
+                  "command_values": "command: remove_pipeline_config param1: ##Pipeline_ID##"
+                }
+              ]
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List items",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "visible_config_fields": [
+              "name",
+              "location",
+              "list_items",
+              "list_items.display",
+              "list_items.command",
+              "list_items.command_values"
+            ],
+            "uuid": "440c3fcb-184c-4664-9604-c6b6059e3eae"
+          }
+        ],
+        "uuid": "e19eabf5-f652-4b9c-a603-83db59ad4929"
+      },
+      {
+        "number": 8,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "or",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "#{_('data.workato_variable.b7a59a22.manage_pipeline_execution')}",
+              "rhs": "",
+              "uuid": "condition-747f054e-e810-45ef-ae80-5c1d54269682"
+            },
+            {
+              "operand": "is_true",
+              "lhs": "#{_('data.workato_variable.b7a59a22.manage_pipeline_execution_prod')}",
+              "rhs": "",
+              "uuid": "condition-d2a2d77f-b54f-4155-ab3b-a8870a11288d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 9,
+            "provider": "workato_variable",
+            "name": "insert_to_list",
+            "as": "181d07c4",
+            "title": "Add item to Action Configuration list",
+            "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Action Configuration</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Action Configuration (step 6)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "end",
+              "name": "3e0a64da-9402-42ef-9329-23768b4e47a6:413677a8",
+              "list_item": {
+                "display": ":eight_pointed_black_star: Execute",
+                "command": "workato cicd execute",
+                "command_values": "command: collect_pipeline_execution param1: ##Pipeline_ID##"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List item",
+                "name": "list_item",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "72fd6a75-2b91-410b-89fd-25d14cede0e6",
+            "skip": false
+          }
+        ],
+        "uuid": "a03fa8e4-a7b5-4f9f-a01f-1beec1e037e7",
+        "skip": false
+      },
+      {
+        "number": 10,
+        "provider": "slack_bot",
+        "name": "post_bot_message",
+        "as": "f59e1fcd",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "channel": true,
+          "attachment_items.message.color": false,
+          "attachment_items.attachment_buttons.bot_command": false
+        },
+        "input": {
+          "channel": "#{_('data.workato_recipe_function.34a7e6ed.parameters.user_id')}",
+          "multiple_attachments": "true",
+          "attachment_items": {
+            "____source": "#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations')}",
+            "message": {
+              "footer": "=_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.isEnabled').is_true? ? '*Enabled*' : '*Disabled*'",
+              "pretext": "*#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.description')}*",
+              "color": "=_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.isEnabled').is_true? ? 'good' : 'danger'"
+            },
+            "attachment_fields": [
+              {
+                "title": "*Source Environment*",
+                "value": "#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.source_env')}"
+              },
+              {
+                "title": "*Deployment Mode*",
+                "value": "#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.deployment_mode')}"
+              },
+              {
+                "title": "*Target Environment*",
+                "value": "#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.target_env')}"
+              },
+              {
+                "title": "*Supported Stages*",
+                "value": "#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.stages')}"
+              }
+            ],
+            "attachment_buttons": {
+              "____source": "#{_('data.workato_variable.413677a8.list_items')}",
+              "title": "=_('data.workato_variable.413677a8.list_items.first.display')&.include?(\"##Toggle_Status##\") ? (_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.isEnabled').is_true? ? \":red_circle:\" : \":large_green_circle:\") : _('data.workato_variable.413677a8.list_items.first.display')",
+              "params": "=_('data.workato_variable.413677a8.list_items.first.command_values')&.gsub(\"##Pipeline_ID##\", \"#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.pipeline_config_id')}\")&.gsub(\"##Is_Enabled##\", \"#{_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.isEnabled')}\")",
+              "bot_command": "#{_('data.workato_variable.413677a8.list_items.first.command')}"
+            }
+          },
+          "blocks": [
+            {
+              "block_type": "section_with_text",
+              "section_text": "=_('data.workato_recipe_function.34a7e6ed.parameters.pipeline_config_id').present? ? \"*Selected Pipeline Configuration:*\" : \"*List of Pipeline Configurations:*\""
+            },
+            {
+              "block_type": "divider"
+            },
+            {
+              "block_type": "section_with_text",
+              "section_text": "=_('data.workato_recipe_function.c704de03.result.pipeline_configurations.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.c704de03.result.pipeline_configurations') == 0 ? '>*~~ _No pipeline configurations found._ ~~*' : ''"
+            }
+          ]
+        },
+        "visible_config_fields": [
+          "channel",
+          "blocks",
+          "blocks.block_type",
+          "blocks.section_text",
+          "blocks.image_url",
+          "blocks.alt_text",
+          "blocks.button_title",
+          "blocks.url",
+          "blocks.bot_command",
+          "blocks.params",
+          "blocks.style",
+          "blocks.attachment_fields",
+          "blocks.attachment_fields.value",
+          "blocks.placeholder_text",
+          "blocks.menu_type",
+          "blocks.dynamic_menu_recipe",
+          "blocks.field_name",
+          "blocks.options",
+          "blocks.options.title",
+          "blocks.options.bot_command",
+          "blocks.options.params",
+          "blocks.options.init_value",
+          "blocks.init_option",
+          "blocks.initial_date",
+          "blocks.options.value",
+          "blocks.init_options",
+          "blocks.image_title",
+          "blocks.external_id",
+          "blocks.elements",
+          "blocks.elements.type",
+          "blocks.elements.text",
+          "blocks.elements.image_url",
+          "blocks.elements.alt_text",
+          "blocks.actions",
+          "blocks.actions.type",
+          "blocks.actions.button_title",
+          "blocks.actions.url",
+          "blocks.actions.bot_command",
+          "blocks.actions.params",
+          "blocks.actions.style",
+          "blocks.actions.placeholder_text",
+          "blocks.actions.initial_date",
+          "blocks.actions.field_name",
+          "blocks.actions.options",
+          "blocks.actions.options.params",
+          "blocks.actions.menu_type",
+          "blocks.actions.dynamic_menu_recipe",
+          "blocks.objects",
+          "blocks.objects.blocks",
+          "blocks.objects.blocks.block_type",
+          "blocks.objects.blocks.section_text",
+          "blocks.objects.blocks.image_url",
+          "blocks.objects.blocks.alt_text",
+          "blocks.objects.blocks.button_title",
+          "blocks.objects.blocks.url",
+          "blocks.objects.blocks.bot_command",
+          "blocks.objects.blocks.params",
+          "blocks.objects.blocks.style",
+          "blocks.objects.blocks.attachment_fields",
+          "blocks.objects.blocks.attachment_fields.value",
+          "blocks.objects.blocks.placeholder_text",
+          "blocks.objects.blocks.menu_type",
+          "blocks.objects.blocks.dynamic_menu_recipe",
+          "blocks.objects.blocks.field_name",
+          "blocks.objects.blocks.options",
+          "blocks.objects.blocks.options.title",
+          "blocks.objects.blocks.options.bot_command",
+          "blocks.objects.blocks.options.params",
+          "blocks.objects.blocks.options.init_value",
+          "blocks.objects.blocks.init_option",
+          "blocks.objects.blocks.initial_date",
+          "blocks.objects.blocks.image_title",
+          "blocks.objects.blocks.elements",
+          "blocks.objects.blocks.elements.type",
+          "blocks.objects.blocks.elements.text",
+          "blocks.objects.blocks.elements.image_url",
+          "blocks.objects.blocks.elements.alt_text",
+          "blocks.objects.blocks.actions",
+          "blocks.objects.blocks.actions.type",
+          "blocks.objects.blocks.actions.button_title",
+          "blocks.objects.blocks.actions.url",
+          "blocks.objects.blocks.actions.bot_command",
+          "blocks.objects.blocks.actions.params",
+          "blocks.objects.blocks.actions.style",
+          "blocks.objects.blocks.actions.placeholder_text",
+          "blocks.objects.blocks.actions.initial_date",
+          "blocks.objects.blocks.actions.field_name",
+          "blocks.objects.blocks.actions.options",
+          "blocks.objects.blocks.actions.options.params",
+          "blocks.objects.blocks.actions.menu_type",
+          "blocks.objects.blocks.actions.dynamic_menu_recipe",
+          "text",
+          "message.title",
+          "message.title_link",
+          "message.attachment_text",
+          "message.color",
+          "attachment_fields",
+          "attachment_buttons",
+          "attachment_items.message.title",
+          "attachment_items.message.title_link",
+          "attachment_items.message.attachment_text",
+          "attachment_items.message.color",
+          "attachment_items.attachment_fields",
+          "attachment_items.attachment_buttons",
+          "advanced.ts",
+          "multiple_attachments",
+          "attachment_items.attachment_pick_list.options.params",
+          "attachment_items.attachment_pick_list.options.bot_command",
+          "attachment_items.attachment_pick_list.options.title",
+          "attachment_items.attachment_pick_list.placeholder",
+          "attachment_items.attachment_pick_list.display_before_buttons",
+          "attachment_items.attachment_buttons.params",
+          "attachment_items.attachment_buttons.bot_command",
+          "attachment_items.attachment_buttons.title",
+          "attachment_items.attachment_fields.value",
+          "attachment_items.attachment_fields.title",
+          "attachment_items.message.pretext",
+          "attachment_items.message.footer"
+        ],
+        "uuid": "1aeb6e33-3358-4ed6-a7f0-2855c9907966"
+      }
+    ],
+    "uuid": "cc12859b-26d3-4863-9dcd-3ccf39bcde7c"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

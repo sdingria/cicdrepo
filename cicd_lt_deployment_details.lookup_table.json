@@ -1,0 +1,75 @@
+{
+  "name": "CICD | LT | Deployment Details",
+  "schema": [
+    {
+      "control_type": "text",
+      "label": "Pipeline Execution Reference",
+      "name": "col1",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Pipeline Configuration Id",
+      "name": "col2",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Environment",
+      "name": "col3",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Project Configuration Id",
+      "name": "col4",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Project Name",
+      "name": "col5",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Package Version",
+      "name": "col6",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Package Id",
+      "name": "col7",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Deployed On",
+      "name": "col8",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "isActive",
+      "name": "col9",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Comments",
+      "name": "col10",
+      "type": "string",
+      "sticky": true
+    }
+  ]
+}

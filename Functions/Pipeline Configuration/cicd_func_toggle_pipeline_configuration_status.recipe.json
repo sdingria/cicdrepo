@@ -1,0 +1,1893 @@
+{
+  "name": "CICD | FUNC | Toggle Pipeline Configuration Status",
+  "description": "When there is a function call, do action",
+  "version": 4,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "f7a660fe",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"pipeline_config_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Pipeline config ID\"},{\"name\":\"requested_status\",\"type\":\"boolean\",\"optional\":false,\"control_type\":\"checkbox\",\"label\":\"Requested status\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Requested status\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"requested_status\",\"type\":\"boolean\",\"optional\":false}},{\"name\":\"user_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User ID\"},{\"name\":\"user_name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User name\"}]",
+      "result_schema_json": "[{\"control_type\":\"checkbox\",\"label\":\"Status\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Status\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"status\",\"type\":\"boolean\",\"optional\":false},\"name\":\"status\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Pipeline config ID",
+            "name": "pipeline_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Requested status",
+            "render_input": {
+            },
+            "parse_output": {
+            },
+            "toggle_hint": "Select from option list",
+            "toggle_field": {
+              "label": "Requested status",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "requested_status",
+              "type": "boolean",
+              "optional": false
+            },
+            "name": "requested_status",
+            "type": "boolean",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "User name",
+            "name": "user_name",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "1d7f6b22",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Pipeline Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+            "name": "CICD | LT | Pipeline Configuration",
+            "folder": ""
+          },
+          "parameters": {
+            "col1": "#{_('data.workato_recipe_function.f7a660fe.parameters.pipeline_config_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "label": "Entry",
+                "type": "object",
+                "name": "entry",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "isEnabled",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Source Environment",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Steps",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployment Mode",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ]
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Id",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Trigger",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "isEnabled",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Description",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Source Environment",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Stage",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Steps",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Deployment Mode",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "9fbb9696-1041-4f51-a29d-c3e6314e2794"
+      },
+      {
+        "number": 2,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "#{_('data.workato_recipe_function.f7a660fe.parameters.requested_status')}",
+              "rhs": "",
+              "uuid": "condition-ca9bbd24-cc9d-4958-b3ba-d5fd862c6c54"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 3,
+            "provider": "workato_variable",
+            "name": "declare_variable",
+            "as": "1e7358c3",
+            "title": "  Create variables validation_status, build_config, deployment_mode",
+            "description": "Create variables <span class=\"provider\">validation_status</span>, <span class=\"provider\">build_config</span>, <span class=\"provider\">deployment_mode</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "variables.data.validation_status": true
+            },
+            "input": {
+              "variables": {
+                "schema": "[{\"name\":\"validation_status\",\"type\":\"boolean\",\"optional\":true,\"label\":\"validation_status\",\"control_type\":\"checkbox\"},{\"name\":\"build_config\",\"type\":\"string\",\"optional\":true,\"label\":\"build_config\",\"control_type\":\"text\"},{\"name\":\"deployment_mode\",\"type\":\"string\",\"optional\":true,\"label\":\"deployment_mode\",\"control_type\":\"text\"}]",
+                "data": {
+                  "validation_status": "true"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "checkbox",
+                "label": "validation_status",
+                "name": "validation_status",
+                "optional": true,
+                "toggle_field": {
+                  "label": "validation_status",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "validation_status",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "toggle_hint": "Select from option list",
+                "type": "boolean",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              },
+              {
+                "control_type": "text",
+                "label": "build_config",
+                "name": "build_config",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "deployment_mode",
+                "name": "deployment_mode",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "add_field_label": "Add a variable",
+                "control_type": "form-schema-builder",
+                "empty_schema_title": "Add variables by giving them a name, type and default value",
+                "exclude_fields": [
+                  "hint"
+                ],
+                "item_label": "variable",
+                "label": "Variables",
+                "mark_as_required": true,
+                "name": "variables",
+                "ngIf": "!input.name",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "broadcast_change_event": true,
+                    "type": "string",
+                    "name": "schema"
+                  },
+                  {
+                    "label": "Data",
+                    "type": "object",
+                    "name": "data",
+                    "properties": [
+                      {
+                        "control_type": "checkbox",
+                        "label": "validation_status",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "validation_status",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "validation_status",
+                          "type": "boolean",
+                          "optional": true
+                        },
+                        "name": "validation_status",
+                        "type": "boolean",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "build_config",
+                        "name": "build_config",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "deployment_mode",
+                        "name": "deployment_mode",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "variables.data.validation_status",
+              "variables",
+              "variables.schema",
+              "variables.data",
+              "variables.data.build_config",
+              "variables.data.deployment_mode"
+            ],
+            "uuid": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0"
+          },
+          {
+            "number": 4,
+            "as": "f2a28c7a",
+            "keyword": "foreach",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "repeat_mode": "simple",
+            "clear_scope": "false",
+            "input": {
+            },
+            "block": [
+              {
+                "number": 5,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "equals_to",
+                      "lhs": "#{_('data.foreach.f2a28c7a.entry.col6')}",
+                      "rhs": "trigger",
+                      "uuid": "condition-bec68a10-a521-4f9d-be27-86d82125e8e2"
+                    },
+                    {
+                      "operand": "is_true",
+                      "lhs": "#{_('data.workato_variable.1e7358c3.validation_status')}",
+                      "rhs": "",
+                      "uuid": "condition-040b5249-3356-4aba-a11a-92ea3deb72a6"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 6,
+                    "keyword": "if",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "type": "compound",
+                      "operand": "or",
+                      "conditions": [
+                        {
+                          "operand": "blank",
+                          "lhs": "#{_('data.foreach.f2a28c7a.entry.col2')}",
+                          "rhs": "",
+                          "uuid": "condition-aa650d77-9fff-43b3-8da7-8f8aa524d5ce"
+                        },
+                        {
+                          "operand": "blank",
+                          "lhs": "#{_('data.foreach.f2a28c7a.entry.col4')}",
+                          "rhs": "",
+                          "uuid": "condition-8a53fcfa-9a20-4507-8804-6976c38c9935"
+                        },
+                        {
+                          "operand": "blank",
+                          "lhs": "#{_('data.foreach.f2a28c7a.entry.col5')}",
+                          "rhs": "",
+                          "uuid": "condition-597cae4c-94f8-4c15-9330-c68823b60e14"
+                        },
+                        {
+                          "operand": "blank",
+                          "lhs": "#{_('data.foreach.f2a28c7a.entry.col8')}",
+                          "rhs": "",
+                          "uuid": "condition-20669b66-421f-46d3-8f9d-2cad43e4847b"
+                        }
+                      ]
+                    },
+                    "block": [
+                      {
+                        "number": 7,
+                        "provider": "workato_variable",
+                        "name": "update_variables",
+                        "as": "a5e40457",
+                        "title": null,
+                        "description": "Update variables <span class=\"provider\">validation_status</span>",
+                        "keyword": "action",
+                        "dynamicPickListSelection": {
+                          "name": [
+                            {
+                              "label": "validation_status (step 4)",
+                              "value": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status"
+                            }
+                          ]
+                        },
+                        "toggleCfg": {
+                          "validation_status": true
+                        },
+                        "input": {
+                          "name": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status",
+                          "validation_status": "false"
+                        },
+                        "extended_input_schema": [
+                          {
+                            "control_type": "checkbox",
+                            "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                            "label": "validation_status",
+                            "name": "validation_status",
+                            "optional": true,
+                            "sticky": true,
+                            "toggle_field": {
+                              "label": "validation_status",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                              "strip_interpolation": true,
+                              "sticky": true,
+                              "optional": true,
+                              "type": "boolean",
+                              "name": "validation_status"
+                            },
+                            "toggle_hint": "Select from option list",
+                            "type": "boolean",
+                            "parse_output": {
+                            },
+                            "render_input": {
+                            },
+                            "strip_interpolation": true
+                          }
+                        ],
+                        "uuid": "702ab61b-7598-440e-8e02-a6b8d56bbd6c"
+                      }
+                    ],
+                    "uuid": "11a85199-51c4-4ef2-a472-b4744148b6d1"
+                  }
+                ],
+                "uuid": "73067f4d-5872-46ae-8342-57f5292b50aa"
+              },
+              {
+                "number": 8,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "equals_to",
+                      "lhs": "#{_('data.foreach.f2a28c7a.entry.col6')}",
+                      "rhs": "build",
+                      "uuid": "condition-c7f17cd4-c228-4c06-9b2c-ea1067d54b40"
+                    },
+                    {
+                      "operand": "is_true",
+                      "lhs": "#{_('data.workato_variable.1e7358c3.validation_status')}",
+                      "rhs": "",
+                      "uuid": "condition-e283674d-403d-4236-8baa-09b7274a9516"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 9,
+                    "provider": "json_parser",
+                    "name": "parse_json",
+                    "as": "6aa731cd",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "sample_document": "{\"aqs_check\":false,\"build_config\":\"build_export\"}",
+                      "document": "#{_('data.foreach.f2a28c7a.entry.col7')}"
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Document",
+                        "name": "document",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Aqs check",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Aqs check",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "type": "boolean",
+                              "name": "aqs_check"
+                            },
+                            "type": "boolean",
+                            "name": "aqs_check"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Build config",
+                            "type": "string",
+                            "name": "build_config"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "6f2a3e2b-f493-4eca-87ff-f553e5c59330"
+                  },
+                  {
+                    "number": 10,
+                    "provider": "workato_variable",
+                    "name": "update_variables",
+                    "as": "915305ac",
+                    "title": null,
+                    "description": "Update variables <span class=\"provider\">build_config</span>",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "name": [
+                        {
+                          "label": "build_config (step 4)",
+                          "value": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:build_config"
+                        }
+                      ]
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "name": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:build_config",
+                      "build_config": "#{_('data.json_parser.6aa731cd.document.build_config')}"
+                    },
+                    "extended_input_schema": [
+                      {
+                        "control_type": "text",
+                        "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                        "label": "build_config",
+                        "name": "build_config",
+                        "optional": true,
+                        "sticky": true,
+                        "type": "string",
+                        "strip_interpolation": true
+                      }
+                    ],
+                    "uuid": "634a4c18-8bed-45a7-afca-ba68db7fd930"
+                  },
+                  {
+                    "number": 11,
+                    "keyword": "if",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "type": "compound",
+                      "operand": "and",
+                      "conditions": [
+                        {
+                          "operand": "equals_to",
+                          "lhs": "#{_('data.json_parser.6aa731cd.document.build_config')}",
+                          "rhs": "build_export",
+                          "uuid": "condition-4fc3d766-ce09-48d0-8a07-46180c835807"
+                        },
+                        {
+                          "operand": "less_than",
+                          "lhs": "#{_('data.lookup_table.1d7f6b22.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.1d7f6b22.entries')}",
+                          "rhs": "3",
+                          "uuid": "condition-b1e42d8e-9eb4-4658-8c10-cc6f370b81cf"
+                        }
+                      ]
+                    },
+                    "block": [
+                      {
+                        "number": 12,
+                        "keyword": "if",
+                        "dynamicPickListSelection": {
+                        },
+                        "toggleCfg": {
+                        },
+                        "input": {
+                          "type": "compound",
+                          "operand": "or",
+                          "conditions": [
+                            {
+                              "operand": "less_than",
+                              "lhs": "#{_('data.lookup_table.1d7f6b22.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.1d7f6b22.entries')}",
+                              "rhs": "3",
+                              "uuid": "condition-559d263d-1442-4417-92f7-9a44c8dfe17b"
+                            },
+                            {
+                              "operand": "blank",
+                              "lhs": "#{_('data.json_parser.6aa731cd.document.aqs_check')}",
+                              "rhs": "",
+                              "uuid": "condition-c22a8742-c2be-4f06-819c-2fd56e46bcf4"
+                            }
+                          ]
+                        },
+                        "block": [
+                          {
+                            "number": 13,
+                            "provider": "workato_variable",
+                            "name": "update_variables",
+                            "as": "568ee73e",
+                            "title": null,
+                            "description": "Update variables <span class=\"provider\">validation_status</span>",
+                            "keyword": "action",
+                            "dynamicPickListSelection": {
+                              "name": [
+                                {
+                                  "label": "validation_status (step 4)",
+                                  "value": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status"
+                                }
+                              ]
+                            },
+                            "toggleCfg": {
+                              "validation_status": true
+                            },
+                            "input": {
+                              "name": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status",
+                              "validation_status": "false"
+                            },
+                            "extended_input_schema": [
+                              {
+                                "control_type": "checkbox",
+                                "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                                "label": "validation_status",
+                                "name": "validation_status",
+                                "optional": true,
+                                "sticky": true,
+                                "toggle_field": {
+                                  "label": "validation_status",
+                                  "control_type": "text",
+                                  "toggle_hint": "Use custom value",
+                                  "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                                  "strip_interpolation": true,
+                                  "sticky": true,
+                                  "optional": true,
+                                  "type": "boolean",
+                                  "name": "validation_status"
+                                },
+                                "toggle_hint": "Select from option list",
+                                "type": "boolean",
+                                "parse_output": {
+                                },
+                                "render_input": {
+                                },
+                                "strip_interpolation": true
+                              }
+                            ],
+                            "uuid": "d63fe3ad-e7e9-45c5-9eb1-03f5b8fccd79"
+                          }
+                        ],
+                        "uuid": "ca9345c7-d917-4a0f-a9aa-09c9c3a29d8c"
+                      }
+                    ],
+                    "uuid": "90a688f8-b623-4734-8dba-6bf01e31e925"
+                  }
+                ],
+                "uuid": "11d9d538-f8f4-4c8e-8cda-a22f5456b3be"
+              },
+              {
+                "number": 14,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "equals_to",
+                      "lhs": "#{_('data.foreach.f2a28c7a.entry.col6')}",
+                      "rhs": "deploy",
+                      "uuid": "condition-11425df3-3a66-48bf-b19f-31f95a93dd0e"
+                    },
+                    {
+                      "operand": "is_true",
+                      "lhs": "#{_('data.workato_variable.1e7358c3.validation_status')}",
+                      "rhs": "",
+                      "uuid": "condition-b798e7f2-383d-4905-9912-79d7b2a10270"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 15,
+                    "provider": "json_parser",
+                    "name": "parse_json",
+                    "as": "4436eb17",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "sample_document": "{\"target_env\":\"PROD\",\"post_deployment\":[\"post_production\", \"migrate_properties\"],\"approval_channel\":null, \"target_env_type\": null}",
+                      "document": "#{_('data.foreach.f2a28c7a.entry.col7')}"
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Document",
+                        "name": "document",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Target env",
+                            "type": "string",
+                            "name": "target_env"
+                          },
+                          {
+                            "name": "post_deployment",
+                            "type": "array",
+                            "of": "string",
+                            "control_type": "text",
+                            "label": "Post deployment"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Approval channel",
+                            "type": "string",
+                            "name": "approval_channel"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Target env type",
+                            "type": "string",
+                            "name": "target_env_type"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "56d7b922-1b8a-423a-acd4-0ea52d5ec793"
+                  },
+                  {
+                    "number": 16,
+                    "keyword": "if",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "type": "compound",
+                      "operand": "and",
+                      "conditions": [
+                        {
+                          "operand": "blank",
+                          "lhs": "#{_('data.json_parser.4436eb17.document.target_env')}",
+                          "rhs": "",
+                          "uuid": "condition-8f097842-def0-4087-8df9-bf9d43514856"
+                        }
+                      ]
+                    },
+                    "block": [
+                      {
+                        "number": 17,
+                        "provider": "workato_variable",
+                        "name": "update_variables",
+                        "as": "dd0baa0b",
+                        "title": null,
+                        "description": "Update variables <span class=\"provider\">validation_status</span>",
+                        "keyword": "action",
+                        "dynamicPickListSelection": {
+                          "name": [
+                            {
+                              "label": "validation_status (step 4)",
+                              "value": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status"
+                            }
+                          ]
+                        },
+                        "toggleCfg": {
+                          "validation_status": true
+                        },
+                        "input": {
+                          "name": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status",
+                          "validation_status": "false"
+                        },
+                        "extended_input_schema": [
+                          {
+                            "control_type": "checkbox",
+                            "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                            "label": "validation_status",
+                            "name": "validation_status",
+                            "optional": true,
+                            "sticky": true,
+                            "toggle_field": {
+                              "label": "validation_status",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                              "strip_interpolation": true,
+                              "sticky": true,
+                              "optional": true,
+                              "type": "boolean",
+                              "name": "validation_status"
+                            },
+                            "toggle_hint": "Select from option list",
+                            "type": "boolean",
+                            "parse_output": {
+                            },
+                            "render_input": {
+                            },
+                            "strip_interpolation": true
+                          }
+                        ],
+                        "uuid": "9ef233cd-ab5f-4028-9cb0-80bd4a2956a9"
+                      }
+                    ],
+                    "uuid": "714e3d78-9f6d-4238-93a6-b39f5a3c32fd"
+                  },
+                  {
+                    "number": 18,
+                    "keyword": "if",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "type": "compound",
+                      "operand": "and",
+                      "conditions": [
+                        {
+                          "operand": "blank",
+                          "lhs": "#{_('data.json_parser.4436eb17.document.target_env_type')}",
+                          "rhs": "",
+                          "uuid": "condition-8f097842-def0-4087-8df9-bf9d43514856"
+                        },
+                        {
+                          "operand": "equals_to",
+                          "lhs": "#{_('data.foreach.f2a28c7a.entry.col8')}",
+                          "rhs": "projects",
+                          "uuid": "condition-ef806043-e5eb-42a2-8efd-7805ba0420f7"
+                        }
+                      ]
+                    },
+                    "block": [
+                      {
+                        "number": 19,
+                        "provider": "workato_variable",
+                        "name": "update_variables",
+                        "as": "8a63bc1d",
+                        "title": null,
+                        "description": "Update variables <span class=\"provider\">validation_status</span>",
+                        "keyword": "action",
+                        "dynamicPickListSelection": {
+                          "name": [
+                            {
+                              "label": "validation_status (step 4)",
+                              "value": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status"
+                            }
+                          ]
+                        },
+                        "toggleCfg": {
+                          "validation_status": true
+                        },
+                        "input": {
+                          "name": "9cb138ba-3886-4d2e-96f5-b937a1dc1da0:1e7358c3:validation_status",
+                          "validation_status": "false"
+                        },
+                        "extended_input_schema": [
+                          {
+                            "control_type": "checkbox",
+                            "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                            "label": "validation_status",
+                            "name": "validation_status",
+                            "optional": true,
+                            "sticky": true,
+                            "toggle_field": {
+                              "label": "validation_status",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                              "strip_interpolation": true,
+                              "sticky": true,
+                              "optional": true,
+                              "type": "boolean",
+                              "name": "validation_status"
+                            },
+                            "toggle_hint": "Select from option list",
+                            "type": "boolean",
+                            "parse_output": {
+                            },
+                            "render_input": {
+                            },
+                            "strip_interpolation": true
+                          }
+                        ],
+                        "uuid": "81209b02-41dd-4b3a-96fc-184698799436"
+                      }
+                    ],
+                    "uuid": "49e005ef-55c8-4fc5-907c-32441de301dc"
+                  }
+                ],
+                "uuid": "b3cd8419-62fc-4a5f-9426-f621cda85ff1"
+              }
+            ],
+            "source": "#{_('data.lookup_table.1d7f6b22.entries')}",
+            "uuid": "874faf02-dc3d-4bbe-a752-ce377ef1fe14"
+          },
+          {
+            "number": 20,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.1e7358c3.validation_status')}",
+                  "rhs": "",
+                  "uuid": "condition-698026cb-edfe-4d6d-a0a9-3c3f8685b575"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 21,
+                "as": "3fb13848",
+                "keyword": "foreach",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "repeat_mode": "simple",
+                "clear_scope": "false",
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 22,
+                    "provider": "lookup_table",
+                    "name": "update_entry",
+                    "as": "44d8b976",
+                    "title": null,
+                    "description": "\n      Update\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                    },
+                    "toggleCfg": {
+                      "ignore_not_found": true
+                    },
+                    "input": {
+                      "ignore_not_found": "false",
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                        "name": "CICD | LT | Pipeline Configuration",
+                        "folder": ""
+                      },
+                      "id": "#{_('data.foreach.3fb13848.id')}",
+                      "parameters": {
+                        "col3": "true"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "number",
+                        "label": "Entry ID",
+                        "name": "id",
+                        "type": "integer",
+                        "parse_output": "integer_conversion"
+                      },
+                      {
+                        "label": "Entry",
+                        "name": "entry",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Fill the fields you want to update",
+                        "label": "Entry fields",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "49560fba-395d-42df-a497-42f133d2b53b"
+                  }
+                ],
+                "source": "#{_('data.lookup_table.1d7f6b22.entries')}",
+                "uuid": "c212805e-55de-4f15-b2cf-6a50da544ea4"
+              },
+              {
+                "number": 23,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe_async",
+                "as": "c0bb7e8f",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | Audit Log</span> (async)",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUNC | Audit Log"
+                },
+                "toggleCfg": {
+                  "parameters.method": true
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Data Access Functions/cicd_func_audit_log.recipe.json",
+                    "name": "CICD | FUNC | Audit Log",
+                    "folder": "Data Access Functions"
+                  },
+                  "parameters": {
+                    "table": "CICD | Audit Log",
+                    "method": "POST",
+                    "entries": {
+                      "entity": "Pipeline Configuration",
+                      "entity_id": "#{_('data.foreach.3fb13848.entry.col1')}",
+                      "operation": "Toggle Pipeline Configuration Status",
+                      "user_name": "#{_('data.workato_recipe_function.f7a660fe.parameters.user_name')}",
+                      "timestamp": "=now",
+                      "user_id": "#{_('data.workato_recipe_function.f7a660fe.parameters.user_id')}"
+                    }
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Table",
+                        "type": "string",
+                        "name": "table",
+                        "optional": true,
+                        "default": "CICD | Audit Log"
+                      },
+                      {
+                        "control_type": "select",
+                        "label": "Method",
+                        "type": "string",
+                        "name": "method",
+                        "optional": false,
+                        "hint": "GET, POST",
+                        "pick_list": [
+                          [
+                            "GET",
+                            "GET"
+                          ],
+                          [
+                            "POST",
+                            "POST"
+                          ]
+                        ],
+                        "toggle_hint": "Select from list",
+                        "toggle_field": {
+                          "name": "method",
+                          "label": "Method",
+                          "type": "string",
+                          "control_type": "text",
+                          "optional": false,
+                          "toggle_hint": "Enter Value",
+                          "hint": "Map Method"
+                        }
+                      },
+                      {
+                        "name": "entries",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Entries",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Entity",
+                            "name": "entity",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Entity ID",
+                            "name": "entity_id",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Operation",
+                            "name": "operation",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User ID",
+                            "name": "user_id",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User name",
+                            "name": "user_name",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Timestamp",
+                            "name": "timestamp",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "9d80c14a-04ec-4964-9e82-7bb6f0d79875"
+              }
+            ],
+            "uuid": "3dce2e69-eb1e-4a36-9ca4-d5d11e9d4f17"
+          },
+          {
+            "number": 24,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "949d39bc",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "result.status": false
+            },
+            "input": {
+              "result": {
+                "status": "#{_('data.workato_variable.1e7358c3.validation_status')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Status",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Status",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "status",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "status",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Status",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Status",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "status",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "status",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "97974b05-b231-45f4-a1f0-3b8acc8719c4"
+          },
+          {
+            "number": 25,
+            "keyword": "else",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+            },
+            "block": [
+              {
+                "number": 26,
+                "as": "d7cb1870",
+                "keyword": "foreach",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "repeat_mode": "simple",
+                "clear_scope": "false",
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 27,
+                    "provider": "lookup_table",
+                    "name": "update_entry",
+                    "as": "eac3bb53",
+                    "title": null,
+                    "description": "\n      Update\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                    },
+                    "toggleCfg": {
+                      "ignore_not_found": true
+                    },
+                    "input": {
+                      "ignore_not_found": "false",
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                        "name": "CICD | LT | Pipeline Configuration",
+                        "folder": ""
+                      },
+                      "id": "#{_('data.foreach.d7cb1870.id')}",
+                      "parameters": {
+                        "col3": "false"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "number",
+                        "label": "Entry ID",
+                        "name": "id",
+                        "type": "integer",
+                        "parse_output": "integer_conversion"
+                      },
+                      {
+                        "label": "Entry",
+                        "name": "entry",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Fill the fields you want to update",
+                        "label": "Entry fields",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "516c70d1-6ca4-4ba2-92ef-da263ce5d315"
+                  }
+                ],
+                "source": "#{_('data.lookup_table.1d7f6b22.entries')}",
+                "uuid": "96615628-8769-43f7-b472-a8dd42715e7c"
+              },
+              {
+                "number": 28,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe_async",
+                "as": "5df24b66",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | Audit Log</span> (async)",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUNC | Audit Log"
+                },
+                "toggleCfg": {
+                  "parameters.method": true
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Data Access Functions/cicd_func_audit_log.recipe.json",
+                    "name": "CICD | FUNC | Audit Log",
+                    "folder": "Data Access Functions"
+                  },
+                  "parameters": {
+                    "table": "CICD | Audit Log",
+                    "method": "POST",
+                    "entries": {
+                      "entity": "Pipeline Configuration",
+                      "entity_id": "#{_('data.foreach.d7cb1870.entry.col1')}",
+                      "operation": "Toggle Pipeline Configuration Status",
+                      "user_name": "#{_('data.workato_recipe_function.f7a660fe.parameters.user_name')}",
+                      "timestamp": "=now",
+                      "user_id": "#{_('data.workato_recipe_function.f7a660fe.parameters.user_id')}"
+                    }
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Table",
+                        "type": "string",
+                        "name": "table",
+                        "optional": true,
+                        "default": "CICD | Audit Log"
+                      },
+                      {
+                        "control_type": "select",
+                        "label": "Method",
+                        "type": "string",
+                        "name": "method",
+                        "optional": false,
+                        "hint": "GET, POST",
+                        "pick_list": [
+                          [
+                            "GET",
+                            "GET"
+                          ],
+                          [
+                            "POST",
+                            "POST"
+                          ]
+                        ],
+                        "toggle_hint": "Select from list",
+                        "toggle_field": {
+                          "name": "method",
+                          "label": "Method",
+                          "type": "string",
+                          "control_type": "text",
+                          "optional": false,
+                          "toggle_hint": "Enter Value",
+                          "hint": "Map Method"
+                        }
+                      },
+                      {
+                        "name": "entries",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Entries",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Entity",
+                            "name": "entity",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Entity ID",
+                            "name": "entity_id",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Operation",
+                            "name": "operation",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User ID",
+                            "name": "user_id",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User name",
+                            "name": "user_name",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Timestamp",
+                            "name": "timestamp",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "3974c004-c50d-480e-908a-2adc195dd739"
+              },
+              {
+                "number": 29,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "abc21a79",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUN | List Pipeline Configurations"
+                },
+                "toggleCfg": {
+                  "result.status": true
+                },
+                "input": {
+                  "result": {
+                    "status": "true"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "checkbox",
+                        "label": "Status",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Status",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "status",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "status",
+                        "type": "boolean",
+                        "optional": false,
+                        "default": "false"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "checkbox",
+                        "label": "Status",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Status",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "status",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "status",
+                        "type": "boolean",
+                        "optional": false,
+                        "default": "false"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "fe46cc39-bd37-4ca0-b87c-c55473a227d4"
+              }
+            ],
+            "uuid": "c24d9e72-9bd3-4e13-866c-1f2ed56ac4f7"
+          }
+        ],
+        "uuid": "85b7c4c2-02c0-40e6-bd5a-c247240dd195"
+      }
+    ],
+    "uuid": "58455bd2-6761-4f57-b8f7-c4c05838c738"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

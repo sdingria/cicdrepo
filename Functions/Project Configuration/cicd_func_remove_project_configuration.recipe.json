@@ -1,0 +1,725 @@
+{
+  "name": "CICD | FUNC | Remove Project Configuration",
+  "description": "When there is a function call, do action",
+  "version": 4,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "98d6dbf6",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Project config ID\",\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false}]",
+      "result_schema_json": "[{\"control_type\":\"checkbox\",\"label\":\"Is dependency\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Is Dependency\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"is_dependency\",\"type\":\"boolean\",\"optional\":false},\"name\":\"is_dependency\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"},{\"control_type\":\"checkbox\",\"label\":\"Status\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Status\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"is_removed\",\"type\":\"boolean\",\"optional\":false},\"name\":\"is_removed\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"},{\"name\":\"name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Name\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Project config ID",
+            "name": "project_config_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "lookup_table",
+        "name": "get_entries",
+        "as": "0f07ddbe",
+        "title": null,
+        "description": "\n      Get all\n      <span class=\"provider\">entries</span>\n      from\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Project Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+            "name": "CICD | LT | Project Configuration",
+            "folder": ""
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "label": "Entry",
+                "type": "object",
+                "name": "entry",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Code Repository",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Reviewer Notification Id",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ]
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "547b21e3-a471-401c-b08d-47ae3e4ff774"
+      },
+      {
+        "number": 2,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "97ecbfe7",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Project Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+            "name": "CICD | LT | Project Configuration",
+            "folder": ""
+          },
+          "parameters": {
+            "col1": "#{_('data.workato_recipe_function.98d6dbf6.parameters.project_config_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "label": "Entry",
+                "type": "object",
+                "name": "entry",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Code Repository",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Reviewer Notification Id",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ]
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Id",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Name",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Environment",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Id",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Type",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Code Repository",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Reviewer Notification Id",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Dependencies",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Target Folder Details",
+                "name": "col9",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Last Updated",
+                "name": "col10",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "4f383783-3581-4c90-b84f-0d63b689df2d"
+      },
+      {
+        "number": 3,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "contains",
+              "lhs": "=_('data.lookup_table.0f07ddbe.entries').pluck('entry').pluck('col8').smart_join(\"###\")",
+              "rhs": "#{_('data.workato_recipe_function.98d6dbf6.parameters.project_config_id')}",
+              "uuid": "condition-250e9a51-d076-4788-8f01-fdd497622e36"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 4,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "fcccc4d6",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "result.is_dependency": true,
+              "result.is_removed": true
+            },
+            "input": {
+              "result": {
+                "is_dependency": "true",
+                "is_removed": "false",
+                "name": "#{_('data.lookup_table.97ecbfe7.entries.first.entry.col2')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is dependency",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is Dependency",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_dependency",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_dependency",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Status",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Status",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_removed",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_removed",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is dependency",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is Dependency",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_dependency",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_dependency",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Status",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Status",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_removed",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_removed",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "a1415c25-1da8-45cd-a01d-49c39e72df00"
+          }
+        ],
+        "uuid": "f8cc916a-e1a4-465a-bef8-d476bd32bfff"
+      },
+      {
+        "number": 5,
+        "as": "efa6ce8f",
+        "keyword": "foreach",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 6,
+            "provider": "lookup_table",
+            "name": "delete_entry",
+            "as": "d45281b6",
+            "title": null,
+            "description": "\n      Delete\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | Project Configuration"
+            },
+            "toggleCfg": {
+              "ignore_not_found": true
+            },
+            "input": {
+              "ignore_not_found": "false",
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+                "name": "CICD | LT | Project Configuration",
+                "folder": ""
+              },
+              "id": "#{_('data.foreach.efa6ce8f.id')}"
+            },
+            "uuid": "a9d614fb-3b20-4e3f-b1a1-4b5eb952a027"
+          }
+        ],
+        "source": "#{_('data.lookup_table.97ecbfe7.entries')}",
+        "uuid": "cc424419-0155-4a34-8626-a1378f15d4c9"
+      },
+      {
+        "number": 7,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "ed4eb834",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.is_dependency": true,
+          "result.is_removed": true
+        },
+        "input": {
+          "result": {
+            "is_dependency": "false",
+            "is_removed": "true",
+            "name": "#{_('data.lookup_table.97ecbfe7.entries.first.entry.col2')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "checkbox",
+                "label": "Is dependency",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Is Dependency",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "is_dependency",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "is_dependency",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Status",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Status",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "is_removed",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "is_removed",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              },
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "checkbox",
+                "label": "Is dependency",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Is Dependency",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "is_dependency",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "is_dependency",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Status",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Status",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "is_removed",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "is_removed",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              },
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "5eee0367-4642-4dfc-9be3-67950e0a6de3"
+      }
+    ],
+    "uuid": "5fcc4aff-c654-493f-a266-9c76b2f3c1ae"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

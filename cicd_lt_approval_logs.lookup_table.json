@@ -1,0 +1,75 @@
+{
+  "name": "CICD | LT | Approval Logs",
+  "schema": [
+    {
+      "control_type": "text",
+      "label": "Id",
+      "name": "col1",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Execution Reference",
+      "name": "col2",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Approval Channel",
+      "name": "col3",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Status",
+      "name": "col4",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Comments",
+      "name": "col5",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Action By",
+      "name": "col6",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Action On",
+      "name": "col7",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Execution Context",
+      "name": "col8",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 9",
+      "name": "col9",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 10",
+      "name": "col10",
+      "type": "string",
+      "sticky": false
+    }
+  ]
+}

@@ -1,0 +1,1061 @@
+{
+  "name": "CICD | FUNC | User Permission Analyzer",
+  "description": "When there is a function call, do action and other actions",
+  "version": 21,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "81e5ad62",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"User\",\"name\":\"user\",\"type\":\"string\",\"optional\":false},{\"name\":\"permissions\",\"type\":\"array\",\"of\":\"string\",\"label\":\"Permissions\",\"optional\":false}]",
+      "result_schema_json": "[{\"name\":\"permissions\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Permissions\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Name\",\"name\":\"name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"checkbox\",\"label\":\"Result\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Result\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"result\",\"type\":\"boolean\",\"optional\":false},\"name\":\"result\",\"type\":\"boolean\",\"optional\":false}]}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "User",
+            "name": "user",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "permissions",
+            "type": "array",
+            "of": "string",
+            "label": "Permissions",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "36d26849",
+        "title": " Create Permission Result list",
+        "description": "Create <span class=\"provider\">Permission Result</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Permission Result",
+          "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Permission name\",\"name\":\"permission_name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"checkbox\",\"label\":\"Result\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Result\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"result\",\"type\":\"boolean\",\"optional\":false},\"name\":\"result\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"}]"
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Permission Result",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Permission name",
+                "name": "permission_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Result",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Result",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "result",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "result",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Permission name",
+                "name": "permission_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Result",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Result",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "result",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "result",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "9787428a-c5e7-4140-8140-70aac897a4de"
+      },
+      {
+        "number": 2,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "c3a88413",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | User Role Mappings</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | User Role Mappings"
+        },
+        "toggleCfg": {
+          "parameters.method": true
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Data Access Functions/RBAC/cicd_func_user_role_mappings.recipe.json",
+            "name": "CICD | FUNC | User Role Mappings",
+            "folder": "Data Access Functions/RBAC"
+          },
+          "parameters": {
+            "table": "CICD | User Roles",
+            "method": "GET",
+            "entries": {
+              "user": "#{_('data.workato_recipe_function.81e5ad62.parameters.user')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table"
+              },
+              {
+                "control_type": "text",
+                "label": "Method",
+                "type": "string",
+                "name": "method"
+              },
+              {
+                "control_type": "text",
+                "label": "Count",
+                "type": "string",
+                "name": "count"
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User",
+                    "name": "user",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Roles",
+                    "name": "roles",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table",
+                "optional": true,
+                "default": "CICD | User Roles"
+              },
+              {
+                "control_type": "select",
+                "label": "Method",
+                "type": "string",
+                "name": "method",
+                "optional": false,
+                "hint": "GET, POST, PUT or DELETE.  For PUT method, \"id\" is mandatory.",
+                "pick_list": [
+                  [
+                    "GET",
+                    "GET"
+                  ],
+                  [
+                    "POST",
+                    "POST"
+                  ],
+                  [
+                    "PUT",
+                    "PUT"
+                  ],
+                  [
+                    "DELETE",
+                    "DELETE"
+                  ]
+                ],
+                "toggle_hint": "Select from list",
+                "toggle_field": {
+                  "name": "method",
+                  "label": "Method",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Enter Value",
+                  "hint": "Map Method"
+                }
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User",
+                    "name": "user",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Roles",
+                    "name": "roles",
+                    "type": "string",
+                    "optional": true
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters",
+          "parameters.table",
+          "parameters.entries.user"
+        ],
+        "uuid": "9af4053a-5dae-42cf-9e2e-5c46eaff73c0"
+      },
+      {
+        "number": 3,
+        "as": "5dfdf26b",
+        "keyword": "foreach",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 4,
+            "provider": "json_parser",
+            "name": "parse_json",
+            "as": "5b6244c2",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "document": "=_('data.foreach.5dfdf26b.roles').presence || \"[]\"",
+              "sample_document": "[\"sample_role\"]"
+            },
+            "extended_output_schema": [
+              {
+                "label": "Document",
+                "name": "document",
+                "properties": [
+                  {
+                    "name": "array",
+                    "type": "array",
+                    "of": "string",
+                    "control_type": "text",
+                    "label": "Array"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "2b741772-fa01-40d5-9964-1e01de39208b"
+          },
+          {
+            "number": 5,
+            "as": "910a25e7",
+            "keyword": "foreach",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "repeat_mode": "simple",
+            "clear_scope": "false",
+            "input": {
+            },
+            "block": [
+              {
+                "number": 6,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "c969dd6a",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | User Roles</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUNC | User Roles"
+                },
+                "toggleCfg": {
+                  "parameters.method": true,
+                  "parameters.entries.is_active": false
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Data Access Functions/RBAC/cicd_func_user_roles.recipe.json",
+                    "name": "CICD | FUNC | User Roles",
+                    "folder": "Data Access Functions/RBAC"
+                  },
+                  "parameters": {
+                    "table": "CICD | User Roles",
+                    "method": "GET",
+                    "entries": {
+                      "role": "#{_('data.foreach.910a25e7.value')}",
+                      "is_active": "=['true','True','TRUE']"
+                    }
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Table",
+                        "type": "string",
+                        "name": "table"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Method",
+                        "type": "string",
+                        "name": "method"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Count",
+                        "type": "string",
+                        "name": "count"
+                      },
+                      {
+                        "name": "entries",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Entries",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Role",
+                            "name": "role",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Permissions",
+                            "name": "permissions",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Is Active",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Is Active",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "is_active",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "is_active",
+                            "type": "boolean",
+                            "optional": false
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Table",
+                        "type": "string",
+                        "name": "table",
+                        "optional": true,
+                        "default": "CICD | User Roles"
+                      },
+                      {
+                        "control_type": "select",
+                        "label": "Method",
+                        "type": "string",
+                        "name": "method",
+                        "optional": false,
+                        "hint": "GET, POST, PUT or DELETE.  For PUT method, \"id\" is mandatory.",
+                        "pick_list": [
+                          [
+                            "GET",
+                            "GET"
+                          ],
+                          [
+                            "POST",
+                            "POST"
+                          ],
+                          [
+                            "PUT",
+                            "PUT"
+                          ],
+                          [
+                            "DELETE",
+                            "DELETE"
+                          ]
+                        ],
+                        "toggle_hint": "Select from list",
+                        "toggle_field": {
+                          "name": "method",
+                          "label": "Method",
+                          "type": "string",
+                          "control_type": "text",
+                          "optional": false,
+                          "toggle_hint": "Enter Value",
+                          "hint": "Map Method"
+                        }
+                      },
+                      {
+                        "name": "entries",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Entries",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Role",
+                            "name": "role",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Permissions",
+                            "name": "permissions",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Is Active",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Is Active",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "is_active",
+                              "type": "boolean",
+                              "optional": true
+                            },
+                            "name": "is_active",
+                            "type": "boolean",
+                            "optional": true
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "flow_id",
+                  "parameters",
+                  "parameters.table",
+                  "parameters.entries.role",
+                  "parameters.method",
+                  "parameters.entries",
+                  "parameters.entries.is_active"
+                ],
+                "uuid": "42ec7d67-ebc5-4388-975e-8d98531b2cdd"
+              },
+              {
+                "number": 7,
+                "as": "d3606889",
+                "keyword": "foreach",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "repeat_mode": "simple",
+                "clear_scope": "false",
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 8,
+                    "provider": "json_parser",
+                    "name": "parse_json",
+                    "as": "a7f7c1b9",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "document": "=_('data.foreach.d3606889.permissions').presence || \"[]\"",
+                      "sample_document": "[\"sample_permission\"]"
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Document",
+                        "name": "document",
+                        "properties": [
+                          {
+                            "name": "array",
+                            "type": "array",
+                            "of": "string",
+                            "control_type": "text",
+                            "label": "Array"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "8db5a156-153e-446a-8ace-d09f7c0832aa"
+                  },
+                  {
+                    "number": 9,
+                    "as": "57fa4f4e",
+                    "keyword": "foreach",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "repeat_mode": "simple",
+                    "clear_scope": "false",
+                    "input": {
+                    },
+                    "block": [
+                      {
+                        "number": 10,
+                        "keyword": "if",
+                        "dynamicPickListSelection": {
+                        },
+                        "toggleCfg": {
+                        },
+                        "input": {
+                          "type": "compound",
+                          "operand": "and",
+                          "conditions": [
+                            {
+                              "operand": "contains",
+                              "lhs": "#{_('data.json_parser.a7f7c1b9.document.array')}",
+                              "rhs": "#{_('data.foreach.57fa4f4e.value')}",
+                              "uuid": "condition-6d0f16f2-f90c-4e3a-abab-c278e1a3618a"
+                            },
+                            {
+                              "operand": "equals_to",
+                              "lhs": "=_('data.workato_variable.36d26849.list_items').where(permission_name: \"#{_('data.foreach.57fa4f4e.value')}\").length",
+                              "rhs": "0",
+                              "uuid": "condition-886fca5e-1bb9-4d46-ba1a-a58154a7dac0"
+                            }
+                          ]
+                        },
+                        "block": [
+                          {
+                            "number": 11,
+                            "provider": "workato_variable",
+                            "name": "insert_to_list",
+                            "as": "16b72645",
+                            "title": "Add item to Permission Result list",
+                            "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Permission Result</span> list",
+                            "keyword": "action",
+                            "dynamicPickListSelection": {
+                              "name": "Permission Result (step 2)"
+                            },
+                            "toggleCfg": {
+                              "list_item.result": true
+                            },
+                            "input": {
+                              "location": "end",
+                              "name": "9787428a-c5e7-4140-8140-70aac897a4de:36d26849",
+                              "list_item": {
+                                "permission_name": "#{_('data.foreach.57fa4f4e.value')}",
+                                "result": "true"
+                              }
+                            },
+                            "extended_input_schema": [
+                              {
+                                "hint": "",
+                                "label": "List item",
+                                "name": "list_item",
+                                "optional": false,
+                                "properties": [
+                                  {
+                                    "control_type": "text",
+                                    "label": "Permission name",
+                                    "name": "permission_name",
+                                    "type": "string",
+                                    "optional": false
+                                  },
+                                  {
+                                    "control_type": "checkbox",
+                                    "label": "Result",
+                                    "render_input": {
+                                    },
+                                    "parse_output": {
+                                    },
+                                    "toggle_hint": "Select from option list",
+                                    "toggle_field": {
+                                      "label": "Result",
+                                      "control_type": "text",
+                                      "toggle_hint": "Use custom value",
+                                      "name": "result",
+                                      "type": "boolean",
+                                      "optional": false
+                                    },
+                                    "name": "result",
+                                    "type": "boolean",
+                                    "optional": false,
+                                    "default": "false"
+                                  }
+                                ],
+                                "type": "object"
+                              }
+                            ],
+                            "uuid": "98c46b86-4678-4fec-be82-c39e43e4890f"
+                          }
+                        ],
+                        "uuid": "c7f6218a-d96e-409d-94bf-aa051677180e"
+                      }
+                    ],
+                    "source": "#{_('data.workato_recipe_function.81e5ad62.parameters.permissions')}",
+                    "uuid": "3de4a384-861d-48df-9c07-9ee78c763231"
+                  }
+                ],
+                "source": "#{_('data.workato_recipe_function.c969dd6a.result.entries')}",
+                "uuid": "2a7d911a-eb14-4a21-8d5e-6c5b5d762c17"
+              }
+            ],
+            "source": "#{_('data.json_parser.5b6244c2.document.array')}",
+            "uuid": "d44559d9-57b2-4c86-bf27-811b5e11f41d"
+          }
+        ],
+        "source": "#{_('data.workato_recipe_function.c3a88413.result.entries')}",
+        "uuid": "af1be723-a464-4068-8f0c-8d348abf535c"
+      },
+      {
+        "number": 12,
+        "provider": "workato_custom_code",
+        "name": "invoke_custom_ruby_code",
+        "as": "8c5294a7",
+        "title": null,
+        "description": "Execute <span class=\"provider\">ruby</span> code: <span class=\"provider\">Extract non-existent permissions</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "code": "# @param input [Hash] input hash supplied in the recipe step\n# @return value returned in the last line\n# Eg: Code for returning country code for an IP address\n# {\n#   country_code: get(\"http://freegeoip.net/json/\" + input[\"ip_address\"])\n# }\nall_permissions = input['all_permissions']\nexistent_permissions = input['existent_permissions']\n\n{\n  permissions: all_permissions - existent_permissions\n}",
+          "name": "Extract non-existent permissions",
+          "code_output_schema_json": "[{\"name\":\"permissions\",\"type\":\"array\",\"of\":\"string\",\"label\":\"Permissions\",\"optional\":false}]",
+          "code_input": {
+            "schema": "[{\"name\":\"all_permissions\",\"type\":\"array\",\"of\":\"string\",\"label\":\"All Permissions\",\"optional\":false},{\"name\":\"existent_permissions\",\"type\":\"array\",\"of\":\"string\",\"label\":\"Existent Permissions\",\"optional\":false}]",
+            "data": {
+              "all_permissions": "=_('data.workato_recipe_function.81e5ad62.parameters.permissions')",
+              "existent_permissions": "=_('data.workato_variable.36d26849.list_items').pluck('permission_name')"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Output",
+            "name": "output",
+            "properties": [
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "string",
+                "label": "Permissions",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "control_type": "form-schema-builder",
+            "label": "Input",
+            "name": "code_input",
+            "optional": true,
+            "override": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "type": "string",
+                "name": "schema"
+              },
+              {
+                "properties": [
+                  {
+                    "name": "all_permissions",
+                    "type": "array",
+                    "of": "string",
+                    "label": "All Permissions",
+                    "optional": false
+                  },
+                  {
+                    "name": "existent_permissions",
+                    "type": "array",
+                    "of": "string",
+                    "label": "Existent Permissions",
+                    "optional": false
+                  }
+                ],
+                "label": "Data",
+                "type": "object",
+                "name": "data"
+              }
+            ],
+            "sticky": true,
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "name",
+          "code_input",
+          "code_output_schema_json",
+          "code",
+          "code_input.data.result",
+          "code_input.schema",
+          "code_input.data.name",
+          "code_input.data.all_permissions",
+          "code_input.data.existent_permissions"
+        ],
+        "uuid": "281ede7f-a186-4e4c-a5a5-0102869c75f1"
+      },
+      {
+        "number": 13,
+        "as": "fd79ed8c",
+        "keyword": "foreach",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "repeat_mode": "simple",
+        "batch_size": "",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 14,
+            "provider": "workato_variable",
+            "name": "insert_to_list",
+            "as": "948f7970",
+            "title": "Add item to Permission Result list",
+            "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Permission Result</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Permission Result (step 2)"
+            },
+            "toggleCfg": {
+              "list_item.result": true
+            },
+            "input": {
+              "location": "end",
+              "name": "9787428a-c5e7-4140-8140-70aac897a4de:36d26849",
+              "list_item": {
+                "result": "false",
+                "permission_name": "#{_('data.foreach.fd79ed8c.value')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List item",
+                "name": "list_item",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Permission name",
+                    "name": "permission_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Result",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Result",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "result",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "result",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "42c4d477-8dc6-4baa-96b0-5e81849fdc97"
+          }
+        ],
+        "source": "#{_('data.workato_custom_code.8c5294a7.output.permissions')}",
+        "uuid": "a50cb46f-1263-477d-b712-88b0f222d7af"
+      },
+      {
+        "number": 15,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "3a845550",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.result": true,
+          "result.permissions.result": false
+        },
+        "input": {
+          "result": {
+            "permissions": {
+              "____source": "#{_('data.workato_variable.36d26849.list_items')}",
+              "name": "#{_('data.workato_variable.36d26849.list_items.first.permission_name')}",
+              "result": "=_('data.workato_variable.36d26849.list_items.first.result').is_true?"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "object",
+                "label": "Permissions",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Result",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Result",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "result",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "result",
+                    "type": "boolean",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "object",
+                "label": "Permissions",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Result",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Result",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "result",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "result",
+                    "type": "boolean",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "d7c3a8bb-d5b3-449f-bb8c-eecadae06454"
+      }
+    ],
+    "uuid": "adbea131-8dcf-4f09-9ca1-51cc61bb5006"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_custom_code",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

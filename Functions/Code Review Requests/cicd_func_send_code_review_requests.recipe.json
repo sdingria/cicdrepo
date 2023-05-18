@@ -1,0 +1,967 @@
+{
+  "name": "CICD | FUNC | Send Code Review Requests",
+  "description": "When there is a function call, do action",
+  "version": 42,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "a6046953",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"properties\":[{\"control_type\":\"checkbox\",\"label\":\"Is dependency\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Is dependency\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"is_dependency\",\"type\":\"boolean\",\"optional\":false},\"name\":\"is_dependency\",\"type\":\"boolean\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Project name\",\"name\":\"project_name\",\"type\":\"string\",\"optional\":false},{\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Project config ID\"}],\"label\":\"Project Details\",\"name\":\"project_details\",\"type\":\"object\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Build package ID\",\"name\":\"build_package_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Package version\",\"name\":\"package_version\",\"type\":\"string\",\"optional\":false}],\"label\":\"Package Details\",\"name\":\"package_details\",\"type\":\"object\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Execution reference\",\"name\":\"execution_reference\",\"type\":\"string\",\"optional\":false},{\"name\":\"execution_mode\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Execution mode\"},{\"control_type\":\"text\",\"label\":\"Pipeline Description\",\"name\":\"pipeline_desc\",\"type\":\"string\",\"optional\":false},{\"name\":\"pipeline_config_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Pipeline config ID\"},{\"name\":\"promote_context\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Promote context\"},{\"name\":\"deployment_comments\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Deployment comments\"}],\"label\":\"Execution Context\",\"name\":\"execution_context\",\"type\":\"object\",\"optional\":false}]",
+      "result_schema_json": "[{\"control_type\":\"checkbox\",\"label\":\"Process execution\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Process execution\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"process_execution\",\"type\":\"boolean\",\"optional\":false},\"name\":\"process_execution\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "properties": [
+              {
+                "control_type": "checkbox",
+                "label": "Is dependency",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Is dependency",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "is_dependency",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "is_dependency",
+                "type": "boolean",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Project name",
+                "name": "project_name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Project config ID",
+                "name": "project_config_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "label": "Project Details",
+            "name": "project_details",
+            "type": "object",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Build package ID",
+                "name": "build_package_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Package version",
+                "name": "package_version",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "label": "Package Details",
+            "name": "package_details",
+            "type": "object",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution reference",
+                "name": "execution_reference",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Execution mode",
+                "name": "execution_mode",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Pipeline Description",
+                "name": "pipeline_desc",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Pipeline config ID",
+                "name": "pipeline_config_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Promote context",
+                "name": "promote_context",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Deployment comments",
+                "name": "deployment_comments",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "label": "Execution Context",
+            "name": "execution_context",
+            "type": "object",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "b9cad0df",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Prepare Code Review Request fields for Pipeline Execution</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | Prepare Code Review Request fields for Pipeline Execution"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/Code Review Requests/cicd_func_prepare_code_review_request_fields_for_pipeline_execution.recipe.json",
+            "name": "CICD | FUNC | Prepare Code Review Request fields for Pipeline Execution",
+            "folder": "Functions/Code Review Requests"
+          },
+          "parameters": {
+            "project_details": {
+              "project_name": "#{_('data.workato_recipe_function.a6046953.parameters.project_details.project_name')}",
+              "project_config_id": "#{_('data.workato_recipe_function.a6046953.parameters.project_details.project_config_id')}"
+            },
+            "package_details": {
+              "build_package_id": "#{_('data.workato_recipe_function.a6046953.parameters.package_details.build_package_id')}",
+              "package_version": "#{_('data.workato_recipe_function.a6046953.parameters.package_details.package_version')}"
+            },
+            "execution_context": {
+              "pipeline_desc": "#{_('data.workato_recipe_function.a6046953.parameters.execution_context.pipeline_desc')}",
+              "pipeline_config_id": "#{_('data.workato_recipe_function.a6046953.parameters.execution_context.pipeline_config_id')}",
+              "execution_reference": "#{_('data.workato_recipe_function.a6046953.parameters.execution_context.execution_reference')}",
+              "deployment_comments": "#{_('data.workato_recipe_function.a6046953.parameters.execution_context.deployment_comments')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "code_review_request_fields",
+                "type": "array",
+                "of": "object",
+                "label": "Code Review request fields",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Value",
+                    "name": "value",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Project name",
+                    "name": "project_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project config ID",
+                    "name": "project_config_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "label": "Project Details",
+                "name": "project_details",
+                "type": "object",
+                "optional": false
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Build package ID",
+                    "name": "build_package_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Package version",
+                    "name": "package_version",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "label": "Package Details",
+                "name": "package_details",
+                "type": "object",
+                "optional": false
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Description",
+                    "name": "pipeline_desc",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline config ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployment comments",
+                    "name": "deployment_comments",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "label": "Execution Context",
+                "name": "execution_context",
+                "type": "object",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters.execution_context.execution_reference",
+          "parameters",
+          "parameters.project_details",
+          "parameters.project_details.project_name",
+          "parameters.project_details.project_config_id",
+          "parameters.package_details",
+          "parameters.package_details.build_package_id",
+          "parameters.package_details.package_version",
+          "parameters.execution_context",
+          "parameters.execution_context.pipeline_desc",
+          "parameters.execution_context.pipeline_config_id",
+          "parameters.execution_context.deployment_comments"
+        ],
+        "uuid": "0a93a7d9-7d20-40b1-9b3a-bcf353cc9e42"
+      },
+      {
+        "number": 2,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "afd41657",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Project Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+            "name": "CICD | LT | Project Configuration",
+            "folder": ""
+          },
+          "parameters": {
+            "col1": "#{_('data.workato_recipe_function.a6046953.parameters.project_details.project_config_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Code Repository",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Notification Settings",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "label": "Entry",
+                "type": "object",
+                "name": "entry"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Id",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Name",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Environment",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Id",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Type",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Code Repository",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Notification Settings",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Dependencies",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Target Folder Details",
+                "name": "col9",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Last Updated",
+                "name": "col10",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "57416b8c-a0b6-499d-aa60-4c0335598847"
+      },
+      {
+        "number": 3,
+        "provider": "json_parser",
+        "name": "parse_json",
+        "as": "8985fa42",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "sample_document": "{\"reviewer_notification_id\":\"U0342UCK0TB\", \"release_announcement\":\"C0463GE8XV5\"}",
+          "document": "#{_('data.lookup_table.afd41657.entries.first.entry.col7')}"
+        },
+        "extended_output_schema": [
+          {
+            "label": "Document",
+            "name": "document",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Reviewer notification ID",
+                "type": "string",
+                "name": "reviewer_notification_id"
+              },
+              {
+                "control_type": "text",
+                "label": "Release announcement",
+                "type": "string",
+                "name": "release_announcement"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "comment": "Parse Notification Settings",
+        "uuid": "56c28405-40ac-4e4a-89ab-453b1b3c89a2"
+      },
+      {
+        "number": 4,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato.job_context.account_properties.Accl_CICD_App', 'account_property', 'Accl.CICD.App').upcase",
+              "rhs": "SLACK",
+              "uuid": "condition-5593982b-d69c-4903-8e86-532295fc6dd6"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 5,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "35841614",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Send Code Review Request</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | (Slack) Send Code Review Request"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Triggers/Slack/Functions/Code Review Request/cicd_func_slack_send_code_review_request.recipe.json",
+                "name": "CICD | FUNC | (Slack) Send Code Review Request",
+                "folder": "Triggers/Slack/Functions/Code Review Request"
+              },
+              "parameters": {
+                "execution_context": {
+                  "execution_reference": "#{_('data.workato_recipe_function.a6046953.parameters.execution_context.execution_reference')}",
+                  "reviewer_id": "#{_('data.json_parser.8985fa42.document.reviewer_notification_id')}"
+                },
+                "attachment_fields": {
+                  "____source": "#{_('data.workato_recipe_function.b9cad0df.result.code_review_request_fields')}",
+                  "title": "#{_('data.workato_recipe_function.b9cad0df.result.code_review_request_fields.first.title')}",
+                  "value": "#{_('data.workato_recipe_function.b9cad0df.result.code_review_request_fields.first.value')}"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Process execution",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Process execution",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "process_execution",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "process_execution",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Execution reference",
+                        "name": "execution_reference",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Reviewer Id",
+                        "name": "reviewer_id",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "label": "Execution Context",
+                    "name": "execution_context",
+                    "type": "object",
+                    "optional": false
+                  },
+                  {
+                    "name": "attachment_fields",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Attachment fields",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Title",
+                        "name": "title",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.environment_details",
+              "parameters.environment_details.source_environment",
+              "parameters.environment_details.target_environment",
+              "parameters.execution_context",
+              "parameters.execution_context.execution_reference",
+              "parameters.execution_context.approval_channel",
+              "parameters.attachment_fields",
+              "parameters.attachment_fields.title",
+              "parameters.attachment_fields.value",
+              "parameters.execution_context.pipeline_context"
+            ],
+            "uuid": "65cbae5c-780b-41dc-b94e-0fab6c26acea",
+            "skip": false
+          }
+        ],
+        "uuid": "dc4d9b35-ad95-42b0-a43e-85164db6d791",
+        "skip": false
+      },
+      {
+        "number": 6,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato.job_context.account_properties.Accl_CICD_App', 'account_property', 'Accl.CICD.App').upcase",
+              "rhs": "MSTEAMS",
+              "uuid": "condition-5593982b-d69c-4903-8e86-532295fc6dd6"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 7,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "7304363f",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | (MS Teams) Send Code Review Requests</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | (MS Teams) Send Code Review Requests"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": "3023439",
+              "parameters": {
+                "execution_context": {
+                  "execution_reference": "#{_('data.workato_recipe_function.a6046953.parameters.execution_context.execution_reference')}",
+                  "reviewer_id": "#{_('data.json_parser.8985fa42.document.reviewer_notification_id')}"
+                },
+                "attachment_fields": {
+                  "____source": "#{_('data.workato_recipe_function.b9cad0df.result.code_review_request_fields')}",
+                  "title": "#{_('data.workato_recipe_function.b9cad0df.result.code_review_request_fields.first.title')}",
+                  "value": "#{_('data.workato_recipe_function.b9cad0df.result.code_review_request_fields.first.value')}"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Process execution",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Process execution",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "process_execution",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "process_execution",
+                    "type": "boolean",
+                    "optional": false,
+                    "default": "false"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Execution reference",
+                        "name": "execution_reference",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Reviewer Id",
+                        "name": "reviewer_id",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "label": "Execution Context",
+                    "name": "execution_context",
+                    "type": "object",
+                    "optional": false
+                  },
+                  {
+                    "name": "attachment_fields",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Attachment fields",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Title",
+                        "name": "title",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "2ae7318d-0850-427e-8425-f5efdab0ec79",
+            "skip": true
+          }
+        ],
+        "uuid": "d8d01f7a-5dcd-46ad-b142-0506cfcbe849",
+        "skip": true
+      },
+      {
+        "number": 8,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "012fee72",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.process_execution": true
+        },
+        "input": {
+          "result": {
+            "process_execution": "false"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "checkbox",
+                "label": "Process execution",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Process execution",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "process_execution",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "process_execution",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "checkbox",
+                "label": "Process execution",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Process execution",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "process_execution",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "process_execution",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "5e6ee2a8-ffca-4ed0-95cf-191c6061e397"
+      }
+    ],
+    "uuid": "45a13413-add4-4a0d-9e43-01e476c7b26f"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

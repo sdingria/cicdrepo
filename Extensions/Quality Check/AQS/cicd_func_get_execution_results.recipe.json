@@ -1,0 +1,341 @@
+{
+  "name": "CICD | FUNC | Get Execution Results",
+  "description": "When there is a function call, do action and other actions",
+  "version": 8,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "f7c6c340",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"aqs_execution_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Aqs execution ID\"}]",
+      "result_schema_json": "[{\"control_type\":\"text\",\"label\":\"Execution ID\",\"name\":\"execution_id\",\"type\":\"string\",\"optional\":false},{\"name\":\"results\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Results\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Execution date time\",\"name\":\"execution_date_time\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Recipe manifest project ID\",\"name\":\"recipe_manifest_project_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Recipe manifest project name\",\"name\":\"recipe_manifest_project_name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Result\",\"name\":\"result\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Percentage score\",\"name\":\"percentage_score\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Non compliant details\",\"name\":\"non_compliant_details\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Asset type\",\"name\":\"asset_type\",\"type\":\"string\",\"optional\":false}]}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Aqs execution ID",
+            "name": "aqs_execution_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "42155fcc",
+        "title": null,
+        "description": "Call <span class=\"provider\">AQS | FUNC | Get execution results from results table</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "AQS | FUNC - 010 | Get execution results from results table"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": "2369161",
+          "parameters": {
+            "execution_id": "#{_('data.workato_recipe_function.f7c6c340.parameters.aqs_execution_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution ID",
+                "name": "execution_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "results",
+                "type": "array",
+                "of": "object",
+                "label": "Results",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution date time",
+                    "name": "execution_date_time",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project ID",
+                    "name": "recipe_manifest_project_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project name",
+                    "name": "recipe_manifest_project_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Result",
+                    "name": "result",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Percentage score",
+                    "name": "percentage_score",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Non compliant details",
+                    "name": "non_compliant_details",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset type",
+                    "name": "asset_type",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution ID",
+                "name": "execution_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "bbc6594e-9d05-41a9-a130-db358c0ac7c8",
+        "skip": true
+      },
+      {
+        "number": 2,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "ded7e0b2",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "result": {
+            "execution_id": "#{_('data.workato_recipe_function.f7c6c340.parameters.aqs_execution_id')}",
+            "results": {
+              "____source": "#{_('data.workato_recipe_function.42155fcc.result.results')}",
+              "execution_date_time": "#{_('data.workato_recipe_function.42155fcc.result.results.first.execution_date_time')}",
+              "recipe_manifest_project_id": "#{_('data.workato_recipe_function.42155fcc.result.results.first.recipe_manifest_project_id')}",
+              "recipe_manifest_project_name": "#{_('data.workato_recipe_function.42155fcc.result.results.first.recipe_manifest_project_name')}",
+              "result": "#{_('data.workato_recipe_function.42155fcc.result.results.first.result')}",
+              "percentage_score": "#{_('data.workato_recipe_function.42155fcc.result.results.first.percentage_score')}",
+              "non_compliant_details": "#{_('data.workato_recipe_function.42155fcc.result.results.first.non_compliant_details')}",
+              "asset_type": "#{_('data.workato_recipe_function.42155fcc.result.results.first.asset_type')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution ID",
+                "name": "execution_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "results",
+                "type": "array",
+                "of": "object",
+                "label": "Results",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution date time",
+                    "name": "execution_date_time",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project ID",
+                    "name": "recipe_manifest_project_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project name",
+                    "name": "recipe_manifest_project_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Result",
+                    "name": "result",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Percentage score",
+                    "name": "percentage_score",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Non compliant details",
+                    "name": "non_compliant_details",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset type",
+                    "name": "asset_type",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution ID",
+                "name": "execution_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "results",
+                "type": "array",
+                "of": "object",
+                "label": "Results",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution date time",
+                    "name": "execution_date_time",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project ID",
+                    "name": "recipe_manifest_project_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project name",
+                    "name": "recipe_manifest_project_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Result",
+                    "name": "result",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Percentage score",
+                    "name": "percentage_score",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Non compliant details",
+                    "name": "non_compliant_details",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset type",
+                    "name": "asset_type",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "c06eb144-3953-45d2-8252-2bc71b4fb933",
+        "skip": true
+      }
+    ],
+    "uuid": "03344f9d-88f3-4567-802e-d8c3044c7a16"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

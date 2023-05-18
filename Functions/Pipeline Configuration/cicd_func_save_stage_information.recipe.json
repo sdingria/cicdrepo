@@ -1,0 +1,2508 @@
+{
+  "name": "CICD | FUNC | Save Stage Information",
+  "description": "When there is a function call, do action",
+  "version": 78,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "3c54b759",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"properties\":[{\"control_type\":\"text\",\"label\":\"Pipeline ID\",\"name\":\"pipeline_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Updated by\",\"name\":\"updated_by\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"User ID\",\"name\":\"user_id\",\"type\":\"string\",\"optional\":false}],\"label\":\"Pipeline context\",\"name\":\"pipeline_context\",\"type\":\"object\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Pipeline description\",\"name\":\"pipeline_description\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Trigger mode\",\"name\":\"trigger_mode\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Source environment\",\"name\":\"source_environment\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Deployment mode\",\"name\":\"deployment_mode\",\"type\":\"string\",\"optional\":false}],\"label\":\"Trigger info\",\"name\":\"trigger_info\",\"type\":\"object\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Dependency handling\",\"name\":\"dependency_handling\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"checkbox\",\"label\":\"Aqs check\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Aqs check\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"aqs_check\",\"type\":\"boolean\",\"optional\":false},\"name\":\"aqs_check\",\"type\":\"boolean\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Build configuration\",\"name\":\"build_configuration\",\"type\":\"string\",\"optional\":false}],\"label\":\"Build info\",\"name\":\"build_info\",\"type\":\"object\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Post deployment\",\"name\":\"post_deployment\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Environment type\",\"name\":\"environment_type\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Target env\",\"name\":\"target_env\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Approval channel\",\"name\":\"approval_channel\",\"type\":\"string\",\"optional\":false},{\"label\":\"Deploy on Approval\",\"name\":\"deploy_on_approval\",\"type\":\"boolean\",\"optional\":true,\"control_type\":\"checkbox\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Deploy on Approval\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"deploy_on_approval\",\"type\":\"boolean\",\"optional\":true}}],\"label\":\"Deploy info\",\"name\":\"deploy_info\",\"type\":\"object\",\"optional\":true}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Pipeline ID",
+                "name": "pipeline_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Updated by",
+                "name": "updated_by",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "User ID",
+                "name": "user_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "label": "Pipeline context",
+            "name": "pipeline_context",
+            "type": "object",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Pipeline description",
+                "name": "pipeline_description",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Trigger mode",
+                "name": "trigger_mode",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Source environment",
+                "name": "source_environment",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Deployment mode",
+                "name": "deployment_mode",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "label": "Trigger info",
+            "name": "trigger_info",
+            "type": "object",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Dependency handling",
+                "name": "dependency_handling",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Aqs check",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Aqs check",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "aqs_check",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "aqs_check",
+                "type": "boolean",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Build configuration",
+                "name": "build_configuration",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "label": "Build info",
+            "name": "build_info",
+            "type": "object",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Post deployment",
+                "name": "post_deployment",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Environment type",
+                "name": "environment_type",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Target env",
+                "name": "target_env",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Approval channel",
+                "name": "approval_channel",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Deploy on Approval",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Deploy on Approval",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "deploy_on_approval",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "name": "deploy_on_approval",
+                "type": "boolean",
+                "optional": true
+              }
+            ],
+            "label": "Deploy info",
+            "name": "deploy_info",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "=_('data.workato_recipe_function.3c54b759.parameters.trigger_info').present?",
+              "rhs": "trigger",
+              "uuid": "condition-675810f8-7228-4060-afe6-5d7f54906a4f"
+            },
+            {
+              "operand": "present",
+              "lhs": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.trigger_mode')}",
+              "rhs": "",
+              "uuid": "condition-d719f99f-f70e-4579-a26b-94f340678bfe"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "lookup_table",
+            "name": "search_entries",
+            "as": "708e0cd1",
+            "title": null,
+            "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | Pipeline Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                "name": "CICD | LT | Pipeline Configuration",
+                "folder": ""
+              },
+              "parameters": {
+                "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                "col6": "trigger"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Entries",
+                "name": "entries",
+                "of": "object",
+                "properties": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "id"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Entry",
+                    "type": "object",
+                    "name": "entry"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search the entry",
+                "label": "Search by",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "isEnabled",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Source Environment",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Steps",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployment Mode",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "e4e41bd1-560e-45c4-b450-60d12f3b4145"
+          },
+          {
+            "number": 3,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "greater_than",
+                  "lhs": "#{_('data.lookup_table.708e0cd1.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.708e0cd1.entries')}",
+                  "rhs": "0",
+                  "uuid": "condition-13fb815c-d5ca-4e86-9d2c-b6acb4dad695"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 4,
+                "provider": "lookup_table",
+                "name": "update_entry",
+                "as": "0a018c5e",
+                "title": null,
+                "description": "\n      Update\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                },
+                "toggleCfg": {
+                  "ignore_not_found": true
+                },
+                "input": {
+                  "lookup_table_id": {
+                    "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                    "name": "CICD | LT | Pipeline Configuration",
+                    "folder": ""
+                  },
+                  "parameters": {
+                    "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                    "col3": "true",
+                    "col5": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.source_environment')}",
+                    "col2": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.trigger_mode')}",
+                    "col4": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.pipeline_description')}",
+                    "col6": "trigger",
+                    "col8": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.deployment_mode')}",
+                    "col9": "='{\"updated_by\":\"'+_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.updated_by')+'\", \"updated_on\":\"'+today+'\"}'"
+                  },
+                  "ignore_not_found": "false",
+                  "id": "#{_('data.lookup_table.708e0cd1.entries.first.id')}"
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "name": "id",
+                    "type": "integer",
+                    "parse_output": "integer_conversion"
+                  },
+                  {
+                    "label": "Entry",
+                    "name": "entry",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "hint": "Fill the fields you want to update",
+                    "label": "Entry fields",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "52d7c2c0-0421-4d01-b837-928e1e4584ed"
+              },
+              {
+                "number": 5,
+                "keyword": "else",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 6,
+                    "provider": "lookup_table",
+                    "name": "add_entry",
+                    "as": "62e3f8a8",
+                    "title": null,
+                    "description": "\n      Add\n      <span class=\"provider\">entry</span>\n      to\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                        "name": "CICD | LT | Pipeline Configuration",
+                        "folder": ""
+                      },
+                      "parameters": {
+                        "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                        "col3": "true",
+                        "col5": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.source_environment')}",
+                        "col2": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.trigger_mode')}",
+                        "col4": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.pipeline_description')}",
+                        "col6": "trigger",
+                        "col8": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.deployment_mode')}",
+                        "col9": "='{\"updated_by\":\"'+_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.updated_by')+'\", \"updated_on\":\"'+today+'\"}'"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "number",
+                        "label": "Entry ID",
+                        "name": "id",
+                        "type": "integer",
+                        "parse_output": "integer_conversion"
+                      },
+                      {
+                        "label": "Entry",
+                        "name": "entry",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Last Updated",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Fill the fields for the new entry",
+                        "label": "Entry fields",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Last Updated",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "6c5ca51a-7bb7-426d-8d7b-31924758c5d2"
+                  }
+                ],
+                "uuid": "c9a0a529-f55c-4aab-a33c-e2a8725c233f"
+              }
+            ],
+            "uuid": "4b004516-f854-4118-9c81-b4d7018be0df"
+          }
+        ],
+        "uuid": "38352f26-3ed9-4564-934e-93626fff9357"
+      },
+      {
+        "number": 7,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "=_('data.workato_recipe_function.3c54b759.parameters.build_info').present?",
+              "rhs": "build",
+              "uuid": "condition-e5d3a85b-8b71-4f1b-b81d-97c41ea1f7cf"
+            },
+            {
+              "operand": "present",
+              "lhs": "#{_('data.workato_recipe_function.3c54b759.parameters.build_info.build_configuration')}",
+              "rhs": "",
+              "uuid": "condition-9959280a-dc17-42cb-a47e-bdcdfed9a398"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 8,
+            "provider": "lookup_table",
+            "name": "search_entries",
+            "as": "e8bd8ce2",
+            "title": null,
+            "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | Pipeline Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                "name": "CICD | LT | Pipeline Configuration",
+                "folder": ""
+              },
+              "parameters": {
+                "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                "col6": "build"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Entries",
+                "name": "entries",
+                "of": "object",
+                "properties": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "id"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Entry",
+                    "type": "object",
+                    "name": "entry"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search the entry",
+                "label": "Search by",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "isEnabled",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Source Environment",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Steps",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployment Mode",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "3a7a320c-9619-4fcd-9871-dc8223a7423b"
+          },
+          {
+            "number": 9,
+            "provider": "workato_variable",
+            "name": "declare_variable",
+            "as": "201fc6fb",
+            "title": "  Create variable Dependency Handling",
+            "description": "Create variable <span class=\"provider\">Dependency Handling</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "variables": {
+                "schema": "[{\"name\":\"dependency_handling\",\"type\":\"string\",\"optional\":true,\"label\":\"Dependency Handling\",\"control_type\":\"text\"}]",
+                "data": {
+                  "dependency_handling": "=_('data.workato_recipe_function.3c54b759.parameters.build_info.dependency_handling').present? ? _('data.workato_recipe_function.3c54b759.parameters.build_info.dependency_handling') : \"[]\""
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "text",
+                "label": "Dependency Handling",
+                "name": "dependency_handling",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "add_field_label": "Add a variable",
+                "control_type": "form-schema-builder",
+                "empty_schema_title": "Add variables by giving them a name, type and default value",
+                "exclude_fields": [
+                  "hint"
+                ],
+                "item_label": "variable",
+                "label": "Variables",
+                "mark_as_required": true,
+                "name": "variables",
+                "ngIf": "!input.name",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "broadcast_change_event": true,
+                    "type": "string",
+                    "name": "schema"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Dependency Handling",
+                        "name": "dependency_handling",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Data",
+                    "type": "object",
+                    "name": "data"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "variables.data.dependency_handling"
+            ],
+            "uuid": "9b237b17-01fd-4868-90ff-040534132e6f"
+          },
+          {
+            "number": 10,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "greater_than",
+                  "lhs": "#{_('data.lookup_table.e8bd8ce2.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.e8bd8ce2.entries')}",
+                  "rhs": "0",
+                  "uuid": "condition-ee14d294-ebc7-494f-8e36-3a0dc71dfa1f"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 11,
+                "provider": "lookup_table",
+                "name": "update_entry",
+                "as": "465556cf",
+                "title": null,
+                "description": "\n      Update\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                },
+                "toggleCfg": {
+                  "ignore_not_found": true
+                },
+                "input": {
+                  "lookup_table_id": {
+                    "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                    "name": "CICD | LT | Pipeline Configuration",
+                    "folder": ""
+                  },
+                  "parameters": {
+                    "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                    "col3": "true",
+                    "col5": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.source_environment')}",
+                    "col7": "{\"aqs_check\":#{_('data.workato_recipe_function.3c54b759.parameters.build_info.aqs_check')},\"build_config\":\"#{_('data.workato_recipe_function.3c54b759.parameters.build_info.build_configuration')}\",\"dependency_handling\":#{_('data.workato_variable.201fc6fb.dependency_handling')}}",
+                    "col4": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.pipeline_description')}",
+                    "col6": "build",
+                    "col8": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.deployment_mode')}",
+                    "col9": "='{\"updated_by\":\"'+_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.updated_by')+'\", \"updated_on\":\"'+today+'\"}'"
+                  },
+                  "ignore_not_found": "false",
+                  "id": "#{_('data.lookup_table.e8bd8ce2.entries.first.id')}"
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "name": "id",
+                    "type": "integer",
+                    "parse_output": "integer_conversion"
+                  },
+                  {
+                    "label": "Entry",
+                    "name": "entry",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "hint": "Fill the fields you want to update",
+                    "label": "Entry fields",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "a54501a3-f3aa-4124-82dc-c2df60a49ea3"
+              },
+              {
+                "number": 12,
+                "keyword": "else",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 13,
+                    "provider": "lookup_table",
+                    "name": "add_entry",
+                    "as": "b5fe2904",
+                    "title": null,
+                    "description": "\n      Add\n      <span class=\"provider\">entry</span>\n      to\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                        "name": "CICD | LT | Pipeline Configuration",
+                        "folder": ""
+                      },
+                      "parameters": {
+                        "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                        "col3": "true",
+                        "col5": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.source_environment')}",
+                        "col7": "{\"aqs_check\":#{_('data.workato_recipe_function.3c54b759.parameters.build_info.aqs_check')},\"build_config\":\"#{_('data.workato_recipe_function.3c54b759.parameters.build_info.build_configuration')}\",\"dependency_handling\":#{_('data.workato_variable.201fc6fb.dependency_handling')}}",
+                        "col4": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.pipeline_description')}",
+                        "col6": "build",
+                        "col8": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.deployment_mode')}",
+                        "col9": "='{\"updated_by\":\"'+_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.updated_by')+'\", \"updated_on\":\"'+today+'\"}'"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "number",
+                        "label": "Entry ID",
+                        "name": "id",
+                        "type": "integer",
+                        "parse_output": "integer_conversion"
+                      },
+                      {
+                        "label": "Entry",
+                        "name": "entry",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Last Updated",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Fill the fields for the new entry",
+                        "label": "Entry fields",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Last Updated",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "2509f8a2-cda4-4b8d-a67b-79377a947f3c"
+                  }
+                ],
+                "uuid": "858ba0cb-0013-4ee7-9e24-d5453dc8b1ac"
+              }
+            ],
+            "uuid": "c9e9b737-ecd5-4ae4-a5c1-bd4e9ce107d7"
+          }
+        ],
+        "uuid": "44c0b56a-49fc-4013-97cc-ec55a18504d8"
+      },
+      {
+        "number": 14,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "=_('data.workato_recipe_function.3c54b759.parameters.deploy_info').present?",
+              "rhs": "deploy",
+              "uuid": "condition-e5d3a85b-8b71-4f1b-b81d-97c41ea1f7cf"
+            },
+            {
+              "operand": "present",
+              "lhs": "#{_('data.workato_recipe_function.3c54b759.parameters.deploy_info.target_env')}",
+              "rhs": "",
+              "uuid": "condition-63b8b543-a2b7-469e-b1d3-d1162d0faeff"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 15,
+            "provider": "lookup_table",
+            "name": "search_entries",
+            "as": "954251c6",
+            "title": null,
+            "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | Pipeline Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                "name": "CICD | LT | Pipeline Configuration",
+                "folder": ""
+              },
+              "parameters": {
+                "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                "col6": "deploy"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Entries",
+                "name": "entries",
+                "of": "object",
+                "properties": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "id"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Entry",
+                    "type": "object",
+                    "name": "entry"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search the entry",
+                "label": "Search by",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "isEnabled",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Source Environment",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Steps",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployment Mode",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "8a3ac335-225f-41bd-8efa-7f38beaefcef"
+          },
+          {
+            "number": 16,
+            "provider": "workato_variable",
+            "name": "declare_variable",
+            "as": "b2b5e284",
+            "title": "  Create variables Post Deployment, Approval Channel, Target Environment Type, Deploy on Approval",
+            "description": "Create variables <span class=\"provider\">Post Deployment</span>, <span class=\"provider\">Approval Channel</span>, <span class=\"provider\">Target Environment Type</span>, <span class=\"provider\">Deploy on Approval</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "variables": {
+                "schema": "[{\"control_type\":\"text\",\"label\":\"Post Deployment\",\"name\":\"post_deployment\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Approval Channel\",\"name\":\"approval_channel\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Target Environment Type\",\"name\":\"target_environment_type\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Deploy on Approval\",\"name\":\"deploy_on_approval\",\"type\":\"string\",\"optional\":true}]",
+                "data": {
+                  "post_deployment": "=_('data.workato_recipe_function.3c54b759.parameters.deploy_info.post_deployment').present? ? _('data.workato_recipe_function.3c54b759.parameters.deploy_info.post_deployment') : '[]'",
+                  "approval_channel": "=_('data.workato_recipe_function.3c54b759.parameters.deploy_info.approval_channel').present? ? '\"' + _('data.workato_recipe_function.3c54b759.parameters.deploy_info.approval_channel') + '\"' : 'null'",
+                  "target_environment_type": "=_('data.workato_recipe_function.3c54b759.parameters.deploy_info.environment_type') == \"##NA##\" ? \"null\" : \"\\\"#{_('data.workato_recipe_function.3c54b759.parameters.deploy_info.environment_type')}\\\"\"",
+                  "deploy_on_approval": "=_('data.workato_recipe_function.3c54b759.parameters.deploy_info.deploy_on_approval').present? ? '\"' + _('data.workato_recipe_function.3c54b759.parameters.deploy_info.deploy_on_approval') + '\"' : 'null'"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "text",
+                "label": "Post Deployment",
+                "name": "post_deployment",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Approval Channel",
+                "name": "approval_channel",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Target Environment Type",
+                "name": "target_environment_type",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Deploy on Approval",
+                "name": "deploy_on_approval",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "add_field_label": "Add a variable",
+                "control_type": "form-schema-builder",
+                "empty_schema_title": "Add variables by giving them a name, type and default value",
+                "exclude_fields": [
+                  "hint"
+                ],
+                "item_label": "variable",
+                "label": "Variables",
+                "mark_as_required": true,
+                "name": "variables",
+                "ngIf": "!input.name",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "broadcast_change_event": true,
+                    "type": "string",
+                    "name": "schema"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Post Deployment",
+                        "name": "post_deployment",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Approval Channel",
+                        "name": "approval_channel",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Target Environment Type",
+                        "name": "target_environment_type",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deploy on Approval",
+                        "name": "deploy_on_approval",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Data",
+                    "type": "object",
+                    "name": "data"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "variables.data.target_environment_type",
+              "variables",
+              "variables.schema",
+              "variables.data",
+              "variables.data.post_deployment",
+              "variables.data.approval_channel",
+              "variables.data.dependency_handling",
+              "variables.data.deploy_on_approval"
+            ],
+            "uuid": "ba862875-91e4-4b4c-b7ab-41771c495923"
+          },
+          {
+            "number": 17,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "greater_than",
+                  "lhs": "#{_('data.lookup_table.954251c6.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.954251c6.entries')}",
+                  "rhs": "0",
+                  "uuid": "condition-f67cc6c9-e9cd-4448-81b9-758e7637989e"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 18,
+                "provider": "lookup_table",
+                "name": "update_entry",
+                "as": "29e3d35d",
+                "title": null,
+                "description": "\n      Update\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                },
+                "toggleCfg": {
+                  "ignore_not_found": true
+                },
+                "input": {
+                  "lookup_table_id": {
+                    "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                    "name": "CICD | LT | Pipeline Configuration",
+                    "folder": ""
+                  },
+                  "parameters": {
+                    "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                    "col3": "true",
+                    "col5": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.source_environment')}",
+                    "col7": "{\"target_env\":\"#{_('data.workato_recipe_function.3c54b759.parameters.deploy_info.target_env')}\",\"post_deployment\":#{_('data.workato_variable.b2b5e284.post_deployment')},\"approval_channel\":#{_('data.workato_variable.b2b5e284.approval_channel')}, \"target_env_type\": #{_('data.workato_variable.b2b5e284.target_environment_type')},\"deploy_on_approval\":#{_('data.workato_variable.b2b5e284.deploy_on_approval')}}",
+                    "col4": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.pipeline_description')}",
+                    "col6": "deploy",
+                    "col8": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.deployment_mode')}",
+                    "col9": "='{\"updated_by\":\"'+_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.updated_by')+'\", \"updated_on\":\"'+today+'\"}'"
+                  },
+                  "ignore_not_found": "false",
+                  "id": "#{_('data.lookup_table.954251c6.entries.first.id')}"
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "name": "id",
+                    "type": "integer",
+                    "parse_output": "integer_conversion"
+                  },
+                  {
+                    "label": "Entry",
+                    "name": "entry",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "hint": "Fill the fields you want to update",
+                    "label": "Entry fields",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "isEnabled",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Source Environment",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Steps",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Deployment Mode",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "f425ec57-a19a-4747-af74-cbef80fecce3"
+              },
+              {
+                "number": 19,
+                "keyword": "else",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 20,
+                    "provider": "lookup_table",
+                    "name": "add_entry",
+                    "as": "485eb402",
+                    "title": null,
+                    "description": "\n      Add\n      <span class=\"provider\">entry</span>\n      to\n      <span class=\"provider\">CICD | LT | Pipeline Configuration</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | Pipeline Configuration"
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_pipeline_configuration.lookup_table.json",
+                        "name": "CICD | LT | Pipeline Configuration",
+                        "folder": ""
+                      },
+                      "parameters": {
+                        "col1": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+                        "col3": "true",
+                        "col5": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.source_environment')}",
+                        "col7": "{\"target_env\":\"#{_('data.workato_recipe_function.3c54b759.parameters.deploy_info.target_env')}\",\"post_deployment\":#{_('data.workato_variable.b2b5e284.post_deployment')},\"approval_channel\":#{_('data.workato_variable.b2b5e284.approval_channel')}, \"target_env_type\": #{_('data.workato_variable.b2b5e284.target_environment_type')},\"deploy_on_approval\":#{_('data.workato_variable.b2b5e284.deploy_on_approval')}}",
+                        "col4": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.pipeline_description')}",
+                        "col6": "deploy",
+                        "col8": "#{_('data.workato_recipe_function.3c54b759.parameters.trigger_info.deployment_mode')}",
+                        "col9": "='{\"updated_by\":\"'+_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.updated_by')+'\", \"updated_on\":\"'+today+'\"}'"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "number",
+                        "label": "Entry ID",
+                        "name": "id",
+                        "type": "integer",
+                        "parse_output": "integer_conversion"
+                      },
+                      {
+                        "label": "Entry",
+                        "name": "entry",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Last Updated",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Fill the fields for the new entry",
+                        "label": "Entry fields",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Id",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "isEnabled",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source Environment",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Steps",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment Mode",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Last Updated",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "244f528d-2f5c-40f1-ae64-dd41ed219e0a"
+                  }
+                ],
+                "uuid": "48f11647-2993-4e87-aca2-d00aeec9b564"
+              }
+            ],
+            "uuid": "70085c78-b697-409a-81fd-daed5ed8ace1"
+          }
+        ],
+        "uuid": "6624e0fb-3374-47fa-98e1-c7a072073ee7"
+      },
+      {
+        "number": 21,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe_async",
+        "as": "90683198",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Audit Log</span> (async)",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | Audit Log"
+        },
+        "toggleCfg": {
+          "parameters.method": true
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Data Access Functions/cicd_func_audit_log.recipe.json",
+            "name": "CICD | FUNC | Audit Log",
+            "folder": "Data Access Functions"
+          },
+          "parameters": {
+            "table": "CICD | Audit Log",
+            "method": "POST",
+            "entries": {
+              "entity": "Pipeline Configuration",
+              "entity_id": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.pipeline_id')}",
+              "operation": "Save Pipeline Configuration",
+              "user_name": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.updated_by')}",
+              "timestamp": "=now",
+              "user_id": "#{_('data.workato_recipe_function.3c54b759.parameters.pipeline_context.user_id')}"
+            }
+          }
+        },
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table",
+                "optional": true,
+                "default": "CICD | Audit Log"
+              },
+              {
+                "control_type": "select",
+                "label": "Method",
+                "type": "string",
+                "name": "method",
+                "optional": false,
+                "hint": "GET, POST",
+                "pick_list": [
+                  [
+                    "GET",
+                    "GET"
+                  ],
+                  [
+                    "POST",
+                    "POST"
+                  ]
+                ],
+                "toggle_hint": "Select from list",
+                "toggle_field": {
+                  "name": "method",
+                  "label": "Method",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Enter Value",
+                  "hint": "Map Method"
+                }
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Entity",
+                    "name": "entity",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Entity ID",
+                    "name": "entity_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Operation",
+                    "name": "operation",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Timestamp",
+                    "name": "timestamp",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "542a7db5-3a59-45fe-b6ba-bf3ac91b1648"
+      }
+    ],
+    "uuid": "88d8ad49-3c29-4d35-ba1e-56b0a334fbf0"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

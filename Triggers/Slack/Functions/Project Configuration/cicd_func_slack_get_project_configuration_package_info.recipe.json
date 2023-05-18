@@ -1,0 +1,322 @@
+{
+  "name": "CICD | FUNC | (Slack) Get Project Configuration Package Info",
+  "description": "When there is a function call, do action",
+  "version": 19,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "253f4c72",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Trigger ID\"},{\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Project config ID\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Trigger ID",
+            "name": "trigger_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Project config ID",
+            "name": "project_config_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "d1dad317",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUN | Get latest deployments for a project configuartion</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | Get latest deployments for a project configuartion"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/Project Configuration/cicd_func_get_latest_deployments_for_a_project_configuration.recipe.json",
+            "name": "CICD | FUNC | Get latest deployments for a project configuration",
+            "folder": "Functions/Project Configuration"
+          },
+          "parameters": {
+            "project_config_id": "#{_('data.workato_recipe_function.253f4c72.parameters.project_config_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "deployments",
+                "type": "array",
+                "of": "object",
+                "label": "Deployments",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Package version",
+                    "name": "package_version",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "environment",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployed on",
+                    "name": "deployed_on",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              },
+              {
+                "control_type": "text",
+                "label": "Project name",
+                "name": "project_name",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Project config ID",
+                "name": "project_config_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "7f144beb-f0f5-4459-a302-9fc980ecfa39"
+      },
+      {
+        "number": 2,
+        "provider": "slack_bot",
+        "name": "block_kit_modals",
+        "as": "d16ec11b",
+        "title": null,
+        "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "modal_action_type": true
+        },
+        "input": {
+          "modal_action_type": "open",
+          "trigger_id": "#{_('data.workato_recipe_function.253f4c72.parameters.trigger_id')}",
+          "view": {
+            "modal_title": "Deployment Information",
+            "blocks": [
+              {
+                "block_type": "section_with_text",
+                "section_text": "Latest deployment(s) for project *#{_('data.workato_recipe_function.d1dad317.result.project_name')}*:"
+              },
+              {
+                "block_type": "divider"
+              },
+              {
+                "block_type": "section_with_text",
+                "section_text": "=_('data.workato_recipe_function.d1dad317.result.deployments.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.d1dad317.result.deployments') == 0 ? \":exclamation: No deployments found.\" : \"\""
+              },
+              {
+                "block_type": "repeat_block_group",
+                "section_text": "*Latest Package Information*",
+                "objects": {
+                  "____source": "#{_('data.workato_recipe_function.d1dad317.result.deployments')}",
+                  "blocks": [
+                    {
+                      "block_type": "section_with_fields",
+                      "section_text": "*[ #{_('data.workato_recipe_function.d1dad317.result.deployments.first.environment')} ]*",
+                      "attachment_fields": [
+                        {
+                          "title": "_Package Version:_",
+                          "value": "#{_('data.workato_recipe_function.d1dad317.result.deployments.first.package_version')}"
+                        },
+                        {
+                          "title": "_Deployed On:_",
+                          "value": "#{_('data.workato_recipe_function.d1dad317.result.deployments.first.deployed_on')}"
+                        }
+                      ]
+                    },
+                    {
+                      "block_type": "divider"
+                    }
+                  ]
+                }
+              }
+            ],
+            "submit_view": {
+              "continue_flow": "false",
+              "close_text": "Close"
+            }
+          }
+        },
+        "visible_config_fields": [
+          "modal_action_type",
+          "view_id",
+          "view.blocks",
+          "view.blocks.block_type",
+          "view.blocks.section_text",
+          "view.blocks.image_url",
+          "view.blocks.alt_text",
+          "view.blocks.button_title",
+          "view.blocks.url",
+          "view.blocks.bot_command",
+          "view.blocks.params",
+          "view.blocks.style",
+          "view.blocks.attachment_fields",
+          "view.blocks.attachment_fields.value",
+          "view.blocks.placeholder_text",
+          "view.blocks.menu_type",
+          "view.blocks.dynamic_menu_recipe",
+          "view.blocks.field_name",
+          "view.blocks.options",
+          "view.blocks.options.title",
+          "view.blocks.options.bot_command",
+          "view.blocks.options.params",
+          "view.blocks.options.init_value",
+          "view.blocks.init_option",
+          "view.blocks.options.value",
+          "view.blocks.init_options",
+          "view.blocks.initial_date",
+          "view.blocks.image_title",
+          "view.blocks.elements",
+          "view.blocks.elements.type",
+          "view.blocks.elements.text",
+          "view.blocks.elements.image_url",
+          "view.blocks.elements.alt_text",
+          "view.blocks.actions",
+          "view.blocks.actions.type",
+          "view.blocks.actions.button_title",
+          "view.blocks.actions.url",
+          "view.blocks.actions.bot_command",
+          "view.blocks.actions.params",
+          "view.blocks.actions.style",
+          "view.blocks.actions.placeholder_text",
+          "view.blocks.actions.initial_date",
+          "view.blocks.actions.field_name",
+          "view.blocks.actions.options",
+          "view.blocks.actions.options.params",
+          "view.blocks.actions.menu_type",
+          "view.blocks.actions.dynamic_menu_recipe",
+          "view.blocks.label_text",
+          "view.blocks.hint_text",
+          "view.blocks.optional",
+          "view.blocks.initial_value",
+          "view.blocks.objects",
+          "view.blocks.objects.blocks",
+          "view.blocks.objects.blocks.block_type",
+          "view.blocks.objects.blocks.section_text",
+          "view.blocks.objects.blocks.image_url",
+          "view.blocks.objects.blocks.alt_text",
+          "view.blocks.objects.blocks.button_title",
+          "view.blocks.objects.blocks.url",
+          "view.blocks.objects.blocks.bot_command",
+          "view.blocks.objects.blocks.params",
+          "view.blocks.objects.blocks.style",
+          "view.blocks.objects.blocks.attachment_fields",
+          "view.blocks.objects.blocks.attachment_fields.value",
+          "view.blocks.objects.blocks.placeholder_text",
+          "view.blocks.objects.blocks.menu_type",
+          "view.blocks.objects.blocks.dynamic_menu_recipe",
+          "view.blocks.objects.blocks.field_name",
+          "view.blocks.objects.blocks.options",
+          "view.blocks.objects.blocks.options.title",
+          "view.blocks.objects.blocks.options.bot_command",
+          "view.blocks.objects.blocks.options.params",
+          "view.blocks.objects.blocks.options.init_value",
+          "view.blocks.objects.blocks.init_option",
+          "view.blocks.objects.blocks.initial_date",
+          "view.blocks.objects.blocks.image_title",
+          "view.blocks.objects.blocks.elements",
+          "view.blocks.objects.blocks.elements.type",
+          "view.blocks.objects.blocks.elements.text",
+          "view.blocks.objects.blocks.elements.image_url",
+          "view.blocks.objects.blocks.elements.alt_text",
+          "view.blocks.objects.blocks.actions",
+          "view.blocks.objects.blocks.actions.type",
+          "view.blocks.objects.blocks.actions.button_title",
+          "view.blocks.objects.blocks.actions.url",
+          "view.blocks.objects.blocks.actions.bot_command",
+          "view.blocks.objects.blocks.actions.params",
+          "view.blocks.objects.blocks.actions.style",
+          "view.blocks.objects.blocks.actions.placeholder_text",
+          "view.blocks.objects.blocks.actions.initial_date",
+          "view.blocks.objects.blocks.actions.field_name",
+          "view.blocks.objects.blocks.actions.options",
+          "view.blocks.objects.blocks.actions.options.params",
+          "view.blocks.objects.blocks.actions.menu_type",
+          "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+          "view.submit_view.continue_flow",
+          "view.submit_view.bot_command",
+          "view.submit_view.params",
+          "view.submit_view.submit_text",
+          "view.submit_view.close_text",
+          "trigger_id"
+        ],
+        "uuid": "595334a2-7c4d-40dc-959c-3384a7c6de49"
+      }
+    ],
+    "uuid": "14f81f43-8094-447f-b2bf-db39bb7d4271"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    }
+  ]
+}

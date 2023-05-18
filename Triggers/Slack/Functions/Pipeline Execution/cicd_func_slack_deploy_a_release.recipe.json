@@ -1,0 +1,2689 @@
+{
+  "name": "CICD | FUNC | (Slack) Deploy a release",
+  "description": "When there is a function call, do action",
+  "version": 73,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "0032adaa",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Trigger ID\"},{\"name\":\"user_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User ID\"},{\"name\":\"user_name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User name\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Trigger ID",
+            "name": "trigger_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "User name",
+            "name": "user_name",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "7e5a1585",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | User Permission Analyzer</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | User Permission Analyzer"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/RBAC/cicd_func_user_permission_analyzer.recipe.json",
+            "name": "CICD | FUNC | User Permission Analyzer",
+            "folder": "Functions/RBAC"
+          },
+          "parameters": {
+            "user": "#{_('data.workato_recipe_function.0032adaa.parameters.user_id')}",
+            "permissions": "=[\"deploy_release\"]"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "object",
+                "label": "Permissions",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Result",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Result",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "result",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "result",
+                    "type": "boolean",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "User",
+                "name": "user",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "string",
+                "label": "Permissions",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "2d87f3a2-b6a2-4a0a-acc7-2056a77ee233"
+      },
+      {
+        "number": 2,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_not_true",
+              "lhs": "#{_('data.workato_recipe_function.7e5a1585.result.permissions.first.result')}",
+              "rhs": "",
+              "uuid": "condition-12250439-5032-42bc-b97a-7027df1f9c06"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 3,
+            "provider": "slack_bot",
+            "name": "post_bot_message",
+            "as": "1d715a41",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "channel": true,
+              "message.color": true
+            },
+            "input": {
+              "channel": "#{_('data.workato_recipe_function.0032adaa.parameters.user_id')}",
+              "message": {
+                "pretext": ":x: Error!",
+                "attachment_text": "Insufficient privileges!",
+                "color": "danger"
+              }
+            },
+            "visible_config_fields": [
+              "blocks",
+              "blocks.block_type",
+              "blocks.section_text",
+              "blocks.image_url",
+              "blocks.alt_text",
+              "blocks.button_title",
+              "blocks.url",
+              "blocks.bot_command",
+              "blocks.params",
+              "blocks.style",
+              "blocks.attachment_fields",
+              "blocks.attachment_fields.value",
+              "blocks.placeholder_text",
+              "blocks.menu_type",
+              "blocks.dynamic_menu_recipe",
+              "blocks.field_name",
+              "blocks.options",
+              "blocks.options.title",
+              "blocks.options.bot_command",
+              "blocks.options.params",
+              "blocks.options.init_value",
+              "blocks.init_option",
+              "blocks.initial_date",
+              "blocks.options.value",
+              "blocks.init_options",
+              "blocks.image_title",
+              "blocks.external_id",
+              "blocks.elements",
+              "blocks.elements.type",
+              "blocks.elements.text",
+              "blocks.elements.image_url",
+              "blocks.elements.alt_text",
+              "blocks.actions",
+              "blocks.actions.type",
+              "blocks.actions.button_title",
+              "blocks.actions.url",
+              "blocks.actions.bot_command",
+              "blocks.actions.params",
+              "blocks.actions.style",
+              "blocks.actions.placeholder_text",
+              "blocks.actions.initial_date",
+              "blocks.actions.field_name",
+              "blocks.actions.options",
+              "blocks.actions.options.params",
+              "blocks.actions.menu_type",
+              "blocks.actions.dynamic_menu_recipe",
+              "blocks.objects",
+              "blocks.objects.blocks",
+              "blocks.objects.blocks.block_type",
+              "blocks.objects.blocks.section_text",
+              "blocks.objects.blocks.image_url",
+              "blocks.objects.blocks.alt_text",
+              "blocks.objects.blocks.button_title",
+              "blocks.objects.blocks.url",
+              "blocks.objects.blocks.bot_command",
+              "blocks.objects.blocks.params",
+              "blocks.objects.blocks.style",
+              "blocks.objects.blocks.attachment_fields",
+              "blocks.objects.blocks.attachment_fields.value",
+              "blocks.objects.blocks.placeholder_text",
+              "blocks.objects.blocks.menu_type",
+              "blocks.objects.blocks.dynamic_menu_recipe",
+              "blocks.objects.blocks.field_name",
+              "blocks.objects.blocks.options",
+              "blocks.objects.blocks.options.title",
+              "blocks.objects.blocks.options.bot_command",
+              "blocks.objects.blocks.options.params",
+              "blocks.objects.blocks.options.init_value",
+              "blocks.objects.blocks.init_option",
+              "blocks.objects.blocks.initial_date",
+              "blocks.objects.blocks.image_title",
+              "blocks.objects.blocks.elements",
+              "blocks.objects.blocks.elements.type",
+              "blocks.objects.blocks.elements.text",
+              "blocks.objects.blocks.elements.image_url",
+              "blocks.objects.blocks.elements.alt_text",
+              "blocks.objects.blocks.actions",
+              "blocks.objects.blocks.actions.type",
+              "blocks.objects.blocks.actions.button_title",
+              "blocks.objects.blocks.actions.url",
+              "blocks.objects.blocks.actions.bot_command",
+              "blocks.objects.blocks.actions.params",
+              "blocks.objects.blocks.actions.style",
+              "blocks.objects.blocks.actions.placeholder_text",
+              "blocks.objects.blocks.actions.initial_date",
+              "blocks.objects.blocks.actions.field_name",
+              "blocks.objects.blocks.actions.options",
+              "blocks.objects.blocks.actions.options.params",
+              "blocks.objects.blocks.actions.menu_type",
+              "blocks.objects.blocks.actions.dynamic_menu_recipe",
+              "text",
+              "message.title",
+              "message.title_link",
+              "message.attachment_text",
+              "message.color",
+              "attachment_fields",
+              "attachment_buttons",
+              "attachment_items.message.title",
+              "attachment_items.message.title_link",
+              "attachment_items.message.attachment_text",
+              "attachment_items.message.color",
+              "attachment_items.attachment_fields",
+              "attachment_items.attachment_buttons",
+              "advanced.ts",
+              "message.pretext"
+            ],
+            "uuid": "142fc3f8-4644-4361-aa30-25b53aeb7900"
+          },
+          {
+            "number": 4,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "70b0da30-7e5b-4c79-84ce-59f7364020e1"
+          }
+        ],
+        "uuid": "df611e58-a8e9-4a41-84bd-7be80310b53f"
+      },
+      {
+        "number": 5,
+        "provider": "lookup_table",
+        "name": "get_entries",
+        "as": "9a4cfefb",
+        "title": null,
+        "description": "\n      Get all\n      <span class=\"provider\">entries</span>\n      from\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Project Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+            "name": "CICD | LT | Project Configuration",
+            "folder": ""
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Context",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Notification Settings",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "label": "Entry",
+                "type": "object",
+                "name": "entry"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "87ca3cbb-673c-46ef-b71c-1b369c57fcf8"
+      },
+      {
+        "number": 6,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "c27ca623",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | List Environments</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | List Environments"
+        },
+        "toggleCfg": {
+          "parameters.exclude_production": true
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/CICD for Workato/cicd_func_list_environments.recipe.json",
+            "name": "CICD | FUNC | List Environments",
+            "folder": "Functions/CICD for Workato"
+          },
+          "parameters": {
+            "exclude_production": "false"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "environments",
+                "type": "array",
+                "of": "object",
+                "label": "Environments",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is production",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is production",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_production",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_production",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Level",
+                    "parse_output": "integer_conversion",
+                    "name": "level",
+                    "type": "integer",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Source environment",
+                "name": "source_environment",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "environment",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Exclude production",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Exclude production",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "exclude_production",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "exclude_production",
+                "type": "boolean",
+                "optional": true,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "93f612c1-76ea-406c-bb25-9024186f5a03"
+      },
+      {
+        "number": 7,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato_recipe_function.c27ca623.result.environments').where(is_production: true).length",
+              "rhs": "0",
+              "uuid": "condition-61d8dcbe-ae71-46b1-814b-d52e8120f012"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 8,
+            "provider": "slack_bot",
+            "name": "block_kit_modals",
+            "as": "45f20029",
+            "title": null,
+            "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "modal_action_type": true
+            },
+            "input": {
+              "modal_action_type": "open",
+              "trigger_id": "#{_('data.workato_recipe_function.0032adaa.parameters.trigger_id')}",
+              "view": {
+                "modal_title": "Release Selection",
+                "submit_view": {
+                  "continue_flow": "false",
+                  "close_text": "Close"
+                },
+                "blocks": [
+                  {
+                    "block_type": "section_with_text",
+                    "label_text": "Project Configuration",
+                    "hint_text": "Please select project configuration",
+                    "optional": "false",
+                    "placeholder_text": "Project Configuration",
+                    "menu_type": "static_select",
+                    "options": {
+                      "____source": "#{_('data.lookup_table.9a4cfefb.entries')}",
+                      "title": "#{_('data.lookup_table.9a4cfefb.entries.first.entry.col2')}",
+                      "value": "#{_('data.lookup_table.9a4cfefb.entries.first.entry.col1')}"
+                    },
+                    "section_text": ":exclamation: Production environment not found."
+                  }
+                ]
+              }
+            },
+            "visible_config_fields": [
+              "modal_action_type",
+              "view_id",
+              "view.blocks",
+              "view.blocks.block_type",
+              "view.blocks.section_text",
+              "view.blocks.image_url",
+              "view.blocks.alt_text",
+              "view.blocks.button_title",
+              "view.blocks.url",
+              "view.blocks.bot_command",
+              "view.blocks.params",
+              "view.blocks.style",
+              "view.blocks.attachment_fields",
+              "view.blocks.attachment_fields.value",
+              "view.blocks.placeholder_text",
+              "view.blocks.menu_type",
+              "view.blocks.dynamic_menu_recipe",
+              "view.blocks.field_name",
+              "view.blocks.options",
+              "view.blocks.options.title",
+              "view.blocks.options.bot_command",
+              "view.blocks.options.params",
+              "view.blocks.options.init_value",
+              "view.blocks.init_option",
+              "view.blocks.options.value",
+              "view.blocks.init_options",
+              "view.blocks.initial_date",
+              "view.blocks.image_title",
+              "view.blocks.elements",
+              "view.blocks.elements.type",
+              "view.blocks.elements.text",
+              "view.blocks.elements.image_url",
+              "view.blocks.elements.alt_text",
+              "view.blocks.actions",
+              "view.blocks.actions.type",
+              "view.blocks.actions.button_title",
+              "view.blocks.actions.url",
+              "view.blocks.actions.bot_command",
+              "view.blocks.actions.params",
+              "view.blocks.actions.style",
+              "view.blocks.actions.placeholder_text",
+              "view.blocks.actions.initial_date",
+              "view.blocks.actions.field_name",
+              "view.blocks.actions.options",
+              "view.blocks.actions.options.params",
+              "view.blocks.actions.menu_type",
+              "view.blocks.actions.dynamic_menu_recipe",
+              "view.blocks.label_text",
+              "view.blocks.hint_text",
+              "view.blocks.optional",
+              "view.blocks.initial_value",
+              "view.blocks.objects",
+              "view.blocks.objects.blocks",
+              "view.blocks.objects.blocks.block_type",
+              "view.blocks.objects.blocks.section_text",
+              "view.blocks.objects.blocks.image_url",
+              "view.blocks.objects.blocks.alt_text",
+              "view.blocks.objects.blocks.button_title",
+              "view.blocks.objects.blocks.url",
+              "view.blocks.objects.blocks.bot_command",
+              "view.blocks.objects.blocks.params",
+              "view.blocks.objects.blocks.style",
+              "view.blocks.objects.blocks.attachment_fields",
+              "view.blocks.objects.blocks.attachment_fields.value",
+              "view.blocks.objects.blocks.placeholder_text",
+              "view.blocks.objects.blocks.menu_type",
+              "view.blocks.objects.blocks.dynamic_menu_recipe",
+              "view.blocks.objects.blocks.field_name",
+              "view.blocks.objects.blocks.options",
+              "view.blocks.objects.blocks.options.title",
+              "view.blocks.objects.blocks.options.bot_command",
+              "view.blocks.objects.blocks.options.params",
+              "view.blocks.objects.blocks.options.init_value",
+              "view.blocks.objects.blocks.init_option",
+              "view.blocks.objects.blocks.initial_date",
+              "view.blocks.objects.blocks.image_title",
+              "view.blocks.objects.blocks.elements",
+              "view.blocks.objects.blocks.elements.type",
+              "view.blocks.objects.blocks.elements.text",
+              "view.blocks.objects.blocks.elements.image_url",
+              "view.blocks.objects.blocks.elements.alt_text",
+              "view.blocks.objects.blocks.actions",
+              "view.blocks.objects.blocks.actions.type",
+              "view.blocks.objects.blocks.actions.button_title",
+              "view.blocks.objects.blocks.actions.url",
+              "view.blocks.objects.blocks.actions.bot_command",
+              "view.blocks.objects.blocks.actions.params",
+              "view.blocks.objects.blocks.actions.style",
+              "view.blocks.objects.blocks.actions.placeholder_text",
+              "view.blocks.objects.blocks.actions.initial_date",
+              "view.blocks.objects.blocks.actions.field_name",
+              "view.blocks.objects.blocks.actions.options",
+              "view.blocks.objects.blocks.actions.options.params",
+              "view.blocks.objects.blocks.actions.menu_type",
+              "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+              "view.submit_view.continue_flow",
+              "view.submit_view.bot_command",
+              "view.submit_view.params",
+              "view.submit_view.submit_text",
+              "view.submit_view.close_text",
+              "trigger_id",
+              "view",
+              "view.modal_title",
+              "view.submit_view",
+              "view.submit_view.notify_on_close"
+            ],
+            "uuid": "19581840-0d3e-466b-959e-5fe07efe1ec8"
+          },
+          {
+            "number": 9,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "bdb99dec-4e30-495c-a8dd-26671fdbc599"
+          }
+        ],
+        "uuid": "45b7995a-d63e-4057-b70a-4be9310e8436"
+      },
+      {
+        "number": 10,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "8c8b1656",
+        "title": " Create Folder List list",
+        "description": "Create <span class=\"provider\">Folder List</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Folder List",
+          "list_item_schema_json": "[{\"name\":\"id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"ID\"},{\"name\":\"name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Name\"}]"
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Folder List",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "ID",
+                "name": "id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "ID",
+                "name": "id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "993ed3c4-96fd-46c4-a084-1683c700f0d8"
+      },
+      {
+        "number": 11,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "9252c786",
+        "title": " Create Environment Types list",
+        "description": "Create <span class=\"provider\">Environment Types</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Environment Types",
+          "list_item_schema_json": "[{\"name\":\"name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Name\"},{\"name\":\"value\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Value\"}]"
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Environment Types",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "51aa9f7c-9a17-4401-9802-e667436bdbfe"
+      },
+      {
+        "number": 12,
+        "provider": "slack_bot",
+        "name": "block_kit_modals",
+        "as": "9fa48392",
+        "title": null,
+        "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "modal_action_type": true
+        },
+        "input": {
+          "modal_action_type": "open",
+          "trigger_id": "#{_('data.workato_recipe_function.0032adaa.parameters.trigger_id')}",
+          "view": {
+            "modal_title": "Target Selection",
+            "submit_view": {
+              "continue_flow": "true",
+              "notify_on_close": "true",
+              "submit_text": "Next"
+            },
+            "blocks": [
+              {
+                "block_type": "select_menu_input",
+                "label_text": "Project Configuration",
+                "hint_text": "Please select project configuration",
+                "optional": "false",
+                "block_id": "project_configuration",
+                "placeholder_text": "Project Configuration",
+                "menu_type": "static_select",
+                "options": {
+                  "____source": "#{_('data.lookup_table.9a4cfefb.entries')}",
+                  "title": "#{_('data.lookup_table.9a4cfefb.entries.first.entry.col2')} (#{_('data.lookup_table.9a4cfefb.entries.first.entry.col5')})",
+                  "value": "#{_('data.lookup_table.9a4cfefb.entries.first.entry.col1')}"
+                }
+              },
+              {
+                "block_type": "select_menu_input",
+                "label_text": "Target Environment",
+                "hint_text": "Please select the target environment. In case of \"projects\", environment of type \"dev\" isn't supported.",
+                "optional": "false",
+                "block_id": "target_environment",
+                "placeholder_text": "Target Environment",
+                "menu_type": "static_select",
+                "options": {
+                  "____source": "#{_('data.workato_recipe_function.c27ca623.result.environments')}",
+                  "title": "=_('data.workato_recipe_function.c27ca623.result.environments.first.name').titleize",
+                  "value": "#{_('data.workato_recipe_function.c27ca623.result.environments.first.name')}"
+                }
+              }
+            ]
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "checkbox",
+            "label": "Modal cancelled",
+            "name": "view_cancelled",
+            "toggle_field": {
+              "label": "Modal cancelled",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "type": "boolean",
+              "name": "view_cancelled"
+            },
+            "toggle_hint": "Select from option list",
+            "type": "boolean",
+            "parse_output": {
+            },
+            "render_input": {
+            }
+          },
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Project configuration",
+                "name": "project_configuration",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Target environment",
+                "name": "target_environment",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "modal_action_type",
+          "view_id",
+          "view.blocks",
+          "view.blocks.block_type",
+          "view.blocks.section_text",
+          "view.blocks.image_url",
+          "view.blocks.alt_text",
+          "view.blocks.button_title",
+          "view.blocks.url",
+          "view.blocks.bot_command",
+          "view.blocks.params",
+          "view.blocks.style",
+          "view.blocks.attachment_fields",
+          "view.blocks.attachment_fields.value",
+          "view.blocks.placeholder_text",
+          "view.blocks.menu_type",
+          "view.blocks.dynamic_menu_recipe",
+          "view.blocks.field_name",
+          "view.blocks.options",
+          "view.blocks.options.title",
+          "view.blocks.options.bot_command",
+          "view.blocks.options.params",
+          "view.blocks.options.init_value",
+          "view.blocks.init_option",
+          "view.blocks.options.value",
+          "view.blocks.init_options",
+          "view.blocks.initial_date",
+          "view.blocks.image_title",
+          "view.blocks.elements",
+          "view.blocks.elements.type",
+          "view.blocks.elements.text",
+          "view.blocks.elements.image_url",
+          "view.blocks.elements.alt_text",
+          "view.blocks.actions",
+          "view.blocks.actions.type",
+          "view.blocks.actions.button_title",
+          "view.blocks.actions.url",
+          "view.blocks.actions.bot_command",
+          "view.blocks.actions.params",
+          "view.blocks.actions.style",
+          "view.blocks.actions.placeholder_text",
+          "view.blocks.actions.initial_date",
+          "view.blocks.actions.field_name",
+          "view.blocks.actions.options",
+          "view.blocks.actions.options.params",
+          "view.blocks.actions.menu_type",
+          "view.blocks.actions.dynamic_menu_recipe",
+          "view.blocks.label_text",
+          "view.blocks.hint_text",
+          "view.blocks.optional",
+          "view.blocks.initial_value",
+          "view.blocks.objects",
+          "view.blocks.objects.blocks",
+          "view.blocks.objects.blocks.block_type",
+          "view.blocks.objects.blocks.section_text",
+          "view.blocks.objects.blocks.image_url",
+          "view.blocks.objects.blocks.alt_text",
+          "view.blocks.objects.blocks.button_title",
+          "view.blocks.objects.blocks.url",
+          "view.blocks.objects.blocks.bot_command",
+          "view.blocks.objects.blocks.params",
+          "view.blocks.objects.blocks.style",
+          "view.blocks.objects.blocks.attachment_fields",
+          "view.blocks.objects.blocks.attachment_fields.value",
+          "view.blocks.objects.blocks.placeholder_text",
+          "view.blocks.objects.blocks.menu_type",
+          "view.blocks.objects.blocks.dynamic_menu_recipe",
+          "view.blocks.objects.blocks.field_name",
+          "view.blocks.objects.blocks.options",
+          "view.blocks.objects.blocks.options.title",
+          "view.blocks.objects.blocks.options.bot_command",
+          "view.blocks.objects.blocks.options.params",
+          "view.blocks.objects.blocks.options.init_value",
+          "view.blocks.objects.blocks.init_option",
+          "view.blocks.objects.blocks.initial_date",
+          "view.blocks.objects.blocks.image_title",
+          "view.blocks.objects.blocks.elements",
+          "view.blocks.objects.blocks.elements.type",
+          "view.blocks.objects.blocks.elements.text",
+          "view.blocks.objects.blocks.elements.image_url",
+          "view.blocks.objects.blocks.elements.alt_text",
+          "view.blocks.objects.blocks.actions",
+          "view.blocks.objects.blocks.actions.type",
+          "view.blocks.objects.blocks.actions.button_title",
+          "view.blocks.objects.blocks.actions.url",
+          "view.blocks.objects.blocks.actions.bot_command",
+          "view.blocks.objects.blocks.actions.params",
+          "view.blocks.objects.blocks.actions.style",
+          "view.blocks.objects.blocks.actions.placeholder_text",
+          "view.blocks.objects.blocks.actions.initial_date",
+          "view.blocks.objects.blocks.actions.field_name",
+          "view.blocks.objects.blocks.actions.options",
+          "view.blocks.objects.blocks.actions.options.params",
+          "view.blocks.objects.blocks.actions.menu_type",
+          "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+          "view.submit_view.continue_flow",
+          "view.submit_view.bot_command",
+          "view.submit_view.params",
+          "view.submit_view.submit_text",
+          "view.submit_view.close_text",
+          "trigger_id",
+          "view",
+          "view.modal_title",
+          "view.submit_view",
+          "view.submit_view.notify_on_close"
+        ],
+        "uuid": "a67002af-24dc-427a-9f26-8cd9a92afc0b"
+      },
+      {
+        "number": 13,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "#{_('data.slack_bot.9fa48392.view_cancelled')}",
+              "rhs": "",
+              "uuid": "condition-9c094037-4edd-4dd7-a4dc-360ce3a28724"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 14,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "9ca5ece1-6b39-4393-a696-e577c0b85310"
+          }
+        ],
+        "uuid": "13eb5b0d-5ab0-4dbd-9548-e0188e97765b"
+      },
+      {
+        "number": 15,
+        "provider": "workato_variable",
+        "name": "declare_list",
+        "as": "cb190d9d",
+        "title": " Create Post Deployment Steps list",
+        "description": "Create <span class=\"provider\">Post Deployment Steps</span> list",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "name": "Post Deployment Steps",
+          "list_item_schema_json": "[{\"name\":\"display\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Display\"},{\"name\":\"value\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Value\"}]"
+        },
+        "extended_output_schema": [
+          {
+            "hint": "",
+            "label": "Post Deployment Steps",
+            "name": "list_items",
+            "of": "object",
+            "optional": false,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Display",
+                "name": "display",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+            "label": "Items",
+            "name": "list_items",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Display",
+                "name": "display",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "337380a9-054f-4977-bf28-99ea438b64b3"
+      },
+      {
+        "number": 16,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "5b5572aa",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Project Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+            "name": "CICD | LT | Project Configuration",
+            "folder": ""
+          },
+          "parameters": {
+            "col1": "#{_('data.slack_bot.9fa48392.parameters.project_configuration')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Context",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Notification Settings",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "label": "Entry",
+                "type": "object",
+                "name": "entry"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Id",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Name",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Environment",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Id",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Type",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Context",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Notification Settings",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Dependencies",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Target Folder Details",
+                "name": "col9",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Last Updated",
+                "name": "col10",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "3083235c-ec3c-4b00-bbfd-37b7fd39f931"
+      },
+      {
+        "number": 17,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "ffc2fa70",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | List Environment Folders</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | List Environment Folders"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/CICD for Workato/cicd_func_list_environment_folders.recipe.json",
+            "name": "CICD | FUNC | List Environment Folders",
+            "folder": "Functions/CICD for Workato"
+          },
+          "parameters": {
+            "environment": "#{_('data.slack_bot.9fa48392.parameters.target_environment')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "folders_list",
+                "type": "array",
+                "of": "object",
+                "label": "Folders list",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "environment",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Parent folder ID",
+                "name": "parent_folder_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "8786d301-493e-499b-90ea-6788f441977f"
+      },
+      {
+        "number": 18,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "086fb654",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | List Deployment Details</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | List Deployment Details"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/cicd_func_list_deployment_details.recipe.json",
+            "name": "CICD | FUNC | List Deployment Details",
+            "folder": "Functions"
+          },
+          "parameters": {
+            "environment": "=_('data.workato_recipe_function.c27ca623.result.environments').where(is_production: true).first[:name]",
+            "project_config_id": "#{_('data.slack_bot.9fa48392.parameters.project_configuration')}",
+            "no_of_rows_required": "5",
+            "is_active": "true"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "deployments",
+                "type": "array",
+                "of": "object",
+                "label": "Deployments",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline execution reference",
+                    "name": "pipeline_execution_reference",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "environment",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project name",
+                    "name": "project_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Package version",
+                    "name": "package_version",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployed On",
+                    "name": "deployed_on",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "comments",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "environment",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project config ID",
+                "name": "project_config_id",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "integer",
+                "label": "No of rows required",
+                "parse_output": "integer_conversion",
+                "name": "no_of_rows_required",
+                "type": "integer",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Is active",
+                "name": "is_active",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters.environment",
+          "parameters",
+          "parameters.project_config_id",
+          "parameters.no_of_rows_required",
+          "parameters.is_active"
+        ],
+        "uuid": "c97a82a8-67f7-4418-8cec-2129adb221e2"
+      },
+      {
+        "number": 19,
+        "provider": "workato_variable",
+        "name": "declare_variable",
+        "as": "1c91da62",
+        "title": "  Create variables Submit Title, Cancel Title",
+        "description": "Create variables <span class=\"provider\">Submit Title</span>, <span class=\"provider\">Cancel Title</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "variables": {
+            "schema": "[{\"name\":\"submit_title\",\"type\":\"string\",\"optional\":true,\"label\":\"Submit Title\",\"control_type\":\"text\"},{\"name\":\"cancel_title\",\"type\":\"string\",\"optional\":true,\"label\":\"Cancel Title\",\"control_type\":\"text\"}]",
+            "data": {
+              "cancel_title": "Close"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "text",
+            "label": "Submit Title",
+            "name": "submit_title",
+            "optional": true,
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "label": "Cancel Title",
+            "name": "cancel_title",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "add_field_label": "Add a variable",
+            "control_type": "form-schema-builder",
+            "empty_schema_title": "Add variables by giving them a name, type and default value",
+            "exclude_fields": [
+              "hint"
+            ],
+            "item_label": "variable",
+            "label": "Variables",
+            "mark_as_required": true,
+            "name": "variables",
+            "ngIf": "!input.name",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "broadcast_change_event": true,
+                "type": "string",
+                "name": "schema"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Submit Title",
+                    "name": "submit_title",
+                    "type": "string",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Cancel Title",
+                    "name": "cancel_title",
+                    "type": "string",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  }
+                ],
+                "label": "Data",
+                "type": "object",
+                "name": "data"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "variables.data.submit_title",
+          "variables",
+          "variables.schema",
+          "variables.data.cancel_title"
+        ],
+        "uuid": "fcdda3ec-2c05-4d6b-9232-4d591519c867"
+      },
+      {
+        "number": 20,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "greater_than",
+              "lhs": "#{_('data.workato_recipe_function.086fb654.result.deployments.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.086fb654.result.deployments')}",
+              "rhs": "0",
+              "uuid": "condition-c5b35133-6ad8-47f2-9638-4343bf8745f1"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 21,
+            "provider": "workato_variable",
+            "name": "update_variables",
+            "as": "d488f6f2",
+            "title": null,
+            "description": "Update variables <span class=\"provider\">Submit Title, Cancel Title</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": [
+                {
+                  "label": "Submit Title (step 20)",
+                  "value": "fcdda3ec-2c05-4d6b-9232-4d591519c867:1c91da62:submit_title"
+                },
+                {
+                  "label": "Cancel Title (step 20)",
+                  "value": "fcdda3ec-2c05-4d6b-9232-4d591519c867:1c91da62:cancel_title"
+                }
+              ]
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "fcdda3ec-2c05-4d6b-9232-4d591519c867:1c91da62:submit_title\nfcdda3ec-2c05-4d6b-9232-4d591519c867:1c91da62:cancel_title",
+              "submit_title": "Submit",
+              "cancel_title": "Cancel"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "text",
+                "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                "label": "Submit Title",
+                "name": "submit_title",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "strip_interpolation": true
+              },
+              {
+                "control_type": "text",
+                "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                "label": "Cancel Title",
+                "name": "cancel_title",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "strip_interpolation": true
+              }
+            ],
+            "uuid": "19e42c00-a68b-455d-aff2-b5d85ba0d8d2"
+          },
+          {
+            "number": 22,
+            "provider": "workato_variable",
+            "name": "insert_to_list",
+            "as": "b6a47193",
+            "title": "Add item to Folder List list",
+            "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Folder List</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Folder List (step 4)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "end",
+              "name": "993ed3c4-96fd-46c4-a084-1683c700f0d8:8c8b1656",
+              "list_item": {
+                "id": "##AC##",
+                "name": "<< Auto Create >>"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List item",
+                "name": "list_item",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "1b9e2561-3992-4f23-b91e-643cef952bf3"
+          },
+          {
+            "number": 23,
+            "provider": "workato_variable",
+            "name": "insert_to_list_batch",
+            "as": "7972d84c",
+            "title": "Add items to Folder List list",
+            "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Folder List</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Folder List (step 4)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "end",
+              "name": "993ed3c4-96fd-46c4-a084-1683c700f0d8:8c8b1656",
+              "list_items": {
+                "____source": "#{_('data.workato_recipe_function.ffc2fa70.result.folders_list')}",
+                "id": "#{_('data.workato_recipe_function.ffc2fa70.result.folders_list.first.folder_id')}",
+                "name": "#{_('data.workato_recipe_function.ffc2fa70.result.folders_list.first.folder_name')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List items",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "767c37b3-b58e-4d85-a5fc-c4f5cbe55330"
+          },
+          {
+            "number": 24,
+            "provider": "workato_variable",
+            "name": "insert_to_list_batch",
+            "as": "043ebb2e",
+            "title": "Add items to Post Deployment Steps list",
+            "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Post Deployment Steps</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "name": "Post Deployment Steps (step 16)"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "location": "end",
+              "name": "337380a9-054f-4977-bf28-99ea438b64b3:cb190d9d",
+              "list_items": [
+                {
+                  "display": "Start Recipes",
+                  "value": "start_recipes"
+                },
+                {
+                  "display": "Migrate Properties",
+                  "value": "migrate_properties"
+                }
+              ]
+            },
+            "extended_input_schema": [
+              {
+                "hint": "",
+                "label": "List items",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Value",
+                    "name": "value",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "b2238a19-69a9-491c-8491-b146204415a1"
+          },
+          {
+            "number": 25,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "#{_('data.lookup_table.5b5572aa.entries.first.entry.col5')}",
+                  "rhs": "projects",
+                  "uuid": "condition-a2629474-9c7c-498a-83c8-5281c3fbb75b"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 26,
+                "provider": "workato_variable",
+                "name": "insert_to_list_batch",
+                "as": "ac363d94",
+                "title": "Add items to Environment Types list",
+                "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Environment Types</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Environment Types (step 4)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "end",
+                  "name": "51aa9f7c-9a17-4401-9802-e667436bdbfe:9252c786",
+                  "list_items": [
+                    {
+                      "name": "Test",
+                      "value": "test"
+                    },
+                    {
+                      "name": "Production",
+                      "value": "prod"
+                    }
+                  ]
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List items",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "uuid": "b1c4d0a9-883d-4b29-a5aa-36b757f5f713"
+              }
+            ],
+            "uuid": "94f2cded-e9c5-4762-a76d-e1aebc9fb7ac"
+          }
+        ],
+        "uuid": "8655031e-cfc9-4427-ad59-c13bfbd21cd1"
+      },
+      {
+        "number": 27,
+        "provider": "slack_bot",
+        "name": "block_kit_modals",
+        "as": "3df36131",
+        "title": null,
+        "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "modal_action_type": true,
+          "view.blocks.3.options.init_value": false
+        },
+        "input": {
+          "modal_action_type": "open",
+          "trigger_id": "#{_('data.slack_bot.9fa48392.trigger_id')}",
+          "view": {
+            "modal_title": "Package Selection",
+            "blocks": [
+              {
+                "block_type": "select_menu_input",
+                "label_text": "Release Version",
+                "hint_text": "Please select the release version",
+                "optional": "false",
+                "block_id": "release_version",
+                "placeholder_text": "Release Version",
+                "menu_type": "static_select",
+                "options": {
+                  "____source": "#{_('data.workato_recipe_function.086fb654.result.deployments')}",
+                  "title": "#{_('data.workato_recipe_function.086fb654.result.deployments.first.package_version')} (#{_('data.workato_recipe_function.086fb654.result.deployments.first.deployed_on')})",
+                  "value": "#{_('data.workato_recipe_function.086fb654.result.deployments.first.pipeline_execution_reference')}"
+                }
+              },
+              {
+                "block_type": "radio_buttons_input",
+                "label_text": "Target Environment Type",
+                "hint_text": "Please select the type of target environment",
+                "optional": "false",
+                "block_id": "environment_type",
+                "options": {
+                  "____source": "#{_('data.workato_variable.9252c786.list_items')}",
+                  "title": "#{_('data.workato_variable.9252c786.list_items.first.name')}",
+                  "value": "#{_('data.workato_variable.9252c786.list_items.first.value')}"
+                }
+              },
+              {
+                "block_type": "section_with_text",
+                "section_text": "=_('data.workato_recipe_function.086fb654.result.deployments.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.086fb654.result.deployments') == 0 ? ':exclamation: No releases found.' : ''"
+              },
+              {
+                "block_type": "select_menu_input",
+                "label_text": "Target Folder",
+                "hint_text": "Please select target folder",
+                "optional": "false",
+                "block_id": "folder_id",
+                "placeholder_text": "Folder Selection",
+                "menu_type": "static_select",
+                "options": {
+                  "____source": "#{_('data.workato_variable.8c8b1656.list_items')}",
+                  "title": "#{_('data.workato_variable.8c8b1656.list_items.first.name')}",
+                  "value": "#{_('data.workato_variable.8c8b1656.list_items.first.id')}",
+                  "init_value": "=_('data.workato_variable.8c8b1656.list_items.first.id') == \"##AC##\""
+                }
+              },
+              {
+                "block_type": "checkboxes_input",
+                "label_text": "Post Deployment Steps",
+                "hint_text": "Please select post deployment steps to be executed.",
+                "optional": "true",
+                "block_id": "post_deployment",
+                "options": {
+                  "____source": "#{_('data.workato_variable.cb190d9d.list_items')}",
+                  "title": "#{_('data.workato_variable.cb190d9d.list_items.first.display')}",
+                  "value": "#{_('data.workato_variable.cb190d9d.list_items.first.value')}"
+                }
+              }
+            ],
+            "submit_view": {
+              "continue_flow": "true",
+              "notify_on_close": "true",
+              "submit_text": "#{_('data.workato_variable.1c91da62.submit_title')}",
+              "close_text": "#{_('data.workato_variable.1c91da62.cancel_title')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "checkbox",
+            "label": "Modal cancelled",
+            "name": "view_cancelled",
+            "toggle_field": {
+              "label": "Modal cancelled",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "type": "boolean",
+              "name": "view_cancelled"
+            },
+            "toggle_hint": "Select from option list",
+            "type": "boolean",
+            "parse_output": {
+            },
+            "render_input": {
+            }
+          },
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Release version",
+                "name": "release_version",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Environment type",
+                "name": "environment_type",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "type": "string"
+              },
+              {
+                "name": "post_deployment",
+                "type": "array",
+                "of": "string",
+                "label": "Post deployment"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "modal_action_type",
+          "view_id",
+          "view.blocks",
+          "view.blocks.block_type",
+          "view.blocks.section_text",
+          "view.blocks.image_url",
+          "view.blocks.alt_text",
+          "view.blocks.button_title",
+          "view.blocks.url",
+          "view.blocks.bot_command",
+          "view.blocks.params",
+          "view.blocks.style",
+          "view.blocks.attachment_fields",
+          "view.blocks.attachment_fields.value",
+          "view.blocks.placeholder_text",
+          "view.blocks.menu_type",
+          "view.blocks.dynamic_menu_recipe",
+          "view.blocks.field_name",
+          "view.blocks.options",
+          "view.blocks.options.title",
+          "view.blocks.options.bot_command",
+          "view.blocks.options.params",
+          "view.blocks.options.init_value",
+          "view.blocks.init_option",
+          "view.blocks.options.value",
+          "view.blocks.init_options",
+          "view.blocks.initial_date",
+          "view.blocks.image_title",
+          "view.blocks.elements",
+          "view.blocks.elements.type",
+          "view.blocks.elements.text",
+          "view.blocks.elements.image_url",
+          "view.blocks.elements.alt_text",
+          "view.blocks.actions",
+          "view.blocks.actions.type",
+          "view.blocks.actions.button_title",
+          "view.blocks.actions.url",
+          "view.blocks.actions.bot_command",
+          "view.blocks.actions.params",
+          "view.blocks.actions.style",
+          "view.blocks.actions.placeholder_text",
+          "view.blocks.actions.initial_date",
+          "view.blocks.actions.field_name",
+          "view.blocks.actions.options",
+          "view.blocks.actions.options.params",
+          "view.blocks.actions.menu_type",
+          "view.blocks.actions.dynamic_menu_recipe",
+          "view.blocks.label_text",
+          "view.blocks.hint_text",
+          "view.blocks.optional",
+          "view.blocks.initial_value",
+          "view.blocks.objects",
+          "view.blocks.objects.blocks",
+          "view.blocks.objects.blocks.block_type",
+          "view.blocks.objects.blocks.section_text",
+          "view.blocks.objects.blocks.image_url",
+          "view.blocks.objects.blocks.alt_text",
+          "view.blocks.objects.blocks.button_title",
+          "view.blocks.objects.blocks.url",
+          "view.blocks.objects.blocks.bot_command",
+          "view.blocks.objects.blocks.params",
+          "view.blocks.objects.blocks.style",
+          "view.blocks.objects.blocks.attachment_fields",
+          "view.blocks.objects.blocks.attachment_fields.value",
+          "view.blocks.objects.blocks.placeholder_text",
+          "view.blocks.objects.blocks.menu_type",
+          "view.blocks.objects.blocks.dynamic_menu_recipe",
+          "view.blocks.objects.blocks.field_name",
+          "view.blocks.objects.blocks.options",
+          "view.blocks.objects.blocks.options.title",
+          "view.blocks.objects.blocks.options.bot_command",
+          "view.blocks.objects.blocks.options.params",
+          "view.blocks.objects.blocks.options.init_value",
+          "view.blocks.objects.blocks.init_option",
+          "view.blocks.objects.blocks.initial_date",
+          "view.blocks.objects.blocks.image_title",
+          "view.blocks.objects.blocks.elements",
+          "view.blocks.objects.blocks.elements.type",
+          "view.blocks.objects.blocks.elements.text",
+          "view.blocks.objects.blocks.elements.image_url",
+          "view.blocks.objects.blocks.elements.alt_text",
+          "view.blocks.objects.blocks.actions",
+          "view.blocks.objects.blocks.actions.type",
+          "view.blocks.objects.blocks.actions.button_title",
+          "view.blocks.objects.blocks.actions.url",
+          "view.blocks.objects.blocks.actions.bot_command",
+          "view.blocks.objects.blocks.actions.params",
+          "view.blocks.objects.blocks.actions.style",
+          "view.blocks.objects.blocks.actions.placeholder_text",
+          "view.blocks.objects.blocks.actions.initial_date",
+          "view.blocks.objects.blocks.actions.field_name",
+          "view.blocks.objects.blocks.actions.options",
+          "view.blocks.objects.blocks.actions.options.params",
+          "view.blocks.objects.blocks.actions.menu_type",
+          "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+          "view.submit_view.continue_flow",
+          "view.submit_view.bot_command",
+          "view.submit_view.params",
+          "view.submit_view.submit_text",
+          "view.submit_view.close_text",
+          "trigger_id",
+          "view",
+          "view.modal_title",
+          "view.submit_view",
+          "view.submit_view.notify_on_close"
+        ],
+        "uuid": "000175c1-9812-4965-a912-6ddf953a5074"
+      },
+      {
+        "number": 28,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_true",
+              "lhs": "#{_('data.slack_bot.3df36131.view_cancelled')}",
+              "rhs": "",
+              "uuid": "condition-9c094037-4edd-4dd7-a4dc-360ce3a28724"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 29,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "82a5a517-1da1-4400-87d6-d356e8f70d6e"
+          }
+        ],
+        "uuid": "7f4c09c5-f9bc-48c2-833a-4859b71a4ed4"
+      },
+      {
+        "number": 30,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "present",
+              "lhs": "#{_('data.slack_bot.3df36131.parameters.release_version')}",
+              "rhs": "",
+              "uuid": "condition-00038a35-3603-47d1-aaf6-32264c94fbfb"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 31,
+            "provider": "workato_variable",
+            "name": "declare_variable",
+            "as": "263da6bc",
+            "title": "  Create variable Pipeline Execution Reference",
+            "description": "Create variable <span class=\"provider\">Pipeline Execution Reference</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "variables": {
+                "schema": "[{\"name\":\"pipeline_execution_reference\",\"type\":\"string\",\"optional\":true,\"label\":\"Pipeline Execution Reference\",\"control_type\":\"text\"}]",
+                "data": {
+                  "pipeline_execution_reference": "=workato.uuid"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "text",
+                "label": "Pipeline Execution Reference",
+                "name": "pipeline_execution_reference",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "add_field_label": "Add a variable",
+                "control_type": "form-schema-builder",
+                "empty_schema_title": "Add variables by giving them a name, type and default value",
+                "exclude_fields": [
+                  "hint"
+                ],
+                "item_label": "variable",
+                "label": "Variables",
+                "mark_as_required": true,
+                "name": "variables",
+                "ngIf": "!input.name",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "broadcast_change_event": true,
+                    "type": "string",
+                    "name": "schema"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Pipeline Execution Reference",
+                        "name": "pipeline_execution_reference",
+                        "type": "string",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Data",
+                    "type": "object",
+                    "name": "data"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "variables.data.pipeline_execution_reference"
+            ],
+            "uuid": "ed5fb661-e826-42d5-b943-623b52075bee"
+          },
+          {
+            "number": 32,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe_async",
+            "as": "877d7348",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | Deploy a Release</span> (async)",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | Deploy a Release"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Functions/Core Pipeline/Deploy/cicd_func_deploy_a_release.recipe.json",
+                "name": "CICD | FUNC | Deploy a Release",
+                "folder": "Functions/Core Pipeline/Deploy"
+              },
+              "parameters": {
+                "pipeline_execution_ref": "#{_('data.workato_variable.263da6bc.pipeline_execution_reference')}",
+                "source_pipeline_execution_ref": "#{_('data.slack_bot.3df36131.parameters.release_version')}",
+                "target_details": {
+                  "target_folder_id": "#{_('data.slack_bot.3df36131.parameters.folder_id')}",
+                  "target_environment": "#{_('data.slack_bot.9fa48392.parameters.target_environment')}",
+                  "target_environment_type": "#{_('data.slack_bot.3df36131.parameters.environment_type')}"
+                },
+                "post_deployment": "=_('data.slack_bot.3df36131.parameters.post_deployment')",
+                "user_name": "#{_('data.workato_recipe_function.0032adaa.parameters.user_name')}",
+                "user_id": "#{_('data.workato_recipe_function.0032adaa.parameters.user_id')}"
+              }
+            },
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline execution ref",
+                    "name": "pipeline_execution_ref",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Source pipeline execution ref",
+                    "name": "source_pipeline_execution_ref",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "post_deployment",
+                    "type": "array",
+                    "of": "string",
+                    "label": "Post deployment",
+                    "optional": true
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Target environment",
+                        "name": "target_environment",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Target environment type",
+                        "name": "target_environment_type",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Target Folder ID",
+                        "name": "target_folder_id",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "label": "Target details",
+                    "name": "target_details",
+                    "type": "object",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters",
+              "parameters.pipeline_execution_ref",
+              "parameters.source_pipeline_execution_ref",
+              "parameters.target_details.target_environment_type",
+              "parameters.target_details",
+              "parameters.target_details.target_environment",
+              "parameters.target_details.target_folder_id",
+              "parameters.post_deployment"
+            ],
+            "uuid": "42a3f0ba-39ca-489f-a240-d4302181cd55"
+          },
+          {
+            "number": 33,
+            "provider": "slack_bot",
+            "name": "post_bot_message",
+            "as": "b71269c6",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "channel": true,
+              "message.color": true,
+              "attachment_buttons.0.bot_command": true
+            },
+            "input": {
+              "message": {
+                "pretext": ":white_check_mark: Success!",
+                "attachment_text": "=\"Pipeline Execution with reference `\" + _('data.workato_variable.263da6bc.pipeline_execution_reference') + \"` created successfully.\"",
+                "color": "good"
+              },
+              "channel": "#{_('data.workato_recipe_function.0032adaa.parameters.user_id')}",
+              "attachment_buttons": [
+                {
+                  "title": "Track Execution",
+                  "bot_command": {
+                    "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                    "name": "CICD | BOT | (Slack) CICD Command Router",
+                    "folder": "Triggers/Slack"
+                  },
+                  "params": "command: list_pipeline_executions param2: #{_('data.workato_variable.263da6bc.pipeline_execution_reference')}"
+                }
+              ]
+            },
+            "visible_config_fields": [
+              "channel",
+              "blocks",
+              "blocks.block_type",
+              "blocks.section_text",
+              "blocks.image_url",
+              "blocks.alt_text",
+              "blocks.button_title",
+              "blocks.url",
+              "blocks.bot_command",
+              "blocks.params",
+              "blocks.style",
+              "blocks.attachment_fields",
+              "blocks.attachment_fields.value",
+              "blocks.placeholder_text",
+              "blocks.menu_type",
+              "blocks.dynamic_menu_recipe",
+              "blocks.field_name",
+              "blocks.options",
+              "blocks.options.title",
+              "blocks.options.bot_command",
+              "blocks.options.params",
+              "blocks.options.init_value",
+              "blocks.init_option",
+              "blocks.initial_date",
+              "blocks.options.value",
+              "blocks.init_options",
+              "blocks.image_title",
+              "blocks.external_id",
+              "blocks.elements",
+              "blocks.elements.type",
+              "blocks.elements.text",
+              "blocks.elements.image_url",
+              "blocks.elements.alt_text",
+              "blocks.actions",
+              "blocks.actions.type",
+              "blocks.actions.button_title",
+              "blocks.actions.url",
+              "blocks.actions.bot_command",
+              "blocks.actions.params",
+              "blocks.actions.style",
+              "blocks.actions.placeholder_text",
+              "blocks.actions.initial_date",
+              "blocks.actions.field_name",
+              "blocks.actions.options",
+              "blocks.actions.options.params",
+              "blocks.actions.menu_type",
+              "blocks.actions.dynamic_menu_recipe",
+              "blocks.objects",
+              "blocks.objects.blocks",
+              "blocks.objects.blocks.block_type",
+              "blocks.objects.blocks.section_text",
+              "blocks.objects.blocks.image_url",
+              "blocks.objects.blocks.alt_text",
+              "blocks.objects.blocks.button_title",
+              "blocks.objects.blocks.url",
+              "blocks.objects.blocks.bot_command",
+              "blocks.objects.blocks.params",
+              "blocks.objects.blocks.style",
+              "blocks.objects.blocks.attachment_fields",
+              "blocks.objects.blocks.attachment_fields.value",
+              "blocks.objects.blocks.placeholder_text",
+              "blocks.objects.blocks.menu_type",
+              "blocks.objects.blocks.dynamic_menu_recipe",
+              "blocks.objects.blocks.field_name",
+              "blocks.objects.blocks.options",
+              "blocks.objects.blocks.options.title",
+              "blocks.objects.blocks.options.bot_command",
+              "blocks.objects.blocks.options.params",
+              "blocks.objects.blocks.options.init_value",
+              "blocks.objects.blocks.init_option",
+              "blocks.objects.blocks.initial_date",
+              "blocks.objects.blocks.image_title",
+              "blocks.objects.blocks.elements",
+              "blocks.objects.blocks.elements.type",
+              "blocks.objects.blocks.elements.text",
+              "blocks.objects.blocks.elements.image_url",
+              "blocks.objects.blocks.elements.alt_text",
+              "blocks.objects.blocks.actions",
+              "blocks.objects.blocks.actions.type",
+              "blocks.objects.blocks.actions.button_title",
+              "blocks.objects.blocks.actions.url",
+              "blocks.objects.blocks.actions.bot_command",
+              "blocks.objects.blocks.actions.params",
+              "blocks.objects.blocks.actions.style",
+              "blocks.objects.blocks.actions.placeholder_text",
+              "blocks.objects.blocks.actions.initial_date",
+              "blocks.objects.blocks.actions.field_name",
+              "blocks.objects.blocks.actions.options",
+              "blocks.objects.blocks.actions.options.params",
+              "blocks.objects.blocks.actions.menu_type",
+              "blocks.objects.blocks.actions.dynamic_menu_recipe",
+              "text",
+              "message",
+              "message.pretext",
+              "message.title",
+              "message.title_link",
+              "message.attachment_text",
+              "message.color",
+              "attachment_fields",
+              "attachment_buttons",
+              "attachment_items.message.title",
+              "attachment_items.message.title_link",
+              "attachment_items.message.attachment_text",
+              "attachment_items.message.color",
+              "attachment_items.attachment_fields",
+              "attachment_items.attachment_buttons",
+              "advanced.ts",
+              "message.footer",
+              "attachment_buttons.params",
+              "attachment_buttons.bot_command",
+              "attachment_buttons.title"
+            ],
+            "uuid": "e25b9c66-b09f-42eb-887d-308b93dc9bed"
+          }
+        ],
+        "uuid": "079b0b1d-0387-4644-83a1-adb6ec56f6f7"
+      }
+    ],
+    "uuid": "78ff45ce-ad98-4107-b992-a8267ef9f9ea"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

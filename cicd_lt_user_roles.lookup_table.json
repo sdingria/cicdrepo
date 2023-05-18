@@ -1,0 +1,76 @@
+{
+  "name": "CICD | LT | User Roles",
+  "schema": [
+    {
+      "control_type": "text",
+      "label": "Role",
+      "name": "col1",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Permissions",
+      "name": "col2",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "isActive",
+      "name": "col3",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Type",
+      "name": "col4",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 5",
+      "name": "col5",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 6",
+      "name": "col6",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 7",
+      "name": "col7",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 8",
+      "name": "col8",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 9",
+      "name": "col9",
+      "type": "string",
+      "sticky": false
+    },
+    {
+      "control_type": "text",
+      "label": "Untitled column 10",
+      "name": "col10",
+      "type": "string",
+      "sticky": false
+    }
+  ],
+  "data": "admin,\"[ \"\"view_manage_property_migrations_(prod)\"\", \"\"manage_project_configuration\"\", \"\"manage_pipeline_configuration\"\", \"\"manage_pipeline_execution_(prod)\"\", \"\"recipe_management\"\", \"\"deploy_release\"\", \"\"manage_user_access\"\",\"\"deploy_unreleased_package\"\",\"\"continue_deployment\"\",\"\"continue_deployment_(prod)\"\"]\",true,System\ndevops,\"[\"\"manage_pipeline_configuration\"\", \"\"view_manage_property_migrations_(prod)\"\", \"\"manage_pipeline_execution_(prod)\"\", \"\"recipe_management\"\", \"\"deploy_release\"\",\"\"deploy_unreleased_package\"\",\"\"continue_deployment\"\",\"\"continue_deployment_(prod)\"\"]\",true,System\napprover,\"[\"\"deployment_approver\"\"]\",true,System\n"
+}

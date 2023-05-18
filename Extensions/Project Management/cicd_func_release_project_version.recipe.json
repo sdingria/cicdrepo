@@ -1,0 +1,569 @@
+{
+  "name": "CICD | FUNC | Release Project Version",
+  "description": "When there is a function call, do action and other actions",
+  "version": 14,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "2c336478",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "result_schema_json": "[{\"name\":\"released_name\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Released name\"},{\"name\":\"released\",\"type\":\"boolean\",\"optional\":false,\"control_type\":\"checkbox\",\"label\":\"Released\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Released\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"released\",\"type\":\"boolean\",\"optional\":false}},{\"name\":\"message\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Message\"},{\"name\":\"release_id\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Release ID\"}]",
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Pipeline Configuration ID\",\"name\":\"pipeline_config_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Project Configuration ID\",\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Pipeline Execution Reference\",\"name\":\"pipeline_exec_ref\",\"type\":\"string\",\"optional\":false},{\"properties\":[{\"control_type\":\"text\",\"label\":\"Promote Source Configuration Id\",\"name\":\"promote_source_config_id\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Promote Target Folder Id\",\"name\":\"promote_target_folder_id\",\"type\":\"string\",\"optional\":true}],\"label\":\"Promote Context\",\"name\":\"promote_context\",\"type\":\"object\",\"optional\":true},{\"name\":\"released\",\"type\":\"boolean\",\"optional\":false,\"control_type\":\"checkbox\",\"label\":\"Released\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Released\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"released\",\"type\":\"boolean\",\"optional\":false}}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Pipeline Configuration ID",
+            "name": "pipeline_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Project Configuration ID",
+            "name": "project_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Pipeline Execution Reference",
+            "name": "pipeline_exec_ref",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Promote Source Configuration Id",
+                "name": "promote_source_config_id",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Promote Target Folder Id",
+                "name": "promote_target_folder_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "label": "Promote Context",
+            "name": "promote_context",
+            "type": "object",
+            "optional": true
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Released",
+            "render_input": {
+            },
+            "parse_output": {
+            },
+            "toggle_hint": "Select from option list",
+            "toggle_field": {
+              "label": "Released",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "released",
+              "type": "boolean",
+              "optional": false
+            },
+            "name": "released",
+            "type": "boolean",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "try",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+        },
+        "block": [
+          {
+            "number": 2,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "=_('data.workato.job_context.account_properties.Accl_CICD_project_management_system', 'account_property', 'Accl.CICD.project_management_system').downcase",
+                  "rhs": "jira",
+                  "uuid": "condition-126cc596-fa26-4e73-8524-f621fbefb646"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 3,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "1debef76",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | Release Project Version in Jira</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUNC | Update Jira Version to Released"
+                },
+                "toggleCfg": {
+                  "parameters.released": false
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Extensions/Project Management/Jira/cicd_func_release_project_version_in_jira.recipe.json",
+                    "name": "CICD | FUNC | Release Project Version in Jira",
+                    "folder": "Extensions/Project Management/Jira"
+                  },
+                  "parameters": {
+                    "pipeline_config_id": "#{_('data.workato_recipe_function.2c336478.parameters.pipeline_config_id')}",
+                    "project_config_id": "#{_('data.workato_recipe_function.2c336478.parameters.project_config_id')}",
+                    "pipeline_exec_ref": "#{_('data.workato_recipe_function.2c336478.parameters.pipeline_exec_ref')}",
+                    "promote_context": {
+                      "promote_source_config_id": "#{_('data.workato_recipe_function.2c336478.parameters.promote_context.promote_source_config_id')}",
+                      "promote_target_folder_id": "#{_('data.workato_recipe_function.2c336478.parameters.promote_context.promote_target_folder_id')}"
+                    },
+                    "released": "=_('data.workato_recipe_function.2c336478.parameters.released').is_true?"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Released name",
+                        "name": "released_name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release ID",
+                        "name": "release_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Pipeline Configuration ID",
+                        "name": "pipeline_config_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Project Configuration ID",
+                        "name": "project_config_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Pipeline Execution Reference",
+                        "name": "pipeline_exec_ref",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Promote Source Configuration Id",
+                            "name": "promote_source_config_id",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Promote Target Folder Id",
+                            "name": "promote_target_folder_id",
+                            "type": "string",
+                            "optional": true
+                          }
+                        ],
+                        "label": "Promote Context",
+                        "name": "promote_context",
+                        "type": "object",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "flow_id",
+                  "parameters.description",
+                  "parameters",
+                  "parameters.promote_context.promote_source_config_id",
+                  "parameters.promote_context.promote_target_folder_id"
+                ],
+                "uuid": "59009962-b446-4336-8126-fd9e31da54a1"
+              },
+              {
+                "number": 4,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "a2c392a4",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                  "result.released": false
+                },
+                "input": {
+                  "result": {
+                    "released": "#{_('data.workato_recipe_function.1debef76.result.released')}",
+                    "released_name": "#{_('data.workato_recipe_function.1debef76.result.released_name')}",
+                    "release_id": "#{_('data.workato_recipe_function.1debef76.result.release_id')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Released name",
+                        "name": "released_name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Message",
+                        "name": "message",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release ID",
+                        "name": "release_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Released name",
+                        "name": "released_name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Message",
+                        "name": "message",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release ID",
+                        "name": "release_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "result.released_name",
+                  "result",
+                  "result.released",
+                  "result.release_id"
+                ],
+                "uuid": "cc5ee2e0-c201-42ed-97d9-d19748b8979c"
+              }
+            ],
+            "uuid": "0d4639fa-d96f-4a75-ae92-9c441131bfb4"
+          },
+          {
+            "number": 5,
+            "as": "ac168e85",
+            "keyword": "catch",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "max_retry_count": "0",
+              "retry_interval": "2"
+            },
+            "block": [
+              {
+                "number": 6,
+                "provider": "workato_recipe_function",
+                "name": "return_result",
+                "as": "a088776a",
+                "title": null,
+                "description": null,
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                  "result.released": true
+                },
+                "input": {
+                  "result": {
+                    "released": "false",
+                    "message": "#{_('data.catch.ac168e85.message')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Released name",
+                        "name": "released_name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Message",
+                        "name": "message",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release ID",
+                        "name": "release_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Released name",
+                        "name": "released_name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Released",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Released",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "released",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "released",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Message",
+                        "name": "message",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Release ID",
+                        "name": "release_id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "result.released_name",
+                  "result",
+                  "result.released",
+                  "result.message"
+                ],
+                "uuid": "dabf3de1-0eae-45ac-9d47-2021f4aedbb5"
+              }
+            ],
+            "uuid": "f087ee1a-8d3e-4553-8d29-f987dd5b7720"
+          }
+        ],
+        "uuid": "4b34740e-e41f-43c9-a537-a0b167903a4a"
+      }
+    ],
+    "uuid": "19e4d21d-f902-4cc6-a76e-8b1fb09a543d"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

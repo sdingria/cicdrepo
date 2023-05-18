@@ -1,0 +1,1781 @@
+{
+  "name": "CICD | FUNC | (Slack) Display Command Options",
+  "description": "When there is a new command to Slack Workbot, do action and other actions",
+  "version": 103,
+  "private": true,
+  "concurrency": 3,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "f00bebfc",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"user_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User ID\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "try",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "f3275c4d",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | User Permission Analyzer</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | User Permission Analyzer"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Functions/RBAC/cicd_func_user_permission_analyzer.recipe.json",
+                "name": "CICD | FUNC | User Permission Analyzer",
+                "folder": "Functions/RBAC"
+              },
+              "parameters": {
+                "user": "#{_('data.workato_recipe_function.f00bebfc.parameters.user_id')}",
+                "permissions": "=[\"manage_project_configuration\", \"manage_pipeline_configuration\", \"recipe_management\", \"deploy_release\", \"manage_user_access\",\"deploy_unreleased_package\"]"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "permissions",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Permissions",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Result",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Result",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "result",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "result",
+                        "type": "boolean",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "User",
+                    "name": "user",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "permissions",
+                    "type": "array",
+                    "of": "string",
+                    "label": "Permissions",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "2315b270-12b9-4681-a70d-02521aa57c44"
+          },
+          {
+            "number": 3,
+            "provider": "workato_variable",
+            "name": "declare_variable",
+            "as": "6f891857",
+            "title": "  Create variables Manage Project Configuration, Manage Pipeline Configuration, Recipe Management, Deploy Release, Manage User Access, Deploy Unreleased Package",
+            "description": "Create variables <span class=\"provider\">Manage Project Configuration</span>, <span class=\"provider\">Manage Pipeline Configuration</span>, <span class=\"provider\">Recipe Management</span>, <span class=\"provider\">Deploy Release</span>, <span class=\"provider\">Manage User Access</span>, <span class=\"provider\">Deploy Unreleased Package</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "variables.data.manage_project_configuration": false,
+              "variables.data.manage_pipeline_configuration": false,
+              "variables.data.recipe_management": false,
+              "variables.data.deploy_release": false,
+              "variables.data.manage_user_access": false,
+              "variables.data.deploy_unreleased_package": false
+            },
+            "input": {
+              "variables": {
+                "schema": "[{\"control_type\":\"checkbox\",\"label\":\"Manage Project Configuration\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Manage Project Configuration\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"manage_project_configuration\",\"type\":\"boolean\",\"optional\":true},\"name\":\"manage_project_configuration\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Manage Pipeline Configuration\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Manage Pipeline Configuration\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"manage_pipeline_configuration\",\"type\":\"boolean\",\"optional\":true},\"name\":\"manage_pipeline_configuration\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Recipe Management\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Recipe Management\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"recipe_management\",\"type\":\"boolean\",\"optional\":true},\"name\":\"recipe_management\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Deploy Release\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Deploy Release\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"deploy_release\",\"type\":\"boolean\",\"optional\":true},\"name\":\"deploy_release\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Manage User Access\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Manage User Access\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"manage_user_access\",\"type\":\"boolean\",\"optional\":true},\"name\":\"manage_user_access\",\"type\":\"boolean\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Deploy Unreleased Package\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Deploy Unreleased Package\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"deploy_unreleased_package\",\"type\":\"boolean\",\"optional\":true},\"name\":\"deploy_unreleased_package\",\"type\":\"boolean\",\"optional\":true}]",
+                "data": {
+                  "manage_project_configuration": "=_('data.workato_recipe_function.f3275c4d.result.permissions').where(name: 'manage_project_configuration').first[:result]",
+                  "manage_pipeline_configuration": "=_('data.workato_recipe_function.f3275c4d.result.permissions').where(name: 'manage_pipeline_configuration').first[:result]",
+                  "recipe_management": "=_('data.workato_recipe_function.f3275c4d.result.permissions').where(name: 'recipe_management').first[:result]",
+                  "deploy_release": "=_('data.workato_recipe_function.f3275c4d.result.permissions').where(name: 'deploy_release').first[:result]",
+                  "manage_user_access": "=_('data.workato_recipe_function.f3275c4d.result.permissions').where(name: 'manage_user_access').first[:result]",
+                  "deploy_unreleased_package": "=_('data.workato_recipe_function.f3275c4d.result.permissions').where(name: 'deploy_unreleased_package').first[:result]"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "checkbox",
+                "label": "Manage Project Configuration",
+                "name": "manage_project_configuration",
+                "optional": true,
+                "toggle_field": {
+                  "label": "Manage Project Configuration",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "manage_project_configuration",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "toggle_hint": "Select from option list",
+                "type": "boolean",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Manage Pipeline Configuration",
+                "name": "manage_pipeline_configuration",
+                "optional": true,
+                "toggle_field": {
+                  "label": "Manage Pipeline Configuration",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "manage_pipeline_configuration",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "toggle_hint": "Select from option list",
+                "type": "boolean",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Recipe Management",
+                "name": "recipe_management",
+                "optional": true,
+                "toggle_field": {
+                  "label": "Recipe Management",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "recipe_management",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "toggle_hint": "Select from option list",
+                "type": "boolean",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Deploy Release",
+                "name": "deploy_release",
+                "optional": true,
+                "toggle_field": {
+                  "label": "Deploy Release",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "deploy_release",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "toggle_hint": "Select from option list",
+                "type": "boolean",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Manage User Access",
+                "name": "manage_user_access",
+                "optional": true,
+                "toggle_field": {
+                  "label": "Manage User Access",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "manage_user_access",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "toggle_hint": "Select from option list",
+                "type": "boolean",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Deploy Unreleased Package",
+                "name": "deploy_unreleased_package",
+                "optional": true,
+                "toggle_field": {
+                  "label": "Deploy Unreleased Package",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "deploy_unreleased_package",
+                  "type": "boolean",
+                  "optional": true
+                },
+                "toggle_hint": "Select from option list",
+                "type": "boolean",
+                "parse_output": {
+                },
+                "render_input": {
+                }
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "add_field_label": "Add a variable",
+                "control_type": "form-schema-builder",
+                "empty_schema_title": "Add variables by giving them a name, type and default value",
+                "exclude_fields": [
+                  "hint"
+                ],
+                "item_label": "variable",
+                "label": "Variables",
+                "mark_as_required": true,
+                "name": "variables",
+                "ngIf": "!input.name",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Schema",
+                    "extends_schema": true,
+                    "broadcast_change_event": true,
+                    "type": "string",
+                    "name": "schema"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "checkbox",
+                        "label": "Manage Project Configuration",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Manage Project Configuration",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "manage_project_configuration",
+                          "type": "boolean",
+                          "optional": true
+                        },
+                        "name": "manage_project_configuration",
+                        "type": "boolean",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Manage Pipeline Configuration",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Manage Pipeline Configuration",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "manage_pipeline_configuration",
+                          "type": "boolean",
+                          "optional": true
+                        },
+                        "name": "manage_pipeline_configuration",
+                        "type": "boolean",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Recipe Management",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Recipe Management",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "recipe_management",
+                          "type": "boolean",
+                          "optional": true
+                        },
+                        "name": "recipe_management",
+                        "type": "boolean",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Deploy Release",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Deploy Release",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "deploy_release",
+                          "type": "boolean",
+                          "optional": true
+                        },
+                        "name": "deploy_release",
+                        "type": "boolean",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Manage User Access",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Manage User Access",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "manage_user_access",
+                          "type": "boolean",
+                          "optional": true
+                        },
+                        "name": "manage_user_access",
+                        "type": "boolean",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Deploy Unreleased Package",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Deploy Unreleased Package",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "deploy_unreleased_package",
+                          "type": "boolean",
+                          "optional": true
+                        },
+                        "name": "deploy_unreleased_package",
+                        "type": "boolean",
+                        "optional": true,
+                        "hint": "Defaults to nil if not supplied.",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Data",
+                    "type": "object",
+                    "name": "data"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "variables.data.manage_project_configuration",
+              "variables",
+              "variables.schema",
+              "variables.data",
+              "variables.data.manage_pipeline_configuration",
+              "variables.data.recipe_management",
+              "variables.data.deploy_release",
+              "variables.data.manage_user_access",
+              "variables.data.deploy_unreleased_package"
+            ],
+            "uuid": "736e0253-9e8f-4f98-8fe4-d3446fb37b82"
+          },
+          {
+            "number": 4,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "fafa45d4",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | List Environments</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUN | List Environments"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Functions/CICD for Workato/cicd_func_list_environments.recipe.json",
+                "name": "CICD | FUNC | List Environments",
+                "folder": "Functions/CICD for Workato"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "environments",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Environments",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Is production",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Is production",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "is_production",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "is_production",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "integer",
+                        "label": "Level",
+                        "parse_output": "integer_conversion",
+                        "name": "level",
+                        "type": "integer",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Source environment",
+                    "name": "source_environment",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "2cfff9fa-a319-403d-93f3-f107696b9966",
+            "skip": false
+          },
+          {
+            "number": 5,
+            "provider": "workato_variable",
+            "name": "declare_list",
+            "as": "fcea1ae7",
+            "title": " Create Project Configuration list",
+            "description": "Create <span class=\"provider\">Project Configuration</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "Project Configuration",
+              "list_item_schema_json": "[{\"name\":\"display\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Display\"},{\"name\":\"command\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Command\"},{\"name\":\"command_values\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Command values\"}]",
+              "list_items": [
+                {
+                  "display": "List Configurations",
+                  "command": "workato cicd execute",
+                  "command_values": "command: list_project_config"
+                },
+                {
+                  "display": "Search Configuration",
+                  "command": "workato cicd execute",
+                  "command_values": "command: search_cicd_component param1: project_config"
+                }
+              ]
+            },
+            "extended_output_schema": [
+              {
+                "hint": "",
+                "label": "Project Configuration",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                "label": "Items",
+                "name": "list_items",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "38bb23ba-e71f-497b-b66b-db50642e83ad"
+          },
+          {
+            "number": 6,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.6f891857.manage_project_configuration')}",
+                  "rhs": "",
+                  "uuid": "condition-766f93b9-d45f-48f2-b34c-65b4b033006d"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 7,
+                "provider": "workato_variable",
+                "name": "insert_to_list",
+                "as": "42b65ff5",
+                "title": "Add item to Project Configuration list",
+                "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Project Configuration</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Project Configuration (step 6)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "start",
+                  "name": "38bb23ba-e71f-497b-b66b-db50642e83ad:fcea1ae7",
+                  "list_item": {
+                    "display": "New Configuration",
+                    "command": "workato cicd execute",
+                    "command_values": "command: new_project_config"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List item",
+                    "name": "list_item",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Display",
+                        "name": "display",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command",
+                        "name": "command",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command values",
+                        "name": "command_values",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "e11be7e9-7d83-4dd5-bfeb-87f6e4a2e8bb"
+              }
+            ],
+            "uuid": "a2afaac5-cadc-4d9d-a2ce-6ae0c9ee9403"
+          },
+          {
+            "number": 8,
+            "provider": "workato_variable",
+            "name": "declare_list",
+            "as": "e87e8bd4",
+            "title": " Create Pipeline Configuration list",
+            "description": "Create <span class=\"provider\">Pipeline Configuration</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "Pipeline Configuration",
+              "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Display\",\"name\":\"display\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Command\",\"name\":\"command\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Command values\",\"name\":\"command_values\",\"type\":\"string\",\"optional\":false}]",
+              "list_items": [
+                {
+                  "display": "List Configurations",
+                  "command": "workato cicd execute",
+                  "command_values": "command: list_pipeline_config"
+                },
+                {
+                  "display": "Search Configuration",
+                  "command": "workato cicd execute",
+                  "command_values": "command: search_cicd_component param1: pipeline_config"
+                }
+              ]
+            },
+            "extended_output_schema": [
+              {
+                "hint": "",
+                "label": "Pipeline Configuration",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                "label": "Items",
+                "name": "list_items",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "bf5956ee-51c2-4b20-8a01-cc1c952b867e"
+          },
+          {
+            "number": 9,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.6f891857.manage_pipeline_configuration')}",
+                  "rhs": "",
+                  "uuid": "condition-cabb0e37-2831-4639-8b13-7c8fb3d51d45"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 10,
+                "provider": "workato_variable",
+                "name": "insert_to_list",
+                "as": "ceece595",
+                "title": "Add item to Pipeline Configuration list",
+                "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Pipeline Configuration</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Pipeline Configuration (step 9)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "start",
+                  "name": "bf5956ee-51c2-4b20-8a01-cc1c952b867e:e87e8bd4",
+                  "list_item": {
+                    "display": "New Configuration",
+                    "command": "workato cicd execute",
+                    "command_values": "command: new_pipeline_config"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List item",
+                    "name": "list_item",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Display",
+                        "name": "display",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command",
+                        "name": "command",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command values",
+                        "name": "command_values",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "395d41e7-8a5b-4b10-8566-35353e15b206"
+              }
+            ],
+            "uuid": "0ff32788-29cd-46b8-af22-e1c231cf52a0"
+          },
+          {
+            "number": 11,
+            "provider": "workato_variable",
+            "name": "declare_list",
+            "as": "fbec3231",
+            "title": " Create Admin Configuration list",
+            "description": "Create <span class=\"provider\">Admin Configuration</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "Admin Configuration",
+              "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Display\",\"name\":\"display\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Command\",\"name\":\"command\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Command values\",\"name\":\"command_values\",\"type\":\"string\",\"optional\":false},{\"name\":\"button_style\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Button style\"}]"
+            },
+            "extended_output_schema": [
+              {
+                "hint": "",
+                "label": "Admin Configuration",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Button style",
+                    "name": "button_style",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                "label": "Items",
+                "name": "list_items",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Button style",
+                    "name": "button_style",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "9fa2d273-6d95-4e0b-bae4-c976d53ee017"
+          },
+          {
+            "number": 12,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.6f891857.recipe_management')}",
+                  "rhs": "",
+                  "uuid": "condition-65067039-ac21-4980-b94a-1487b8d2b5a5"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 13,
+                "provider": "workato_variable",
+                "name": "insert_to_list",
+                "as": "91d13d04",
+                "title": "Add item to Admin Configuration list",
+                "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Admin Configuration</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Admin Configuration (step 12)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "start",
+                  "name": "9fa2d273-6d95-4e0b-bae4-c976d53ee017:fbec3231",
+                  "list_item": {
+                    "display": "Recipe Management",
+                    "command": "workato cicd execute",
+                    "command_values": "command: manage_recipes",
+                    "button_style": "primary"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List item",
+                    "name": "list_item",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Display",
+                        "name": "display",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command",
+                        "name": "command",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command values",
+                        "name": "command_values",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Button style",
+                        "name": "button_style",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "5ac240b1-6e3b-4f73-b674-09b1c77cb372"
+              }
+            ],
+            "uuid": "980dcbe3-79f6-426f-9759-81f812b8b188"
+          },
+          {
+            "number": 14,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.6f891857.deploy_release')}",
+                  "rhs": "",
+                  "uuid": "condition-65067039-ac21-4980-b94a-1487b8d2b5a5"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 15,
+                "provider": "workato_variable",
+                "name": "insert_to_list",
+                "as": "305fddff",
+                "title": "Add item to Admin Configuration list",
+                "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Admin Configuration</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Admin Configuration (step 12)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "end",
+                  "name": "9fa2d273-6d95-4e0b-bae4-c976d53ee017:fbec3231",
+                  "list_item": {
+                    "display": ":rocket: Deploy Release",
+                    "command": "workato cicd execute",
+                    "command_values": "command: deploy_release",
+                    "button_style": "default"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List item",
+                    "name": "list_item",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Display",
+                        "name": "display",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command",
+                        "name": "command",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command values",
+                        "name": "command_values",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Button style",
+                        "name": "button_style",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "7b002244-403e-456a-84e6-1491dc5927e3"
+              }
+            ],
+            "uuid": "bc477ccb-079b-419b-9071-5047ffd82b2c"
+          },
+          {
+            "number": 16,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.6f891857.deploy_unreleased_package')}",
+                  "rhs": "",
+                  "uuid": "condition-65067039-ac21-4980-b94a-1487b8d2b5a5"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 17,
+                "provider": "workato_variable",
+                "name": "insert_to_list",
+                "as": "ff0ac839",
+                "title": "Add item to Admin Configuration list",
+                "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">Admin Configuration</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Admin Configuration (step 12)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "end",
+                  "name": "9fa2d273-6d95-4e0b-bae4-c976d53ee017:fbec3231",
+                  "list_item": {
+                    "display": ":rocket: Deploy Unreleased Package",
+                    "command": "workato cicd execute",
+                    "command_values": "command: deploy_unreleased_package",
+                    "button_style": "default"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List item",
+                    "name": "list_item",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Display",
+                        "name": "display",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command",
+                        "name": "command",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command values",
+                        "name": "command_values",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Button style",
+                        "name": "button_style",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "de0f76af-ac47-484f-8e44-2bb379885383"
+              }
+            ],
+            "uuid": "f3a89c7b-64dd-4e24-ab26-c780e063d535"
+          },
+          {
+            "number": 18,
+            "provider": "workato_variable",
+            "name": "declare_list",
+            "as": "4e15ed42",
+            "title": " Create Manage User Access list",
+            "description": "Create <span class=\"provider\">Manage User Access</span> list",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "name": "Manage User Access",
+              "list_item_schema_json": "[{\"control_type\":\"text\",\"label\":\"Display\",\"name\":\"display\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Command\",\"name\":\"command\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Command values\",\"name\":\"command_values\",\"type\":\"string\",\"optional\":false},{\"name\":\"button_style\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Button style\"}]"
+            },
+            "extended_output_schema": [
+              {
+                "hint": "",
+                "label": "Manage User Access",
+                "name": "list_items",
+                "of": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Button style",
+                    "name": "button_style",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                "label": "Items",
+                "name": "list_items",
+                "of": "object",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Display",
+                    "name": "display",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command",
+                    "name": "command",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Command values",
+                    "name": "command_values",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Button style",
+                    "name": "button_style",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "uuid": "7503d2aa-15c0-4bbe-9c7a-1638b02fdd34"
+          },
+          {
+            "number": 19,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.6f891857.manage_user_access')}",
+                  "rhs": "",
+                  "uuid": "condition-6221880f-64af-4f3e-8915-7565d314c8ba"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 20,
+                "provider": "workato_variable",
+                "name": "insert_to_list_batch",
+                "as": "260d48a1",
+                "title": "Add items to Manage User Access list",
+                "description": "Add <span class=\"provider\">items</span> to <span class=\"provider\">Manage User Access</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "Manage User Access (step 17)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "end",
+                  "name": "7503d2aa-15c0-4bbe-9c7a-1638b02fdd34:4e15ed42",
+                  "list_items": [
+                    {
+                      "display": "Manage Permissions",
+                      "command": "workato cicd execute",
+                      "command_values": "command: manage_permissions",
+                      "button_style": "default"
+                    },
+                    {
+                      "display": "Manage Roles",
+                      "command": "workato cicd execute",
+                      "command_values": "command: manage_roles",
+                      "button_style": "default"
+                    },
+                    {
+                      "display": "User Role Mappings",
+                      "command": "workato cicd execute",
+                      "command_values": "command: user_role_assignment",
+                      "button_style": "primary"
+                    },
+                    {
+                      "display": "Permission Analyzer",
+                      "command": "workato cicd execute",
+                      "command_values": "command: permission_analyzer",
+                      "button_style": "danger"
+                    }
+                  ]
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List items",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Display",
+                        "name": "display",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command",
+                        "name": "command",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Command values",
+                        "name": "command_values",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Button style",
+                        "name": "button_style",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "uuid": "fcef0af1-a600-4bdb-929a-74c58b66628c"
+              }
+            ],
+            "uuid": "32ec9c98-e62a-4ece-b124-d6c47216880e"
+          },
+          {
+            "number": 21,
+            "provider": "slack_bot",
+            "name": "post_bot_message",
+            "as": "06605174",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "channel": true,
+              "blocks.14.actions.style": false,
+              "blocks.17.actions.style": false,
+              "blocks.14.actions.bot_command": false,
+              "blocks.17.actions.bot_command": false,
+              "blocks.9.actions.0.style": false,
+              "blocks.5.actions.0.options.bot_command": false,
+              "blocks.5.actions.1.options.bot_command": false,
+              "blocks.5.actions.2.options.0.bot_command": true,
+              "blocks.5.actions.2.options.1.bot_command": true,
+              "blocks.5.actions.2.options.2.bot_command": true,
+              "blocks.9.actions.0.bot_command": true,
+              "blocks.9.actions.1.options.bot_command": true
+            },
+            "input": {
+              "blocks": [
+                {
+                  "block_type": "section_with_text",
+                  "section_text": " :infinity: *Welcome to Workato CI/CD*"
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "Please select an option:"
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "*Project Configuration*: Manage project configurations for CI/CD."
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "*Pipeline Configuration*: Manage pipelines to deploy and promote a package."
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "*Pipeline Execution*: Track CI/CD pipeline executions."
+                },
+                {
+                  "block_type": "actions",
+                  "actions": [
+                    {
+                      "type": "select_menu",
+                      "menu_type": "static_select",
+                      "placeholder_text": "Project Configuration",
+                      "options": {
+                        "____source": "#{_('data.workato_variable.fcea1ae7.list_items')}",
+                        "title": "#{_('data.workato_variable.fcea1ae7.list_items.first.display')}",
+                        "bot_command": "#{_('data.workato_variable.fcea1ae7.list_items.first.command')}",
+                        "params": "#{_('data.workato_variable.fcea1ae7.list_items.first.command_values')}"
+                      }
+                    },
+                    {
+                      "type": "select_menu",
+                      "placeholder_text": "Pipeline Configuration",
+                      "menu_type": "static_select",
+                      "options": {
+                        "____source": "#{_('data.workato_variable.e87e8bd4.list_items')}",
+                        "title": "#{_('data.workato_variable.e87e8bd4.list_items.first.display')}",
+                        "bot_command": "#{_('data.workato_variable.e87e8bd4.list_items.first.command')}",
+                        "params": "#{_('data.workato_variable.e87e8bd4.list_items.first.command_values')}"
+                      }
+                    },
+                    {
+                      "type": "select_menu",
+                      "placeholder_text": "Pipeline Execution",
+                      "menu_type": "static_select",
+                      "options": [
+                        {
+                          "title": "List All Executions",
+                          "bot_command": {
+                            "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                            "name": "CICD | BOT | (Slack) CICD Command Router",
+                            "folder": "Triggers/Slack"
+                          },
+                          "params": "command: list_pipeline_executions"
+                        },
+                        {
+                          "title": "List Open Executions",
+                          "bot_command": {
+                            "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                            "name": "CICD | BOT | (Slack) CICD Command Router",
+                            "folder": "Triggers/Slack"
+                          },
+                          "params": "command: list_pipeline_executions param1: OPEN"
+                        },
+                        {
+                          "title": "Search Pipeline Execution",
+                          "bot_command": {
+                            "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                            "name": "CICD | BOT | (Slack) CICD Command Router",
+                            "folder": "Triggers/Slack"
+                          },
+                          "params": "command: search_pipeline_execution"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "block_type": "divider",
+                  "actions": [
+                    {
+                      "type": "button",
+                      "button_title": "dadada",
+                      "bot_command": "2897412"
+                    }
+                  ]
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "*Property Migration*: Manage properties to be migrated during deployments."
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "*Deployments:* Track environment specific CI/CD deployments."
+                },
+                {
+                  "block_type": "actions",
+                  "actions": [
+                    {
+                      "type": "button",
+                      "button_title": ":memo: Property Migration",
+                      "bot_command": {
+                        "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                        "name": "CICD | BOT | (Slack) CICD Command Router",
+                        "folder": "Triggers/Slack"
+                      },
+                      "params": "command: list_migrate_properties",
+                      "menu_type": "static_select",
+                      "options": [
+                        {
+                          "title": "New Configuration",
+                          "bot_command": {
+                            "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                            "name": "CICD | BOT | (Slack) CICD Command Router",
+                            "folder": "Triggers/Slack"
+                          },
+                          "params": "command: migrate_properties"
+                        },
+                        {
+                          "title": "List Configurations",
+                          "bot_command": {
+                            "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                            "name": "CICD | BOT | (Slack) CICD Command Router",
+                            "folder": "Triggers/Slack"
+                          },
+                          "params": "command: list_migrate_properties"
+                        }
+                      ],
+                      "placeholder_text": "Property Migration",
+                      "style": "default"
+                    },
+                    {
+                      "type": "select_menu",
+                      "placeholder_text": "List Deployments",
+                      "menu_type": "static_select",
+                      "options": {
+                        "____source": "#{_('data.workato_recipe_function.fafa45d4.result.environments')}",
+                        "title": "=_('data.workato_recipe_function.fafa45d4.result.environments.first.name').titleize",
+                        "bot_command": {
+                          "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                          "name": "CICD | BOT | (Slack) CICD Command Router",
+                          "folder": "Triggers/Slack"
+                        },
+                        "params": "command: list_deployments param1: #{_('data.workato_recipe_function.fafa45d4.result.environments.first.name')}"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "block_type": "divider"
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "=_('data.workato_variable.6f891857.recipe_management').is_true? ? \"*Recipe Management*: Manage recipes of a project within any environment.\" : \"\""
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "=_('data.workato_variable.6f891857.deploy_release').is_true? ? \"*Deploy Release*: Deploy an existing release to relevant environments.\" : \"\""
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "=_('data.workato_variable.6f891857.deploy_unreleased_package').is_true? ? \"*Deploy Unreleased Package*: Deploy a package version to non-production environments.\" : \"\""
+                },
+                {
+                  "block_type": "actions",
+                  "actions": {
+                    "type": "button",
+                    "____source": "#{_('data.workato_variable.fbec3231.list_items')}",
+                    "button_title": "#{_('data.workato_variable.fbec3231.list_items.first.display')}",
+                    "bot_command": "#{_('data.workato_variable.fbec3231.list_items.first.command')}",
+                    "params": "#{_('data.workato_variable.fbec3231.list_items.first.command_values')}",
+                    "style": "#{_('data.workato_variable.fbec3231.list_items.first.button_style')}"
+                  }
+                },
+                {
+                  "block_type": "divider"
+                },
+                {
+                  "block_type": "section_with_text",
+                  "section_text": "=_('data.workato_variable.6f891857.manage_user_access').is_true? ? \"*Manage User Access*: Manage role based access for users\" : \"\""
+                },
+                {
+                  "block_type": "actions",
+                  "actions": {
+                    "____source": "#{_('data.workato_variable.4e15ed42.list_items')}",
+                    "type": "button",
+                    "button_title": "#{_('data.workato_variable.4e15ed42.list_items.first.display')}",
+                    "bot_command": "#{_('data.workato_variable.4e15ed42.list_items.first.command')}",
+                    "params": "#{_('data.workato_variable.4e15ed42.list_items.first.command_values')}",
+                    "style": "#{_('data.workato_variable.4e15ed42.list_items.first.button_style')}"
+                  }
+                }
+              ],
+              "channel": "#{_('data.workato_recipe_function.f00bebfc.parameters.user_id')}"
+            },
+            "uuid": "6bf99f70-6dde-466e-9574-30716098f4b4"
+          },
+          {
+            "number": 22,
+            "as": "af3c7e9d",
+            "keyword": "catch",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "max_retry_count": "0",
+              "retry_interval": "2"
+            },
+            "block": [
+              {
+                "number": 23,
+                "provider": "slack_bot",
+                "name": "post_bot_message",
+                "as": "db266380",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                  "channel": true,
+                  "message.color": true
+                },
+                "input": {
+                  "message": {
+                    "title": ":warning: Error starting application",
+                    "title_link": "#{_('data.workato.job_context.job_url')}",
+                    "attachment_text": "#{_('data.catch.af3c7e9d.message')}",
+                    "color": "danger"
+                  },
+                  "channel": "#{_('data.workato_recipe_function.f00bebfc.parameters.user_id')}"
+                },
+                "comment": "Notify errors to the user.",
+                "uuid": "d9a1f536-71c1-46d0-b6a4-2b0b8a42516e"
+              }
+            ],
+            "uuid": "6b650682-e6fb-4415-a2e4-6564d5075205"
+          }
+        ],
+        "uuid": "fc406258-7c7e-4426-9225-c99ec4cc0e0a"
+      }
+    ],
+    "comment": "Trigger on Workbot for Slack command \"workato cicd start\" to present different options.",
+    "uuid": "f6c12c90-1a2e-40c5-9a43-c966fd539e6a"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      },
+      "skip_validation": false
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

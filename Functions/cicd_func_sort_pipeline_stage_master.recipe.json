@@ -1,0 +1,351 @@
+{
+  "name": "CICD | FUNC | Sort Pipeline Stage Master",
+  "description": "When there is a trigger event, do action",
+  "version": 7,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "6e79d9f4",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "result_schema_json": "[{\"name\":\"pipeline_master_sorted_array\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Pipeline Master Array\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Sequence\",\"parse_output\":\"integer_conversion\",\"name\":\"sequence\",\"type\":\"integer\"},{\"control_type\":\"text\",\"label\":\"Stage\",\"name\":\"stage\",\"type\":\"string\"}]}]"
+    },
+    "block": [
+      {
+        "number": 1,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "ea089be3",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Stage Master</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Pipeline Stage Master"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_pipeline_stage_master.lookup_table.json",
+            "name": "CICD | LT | Pipeline Stage Master",
+            "folder": ""
+          },
+          "parameters": {
+            "col3": "=['true','True','TRUE','1']"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "label": "Entry",
+                "type": "object",
+                "name": "entry",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Sequence",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "isEnabled",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ]
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Sequence",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Stage",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "isEnabled",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "0783ad55-66a3-4b5c-beff-c5e3496a431d"
+      },
+      {
+        "number": 2,
+        "provider": "workato_custom_code",
+        "name": "invoke_custom_ruby_code",
+        "as": "692dbe33",
+        "title": null,
+        "description": "Execute <span class=\"provider\">ruby</span> code: <span class=\"provider\">Sort Pipeline Master</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "code": "# @param input [Hash] input hash supplied in the recipe step\n# @return value returned in the last line\n# Eg: Code for returning country code for an IP address\n# {\n#   country_code: get(\"http://freegeoip.net/json/\" + input[\"ip_address\"])\n# }\n\npipeline_master = input['pipeline_master_array']\ni = 0\n{\n  pipeline_master_sorted_array: pipeline_master.sort_by {|x| x[:sequence].to_i}.map do |y|\n    i = i + 1\n    y[:sequence] = i\n    y\n  end\n}\n\n",
+          "name": "Sort Pipeline Master",
+          "code_input": {
+            "schema": "[{\"name\":\"pipeline_master_array\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Pipeline Master Array\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Sequence\",\"parse_output\":\"integer_conversion\",\"name\":\"sequence\",\"type\":\"integer\"},{\"control_type\":\"text\",\"label\":\"Stage\",\"name\":\"stage\",\"type\":\"string\"}]}]",
+            "data": {
+              "pipeline_master_array": {
+                "____source": "#{_('data.lookup_table.ea089be3.entries')}",
+                "sequence": "#{_('data.lookup_table.ea089be3.entries.first.entry.col1')}",
+                "stage": "#{_('data.lookup_table.ea089be3.entries.first.entry.col2')}"
+              }
+            }
+          },
+          "code_output_schema_json": "[{\"name\":\"pipeline_master_sorted_array\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Pipeline Master Array\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Sequence\",\"parse_output\":\"integer_conversion\",\"name\":\"sequence\",\"type\":\"integer\"},{\"control_type\":\"text\",\"label\":\"Stage\",\"name\":\"stage\",\"type\":\"string\"}]}]"
+        },
+        "extended_output_schema": [
+          {
+            "label": "Output",
+            "name": "output",
+            "properties": [
+              {
+                "name": "pipeline_master_sorted_array",
+                "type": "array",
+                "of": "object",
+                "label": "Pipeline Master Array",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Sequence",
+                    "parse_output": "integer_conversion",
+                    "name": "sequence",
+                    "type": "integer"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "stage",
+                    "type": "string"
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "control_type": "form-schema-builder",
+            "label": "Input",
+            "name": "code_input",
+            "optional": true,
+            "override": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "type": "string",
+                "name": "schema"
+              },
+              {
+                "label": "Data",
+                "type": "object",
+                "name": "data",
+                "properties": [
+                  {
+                    "name": "pipeline_master_array",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Pipeline Master Array",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Sequence",
+                        "parse_output": "integer_conversion",
+                        "name": "sequence",
+                        "type": "integer"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "stage",
+                        "type": "string"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "sticky": true,
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "name",
+          "code_input",
+          "code_output_schema_json",
+          "code",
+          "code_input.data.pipeline_master_array"
+        ],
+        "uuid": "c5ffa1f0-b696-42e8-bdbd-9b3ff08ab18f"
+      },
+      {
+        "number": 3,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "cacda071",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "result": {
+            "pipeline_master_sorted_array": {
+              "____source": "#{_('data.workato_custom_code.692dbe33.output.pipeline_master_sorted_array')}",
+              "sequence": "#{_('data.workato_custom_code.692dbe33.output.pipeline_master_sorted_array.first.sequence')}",
+              "stage": "#{_('data.workato_custom_code.692dbe33.output.pipeline_master_sorted_array.first.stage')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "pipeline_master_sorted_array",
+                "type": "array",
+                "of": "object",
+                "label": "Pipeline Master Array",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Sequence",
+                    "parse_output": "integer_conversion",
+                    "name": "sequence",
+                    "type": "integer"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "stage",
+                    "type": "string"
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "pipeline_master_sorted_array",
+                "type": "array",
+                "of": "object",
+                "label": "Pipeline Master Array",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Sequence",
+                    "parse_output": "integer_conversion",
+                    "name": "sequence",
+                    "type": "integer"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "stage",
+                    "type": "string"
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "82369c26-1c10-4e99-995e-8d93aeade0df"
+      }
+    ],
+    "uuid": "ba273fc4-9062-4986-b003-99f01a814766"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_custom_code",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

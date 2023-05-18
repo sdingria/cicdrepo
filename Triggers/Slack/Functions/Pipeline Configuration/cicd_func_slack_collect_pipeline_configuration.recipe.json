@@ -1,0 +1,1673 @@
+{
+  "name": "CICD | FUNC | (Slack) Collect Pipeline Configuration",
+  "description": "When there is a new command to Slack Workbot, do action and other actions",
+  "version": 117,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "6033a040",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Trigger ID\"},{\"name\":\"user_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User ID\"},{\"name\":\"pipeline_id\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Pipeline ID\"},{\"name\":\"user_name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User name\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Trigger ID",
+            "name": "trigger_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Pipeline ID",
+            "name": "pipeline_id",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "User name",
+            "name": "user_name",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "d7ad04f4",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | User Permission Analyzer</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | User Permission Analyzer"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/RBAC/cicd_func_user_permission_analyzer.recipe.json",
+            "name": "CICD | FUNC | User Permission Analyzer",
+            "folder": "Functions/RBAC"
+          },
+          "parameters": {
+            "user": "#{_('data.workato_recipe_function.6033a040.parameters.user_id')}",
+            "permissions": "=[\"manage_pipeline_configuration\"]"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "object",
+                "label": "Permissions",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Result",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Result",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "result",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "result",
+                    "type": "boolean",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "User",
+                "name": "user",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "string",
+                "label": "Permissions",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "30d08ae3-6918-4e06-8b37-dd0f5741f70d"
+      },
+      {
+        "number": 2,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "is_not_true",
+              "lhs": "#{_('data.workato_recipe_function.d7ad04f4.result.permissions.first.result')}",
+              "rhs": "",
+              "uuid": "condition-12250439-5032-42bc-b97a-7027df1f9c06"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 3,
+            "provider": "slack_bot",
+            "name": "post_bot_message",
+            "as": "f0eadc69",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "channel": true,
+              "message.color": true
+            },
+            "input": {
+              "channel": "#{_('data.workato_recipe_function.6033a040.parameters.user_id')}",
+              "message": {
+                "pretext": ":x: Error!",
+                "attachment_text": "Insufficient privileges!",
+                "color": "danger"
+              }
+            },
+            "visible_config_fields": [
+              "blocks",
+              "blocks.block_type",
+              "blocks.section_text",
+              "blocks.image_url",
+              "blocks.alt_text",
+              "blocks.button_title",
+              "blocks.url",
+              "blocks.bot_command",
+              "blocks.params",
+              "blocks.style",
+              "blocks.attachment_fields",
+              "blocks.attachment_fields.value",
+              "blocks.placeholder_text",
+              "blocks.menu_type",
+              "blocks.dynamic_menu_recipe",
+              "blocks.field_name",
+              "blocks.options",
+              "blocks.options.title",
+              "blocks.options.bot_command",
+              "blocks.options.params",
+              "blocks.options.init_value",
+              "blocks.init_option",
+              "blocks.initial_date",
+              "blocks.options.value",
+              "blocks.init_options",
+              "blocks.image_title",
+              "blocks.external_id",
+              "blocks.elements",
+              "blocks.elements.type",
+              "blocks.elements.text",
+              "blocks.elements.image_url",
+              "blocks.elements.alt_text",
+              "blocks.actions",
+              "blocks.actions.type",
+              "blocks.actions.button_title",
+              "blocks.actions.url",
+              "blocks.actions.bot_command",
+              "blocks.actions.params",
+              "blocks.actions.style",
+              "blocks.actions.placeholder_text",
+              "blocks.actions.initial_date",
+              "blocks.actions.field_name",
+              "blocks.actions.options",
+              "blocks.actions.options.params",
+              "blocks.actions.menu_type",
+              "blocks.actions.dynamic_menu_recipe",
+              "blocks.objects",
+              "blocks.objects.blocks",
+              "blocks.objects.blocks.block_type",
+              "blocks.objects.blocks.section_text",
+              "blocks.objects.blocks.image_url",
+              "blocks.objects.blocks.alt_text",
+              "blocks.objects.blocks.button_title",
+              "blocks.objects.blocks.url",
+              "blocks.objects.blocks.bot_command",
+              "blocks.objects.blocks.params",
+              "blocks.objects.blocks.style",
+              "blocks.objects.blocks.attachment_fields",
+              "blocks.objects.blocks.attachment_fields.value",
+              "blocks.objects.blocks.placeholder_text",
+              "blocks.objects.blocks.menu_type",
+              "blocks.objects.blocks.dynamic_menu_recipe",
+              "blocks.objects.blocks.field_name",
+              "blocks.objects.blocks.options",
+              "blocks.objects.blocks.options.title",
+              "blocks.objects.blocks.options.bot_command",
+              "blocks.objects.blocks.options.params",
+              "blocks.objects.blocks.options.init_value",
+              "blocks.objects.blocks.init_option",
+              "blocks.objects.blocks.initial_date",
+              "blocks.objects.blocks.image_title",
+              "blocks.objects.blocks.elements",
+              "blocks.objects.blocks.elements.type",
+              "blocks.objects.blocks.elements.text",
+              "blocks.objects.blocks.elements.image_url",
+              "blocks.objects.blocks.elements.alt_text",
+              "blocks.objects.blocks.actions",
+              "blocks.objects.blocks.actions.type",
+              "blocks.objects.blocks.actions.button_title",
+              "blocks.objects.blocks.actions.url",
+              "blocks.objects.blocks.actions.bot_command",
+              "blocks.objects.blocks.actions.params",
+              "blocks.objects.blocks.actions.style",
+              "blocks.objects.blocks.actions.placeholder_text",
+              "blocks.objects.blocks.actions.initial_date",
+              "blocks.objects.blocks.actions.field_name",
+              "blocks.objects.blocks.actions.options",
+              "blocks.objects.blocks.actions.options.params",
+              "blocks.objects.blocks.actions.menu_type",
+              "blocks.objects.blocks.actions.dynamic_menu_recipe",
+              "text",
+              "message.title",
+              "message.title_link",
+              "message.attachment_text",
+              "message.color",
+              "attachment_fields",
+              "attachment_buttons",
+              "attachment_items.message.title",
+              "attachment_items.message.title_link",
+              "attachment_items.message.attachment_text",
+              "attachment_items.message.color",
+              "attachment_items.attachment_fields",
+              "attachment_items.attachment_buttons",
+              "advanced.ts",
+              "message.pretext"
+            ],
+            "uuid": "1fff36fe-a532-4906-9d1b-92ae2d5c66d9"
+          },
+          {
+            "number": 4,
+            "keyword": "stop",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "f0dcf476-1dbb-4ed0-8436-c8f6f219ed19"
+          }
+        ],
+        "uuid": "aae5d7c6-4013-445f-be1b-be088faae137"
+      },
+      {
+        "number": 5,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "c97efaee",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Sort Pipeline Stage Master</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | Sort Pipeine Stage Master"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/cicd_func_sort_pipeline_stage_master.recipe.json",
+            "name": "CICD | FUNC | Sort Pipeline Stage Master",
+            "folder": "Functions"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "pipeline_master_sorted_array",
+                "type": "array",
+                "of": "object",
+                "label": "Pipeline Master Array",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Sequence",
+                    "parse_output": "integer_conversion",
+                    "name": "sequence",
+                    "type": "integer"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "stage",
+                    "type": "string"
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "74f08769-43d0-413f-9046-ec5c51fe8085"
+      },
+      {
+        "number": 6,
+        "provider": "workato_variable",
+        "name": "declare_variable",
+        "as": "d0f6cf76",
+        "title": "  Create variables Trigger ID, Pipeline ID, Modal Cancelled",
+        "description": "Create variables <span class=\"provider\">Trigger ID</span>, <span class=\"provider\">Pipeline ID</span>, <span class=\"provider\">Modal Cancelled</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "variables.data.modal_cancelled": true
+        },
+        "input": {
+          "variables": {
+            "schema": "[{\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":true,\"label\":\"Trigger ID\",\"control_type\":\"text\"},{\"name\":\"pipeline_id\",\"type\":\"string\",\"optional\":true,\"label\":\"Pipeline ID\",\"control_type\":\"text\"},{\"name\":\"modal_cancelled\",\"type\":\"boolean\",\"optional\":true,\"label\":\"Modal Cancelled\",\"control_type\":\"checkbox\"}]",
+            "data": {
+              "trigger_id": "#{_('data.workato_recipe_function.6033a040.parameters.trigger_id')}",
+              "pipeline_id": "=_('data.workato_recipe_function.6033a040.parameters.pipeline_id').present? ? _('data.workato_recipe_function.6033a040.parameters.pipeline_id') : workato.uuid",
+              "modal_cancelled": "false"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "text",
+            "label": "Trigger ID",
+            "name": "trigger_id",
+            "optional": true,
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "label": "Pipeline ID",
+            "name": "pipeline_id",
+            "optional": true,
+            "type": "string"
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Modal Cancelled",
+            "name": "modal_cancelled",
+            "optional": true,
+            "toggle_field": {
+              "label": "Modal Cancelled",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "modal_cancelled",
+              "type": "boolean",
+              "optional": true
+            },
+            "toggle_hint": "Select from option list",
+            "type": "boolean",
+            "parse_output": {
+            },
+            "render_input": {
+            }
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "add_field_label": "Add a variable",
+            "control_type": "form-schema-builder",
+            "empty_schema_title": "Add variables by giving them a name, type and default value",
+            "exclude_fields": [
+              "hint"
+            ],
+            "item_label": "variable",
+            "label": "Variables",
+            "mark_as_required": true,
+            "name": "variables",
+            "ngIf": "!input.name",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "broadcast_change_event": true,
+                "type": "string",
+                "name": "schema"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "type": "string",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline ID",
+                    "name": "pipeline_id",
+                    "type": "string",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Modal Cancelled",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Modal Cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "modal_cancelled",
+                      "type": "boolean",
+                      "optional": true
+                    },
+                    "name": "modal_cancelled",
+                    "type": "boolean",
+                    "optional": true,
+                    "hint": "Defaults to nil if not supplied.",
+                    "sticky": true
+                  }
+                ],
+                "label": "Data",
+                "type": "object",
+                "name": "data"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "variables.data.trigger_id",
+          "variables",
+          "variables.schema",
+          "variables.data",
+          "variables.data.pipeline_id",
+          "variables.data.build_configuration",
+          "variables.data.deployment_mode",
+          "variables.data.modal_cancelled"
+        ],
+        "uuid": "dadd00d5-ad52-4c8c-9868-f1803cbdf938"
+      },
+      {
+        "number": 7,
+        "as": "d2366094",
+        "keyword": "foreach",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 8,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "#{_('data.foreach.d2366094.stage')}",
+                  "rhs": "trigger",
+                  "uuid": "condition-bf224259-5de8-4c63-9245-8252d1dcf256"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 9,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "9a52a5a7",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Populate Trigger Information</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "Populate Trigger Information"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Triggers/Slack/Functions/Pipeline Configuration/Stages/cicd_func_slack_populate_trigger_information.recipe.json",
+                    "name": "CICD | FUNC | (Slack) Populate Trigger Information",
+                    "folder": "Triggers/Slack/Functions/Pipeline Configuration/Stages"
+                  },
+                  "parameters": {
+                    "trigger_id": "#{_('data.workato_variable.d0f6cf76.trigger_id')}",
+                    "stage_info": {
+                      "current_sequence": "=_('data.foreach.d2366094.index', 'foreach_meta') + 1",
+                      "total_stages": "#{_('data.foreach.d2366094.size', 'foreach_meta')}"
+                    },
+                    "pipeline_info": {
+                      "pipeline_id": "#{_('data.workato_variable.d0f6cf76.pipeline_id')}"
+                    }
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline description",
+                            "name": "pipeline_description",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Trigger mode",
+                            "name": "trigger_mode",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source environment",
+                            "name": "source_environment",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment mode",
+                            "name": "deployment_mode",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Trigger info",
+                        "name": "trigger_info",
+                        "type": "object",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger ID",
+                        "name": "trigger_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Modal cancelled",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Modal cancelled",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "modal_cancelled",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "modal_cancelled",
+                        "type": "boolean",
+                        "optional": false,
+                        "default": "false"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Trigger ID",
+                        "name": "trigger_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Current sequence",
+                            "parse_output": "integer_conversion",
+                            "name": "current_sequence",
+                            "type": "integer",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Total stages",
+                            "parse_output": "integer_conversion",
+                            "name": "total_stages",
+                            "type": "integer",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Stage Info",
+                        "name": "stage_info",
+                        "type": "object",
+                        "optional": false
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline ID",
+                            "name": "pipeline_id",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Pipeline Info",
+                        "name": "pipeline_info",
+                        "type": "object",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "dae2e5ed-0985-40c8-9eaf-5b452ad3ffb5"
+              },
+              {
+                "number": 10,
+                "provider": "workato_variable",
+                "name": "update_variables",
+                "as": "ab491edf",
+                "title": null,
+                "description": "Update variables <span class=\"provider\">Trigger ID, Modal Cancelled</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": [
+                    {
+                      "label": "Trigger ID (step 7)",
+                      "value": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:trigger_id"
+                    },
+                    {
+                      "label": "Modal Cancelled (step 7)",
+                      "value": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:modal_cancelled"
+                    }
+                  ]
+                },
+                "toggleCfg": {
+                  "modal_cancelled": false
+                },
+                "input": {
+                  "name": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:trigger_id\ndadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:modal_cancelled",
+                  "trigger_id": "#{_('data.workato_recipe_function.9a52a5a7.result.trigger_id')}",
+                  "modal_cancelled": "#{_('data.workato_recipe_function.9a52a5a7.result.modal_cancelled')}"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "optional": true,
+                    "sticky": true,
+                    "type": "string",
+                    "strip_interpolation": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Modal Cancelled",
+                    "name": "modal_cancelled",
+                    "optional": true,
+                    "sticky": true,
+                    "toggle_field": {
+                      "label": "Modal Cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                      "strip_interpolation": true,
+                      "sticky": true,
+                      "optional": true,
+                      "type": "boolean",
+                      "name": "modal_cancelled"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "boolean",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    },
+                    "strip_interpolation": true
+                  }
+                ],
+                "uuid": "8a9a8fff-8a0c-46b3-ba87-cd3ef42b30fd"
+              }
+            ],
+            "uuid": "f240da0a-e8c6-490a-83ff-3fdfbee5af8f"
+          },
+          {
+            "number": 11,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "#{_('data.foreach.d2366094.stage')}",
+                  "rhs": "build",
+                  "uuid": "condition-bf224259-5de8-4c63-9245-8252d1dcf256"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 12,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "9e47f1bf",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Populate Build Information</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUN | Populate Build Information"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Triggers/Slack/Functions/Pipeline Configuration/Stages/cicd_func_slack_populate_build_information.recipe.json",
+                    "name": "CICD | FUNC | (Slack) Populate Build Information",
+                    "folder": "Triggers/Slack/Functions/Pipeline Configuration/Stages"
+                  },
+                  "parameters": {
+                    "trigger_id": "#{_('data.workato_variable.d0f6cf76.trigger_id')}",
+                    "stage_info": {
+                      "current_sequence": "=_('data.foreach.d2366094.index', 'foreach_meta') + 1",
+                      "total_stages": "#{_('data.foreach.d2366094.size', 'foreach_meta')}"
+                    },
+                    "pipeline_info": {
+                      "pipeline_id": "#{_('data.workato_variable.d0f6cf76.pipeline_id')}"
+                    }
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Dependency handling",
+                            "name": "dependency_handling",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Aqs check",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Aqs check",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "aqs_check",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "aqs_check",
+                            "type": "boolean",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Build configuration",
+                            "name": "build_configuration",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Build info",
+                        "name": "build_info",
+                        "type": "object",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger ID",
+                        "name": "trigger_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Modal cancelled",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Modal cancelled",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "modal_cancelled",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "modal_cancelled",
+                        "type": "boolean",
+                        "optional": false,
+                        "default": "false"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Trigger ID",
+                        "name": "trigger_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Current sequence",
+                            "parse_output": "integer_conversion",
+                            "name": "current_sequence",
+                            "type": "integer",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Total stages",
+                            "parse_output": "integer_conversion",
+                            "name": "total_stages",
+                            "type": "integer",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Stage Info",
+                        "name": "stage_info",
+                        "type": "object",
+                        "optional": false
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline ID",
+                            "name": "pipeline_id",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Pipeline Info",
+                        "name": "pipeline_info",
+                        "type": "object",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "e48f56f7-4366-4dc8-88a5-eb897030a57a",
+                "skip": false
+              },
+              {
+                "number": 13,
+                "provider": "workato_variable",
+                "name": "update_variables",
+                "as": "d60a1a36",
+                "title": null,
+                "description": "Update variables <span class=\"provider\">Trigger ID, Modal Cancelled</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": [
+                    {
+                      "label": "Trigger ID (step 7)",
+                      "value": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:trigger_id"
+                    },
+                    {
+                      "label": "Modal Cancelled (step 7)",
+                      "value": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:modal_cancelled"
+                    }
+                  ]
+                },
+                "toggleCfg": {
+                  "modal_cancelled": false
+                },
+                "input": {
+                  "name": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:trigger_id\ndadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:modal_cancelled",
+                  "trigger_id": "#{_('data.workato_recipe_function.9e47f1bf.result.trigger_id')}",
+                  "modal_cancelled": "#{_('data.workato_recipe_function.9e47f1bf.result.modal_cancelled')}"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "optional": true,
+                    "sticky": true,
+                    "type": "string",
+                    "strip_interpolation": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Modal Cancelled",
+                    "name": "modal_cancelled",
+                    "optional": true,
+                    "sticky": true,
+                    "toggle_field": {
+                      "label": "Modal Cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                      "strip_interpolation": true,
+                      "sticky": true,
+                      "optional": true,
+                      "type": "boolean",
+                      "name": "modal_cancelled"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "boolean",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    },
+                    "strip_interpolation": true
+                  }
+                ],
+                "uuid": "e19a3b2c-81cb-4ff9-9039-a6eb1310a07d"
+              }
+            ],
+            "uuid": "6007af3c-1f62-4339-af97-03dbf4f9ad13"
+          },
+          {
+            "number": 14,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "equals_to",
+                  "lhs": "#{_('data.foreach.d2366094.stage')}",
+                  "rhs": "deploy",
+                  "uuid": "condition-bf224259-5de8-4c63-9245-8252d1dcf256"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 15,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "3a94c739",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | (Slack) Populate Deploy Information</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUN | Populate Deploy Information"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Triggers/Slack/Functions/Pipeline Configuration/Stages/cicd_func_slack_populate_deploy_information.recipe.json",
+                    "name": "CICD | FUNC | (Slack) Populate Deploy Information",
+                    "folder": "Triggers/Slack/Functions/Pipeline Configuration/Stages"
+                  },
+                  "parameters": {
+                    "trigger_id": "#{_('data.workato_variable.d0f6cf76.trigger_id')}",
+                    "stage_info": {
+                      "current_sequence": "=_('data.foreach.d2366094.index', 'foreach_meta') + 1",
+                      "total_stages": "#{_('data.foreach.d2366094.size', 'foreach_meta')}",
+                      "source_environment": "#{_('data.workato_recipe_function.9a52a5a7.result.trigger_info.source_environment')}"
+                    },
+                    "pipeline_context": {
+                      "pipeline_id": "#{_('data.workato_variable.d0f6cf76.pipeline_id')}",
+                      "build_configuration": "#{_('data.workato_recipe_function.9e47f1bf.result.build_info.build_configuration')}",
+                      "deployment_mode": "#{_('data.workato_recipe_function.9a52a5a7.result.trigger_info.deployment_mode')}"
+                    }
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Post deployment",
+                            "name": "post_deployment",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Environment type",
+                            "name": "environment_type",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Target env",
+                            "name": "target_env",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Approval channel",
+                            "name": "approval_channel",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Deploy on Approval",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Deploy on Approval",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "deploy_on_approval",
+                              "type": "boolean",
+                              "optional": true
+                            },
+                            "name": "deploy_on_approval",
+                            "type": "boolean",
+                            "optional": true
+                          }
+                        ],
+                        "label": "Deploy info",
+                        "name": "deploy_info",
+                        "type": "object",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Trigger ID",
+                        "name": "trigger_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Modal cancelled",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Modal cancelled",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "modal_cancelled",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "modal_cancelled",
+                        "type": "boolean",
+                        "optional": false,
+                        "deafult": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Trigger ID",
+                        "name": "trigger_id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Current sequence",
+                            "parse_output": "integer_conversion",
+                            "name": "current_sequence",
+                            "type": "integer",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Total stages",
+                            "parse_output": "integer_conversion",
+                            "name": "total_stages",
+                            "type": "integer",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Source environment",
+                            "name": "source_environment",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Stage Info",
+                        "name": "stage_info",
+                        "type": "object",
+                        "optional": false
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline ID",
+                            "name": "pipeline_id",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Build Configuration",
+                            "name": "build_configuration",
+                            "type": "string",
+                            "optional": false
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Deployment mode",
+                            "name": "deployment_mode",
+                            "type": "string",
+                            "optional": false
+                          }
+                        ],
+                        "label": "Pipeline Context",
+                        "name": "pipeline_context",
+                        "type": "object",
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "2eebb7a3-1c37-4205-9e38-0ef6fcf08dcd"
+              },
+              {
+                "number": 16,
+                "provider": "workato_variable",
+                "name": "update_variables",
+                "as": "d2cd4a65",
+                "title": null,
+                "description": "Update variables <span class=\"provider\">Trigger ID, Modal Cancelled</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": [
+                    {
+                      "label": "Trigger ID (step 7)",
+                      "value": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:trigger_id"
+                    },
+                    {
+                      "label": "Modal Cancelled (step 7)",
+                      "value": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:modal_cancelled"
+                    }
+                  ]
+                },
+                "toggleCfg": {
+                  "modal_cancelled": false
+                },
+                "input": {
+                  "name": "dadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:trigger_id\ndadd00d5-ad52-4c8c-9868-f1803cbdf938:d0f6cf76:modal_cancelled",
+                  "trigger_id": "#{_('data.workato_recipe_function.3a94c739.result.trigger_id')}",
+                  "modal_cancelled": "#{_('data.workato_recipe_function.3a94c739.result.modal_cancelled')}"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Trigger ID",
+                    "name": "trigger_id",
+                    "optional": true,
+                    "sticky": true,
+                    "type": "string",
+                    "strip_interpolation": true
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                    "label": "Modal Cancelled",
+                    "name": "modal_cancelled",
+                    "optional": true,
+                    "sticky": true,
+                    "toggle_field": {
+                      "label": "Modal Cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "hint": "Provide a value for the variable. When the value is not supplied, the variable is not updated.<br>To clear the value, set the value to <b>nil</b> in formula mode.",
+                      "strip_interpolation": true,
+                      "sticky": true,
+                      "optional": true,
+                      "type": "boolean",
+                      "name": "modal_cancelled"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "boolean",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    },
+                    "strip_interpolation": true
+                  }
+                ],
+                "uuid": "da0eeb77-cea0-480d-ad5b-e0be9361d298"
+              }
+            ],
+            "uuid": "39ffe53e-b9ea-4adf-bf9d-4723dfbff0d7"
+          },
+          {
+            "number": 17,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "is_true",
+                  "lhs": "#{_('data.workato_variable.d0f6cf76.modal_cancelled')}",
+                  "rhs": "",
+                  "uuid": "condition-c1a98147-8bbd-4e9c-98a5-fe1188a94934"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 18,
+                "keyword": "stop",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "stop_with_error": "false"
+                },
+                "uuid": "5fbc69bb-c26c-46d9-abdf-12a5860b3d8b"
+              }
+            ],
+            "uuid": "948df303-cf82-4dc1-bdec-bfc1e5b9ebc8"
+          }
+        ],
+        "source": "#{_('data.workato_recipe_function.c97efaee.result.pipeline_master_sorted_array')}",
+        "uuid": "9f231cba-ea91-4b1a-8715-dad69a4bad72"
+      },
+      {
+        "number": 19,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "fc56c9b4",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Save Stage Information</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "Save Stage Information"
+        },
+        "toggleCfg": {
+          "parameters.build_info.aqs_check": false,
+          "parameters.deploy_info.deploy_on_approval": false
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/Pipeline Configuration/cicd_func_save_stage_information.recipe.json",
+            "name": "CICD | FUNC | Save Stage Information",
+            "folder": "Functions/Pipeline Configuration"
+          },
+          "parameters": {
+            "pipeline_context": {
+              "pipeline_id": "#{_('data.workato_variable.d0f6cf76.pipeline_id')}",
+              "updated_by": "#{_('data.workato_recipe_function.6033a040.parameters.user_name')}",
+              "user_id": "#{_('data.workato_recipe_function.6033a040.parameters.user_id')}"
+            },
+            "trigger_info": {
+              "pipeline_description": "#{_('data.workato_recipe_function.9a52a5a7.result.trigger_info.pipeline_description')}",
+              "trigger_mode": "#{_('data.workato_recipe_function.9a52a5a7.result.trigger_info.trigger_mode')}",
+              "source_environment": "#{_('data.workato_recipe_function.9a52a5a7.result.trigger_info.source_environment')}",
+              "deployment_mode": "#{_('data.workato_recipe_function.9a52a5a7.result.trigger_info.deployment_mode')}"
+            },
+            "build_info": {
+              "dependency_handling": "#{_('data.workato_recipe_function.9e47f1bf.result.build_info.dependency_handling')}",
+              "aqs_check": "#{_('data.workato_recipe_function.9e47f1bf.result.build_info.aqs_check')}",
+              "build_configuration": "#{_('data.workato_recipe_function.9e47f1bf.result.build_info.build_configuration')}"
+            },
+            "deploy_info": {
+              "environment_type": "#{_('data.workato_recipe_function.3a94c739.result.deploy_info.environment_type')}",
+              "target_env": "#{_('data.workato_recipe_function.3a94c739.result.deploy_info.target_env')}",
+              "approval_channel": "#{_('data.workato_recipe_function.3a94c739.result.deploy_info.approval_channel')}",
+              "post_deployment": "#{_('data.workato_recipe_function.3a94c739.result.deploy_info.post_deployment')}",
+              "deploy_on_approval": "#{_('data.workato_recipe_function.3a94c739.result.deploy_info.deploy_on_approval')}"
+            }
+          }
+        },
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline ID",
+                    "name": "pipeline_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Updated by",
+                    "name": "updated_by",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "label": "Pipeline context",
+                "name": "pipeline_context",
+                "type": "object",
+                "optional": false
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline description",
+                    "name": "pipeline_description",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Trigger mode",
+                    "name": "trigger_mode",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Source environment",
+                    "name": "source_environment",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployment mode",
+                    "name": "deployment_mode",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "label": "Trigger info",
+                "name": "trigger_info",
+                "type": "object",
+                "optional": false
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Dependency handling",
+                    "name": "dependency_handling",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Aqs check",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Aqs check",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "aqs_check",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "aqs_check",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Build configuration",
+                    "name": "build_configuration",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "label": "Build info",
+                "name": "build_info",
+                "type": "object",
+                "optional": false
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Post deployment",
+                    "name": "post_deployment",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment type",
+                    "name": "environment_type",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target env",
+                    "name": "target_env",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Approval channel",
+                    "name": "approval_channel",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Deploy on Approval",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Deploy on Approval",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "deploy_on_approval",
+                      "type": "boolean",
+                      "optional": true
+                    },
+                    "name": "deploy_on_approval",
+                    "type": "boolean",
+                    "optional": true
+                  }
+                ],
+                "label": "Deploy info",
+                "name": "deploy_info",
+                "type": "object",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters",
+          "parameters.deploy_info.post_deployment",
+          "parameters.pipeline_context",
+          "parameters.pipeline_context.pipeline_id",
+          "parameters.pipeline_context.updated_by",
+          "parameters.pipeline_context.user_id",
+          "parameters.trigger_info",
+          "parameters.trigger_info.pipeline_description",
+          "parameters.trigger_info.trigger_mode",
+          "parameters.trigger_info.source_environment",
+          "parameters.trigger_info.deployment_mode",
+          "parameters.build_info",
+          "parameters.build_info.dependency_handling",
+          "parameters.build_info.aqs_check",
+          "parameters.build_info.build_configuration",
+          "parameters.deploy_info",
+          "parameters.deploy_info.environment_type",
+          "parameters.deploy_info.target_env",
+          "parameters.deploy_info.approval_channel",
+          "parameters.deploy_info.deploy_on_approval"
+        ],
+        "comment": "",
+        "uuid": "2bf31cc6-7e07-4b4d-a9cf-ed7bc7319bbc",
+        "skip": false
+      },
+      {
+        "number": 20,
+        "provider": "slack_bot",
+        "name": "post_bot_message",
+        "as": "03a13995",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "channel": true,
+          "message.color": true
+        },
+        "input": {
+          "message": {
+            "pretext": ":white_check_mark: Success!",
+            "attachment_text": "Pipeline configuration is saved successfully.\n*Identifier*: `#{_('data.workato_variable.d0f6cf76.pipeline_id')}`\n*Description*: `#{_('data.workato_recipe_function.9a52a5a7.result.trigger_info.pipeline_description')}`",
+            "color": "good"
+          },
+          "channel": "#{_('data.workato_recipe_function.6033a040.parameters.user_id')}"
+        },
+        "uuid": "66b2049f-9930-4d31-92de-86ea4cb49f24",
+        "skip": false
+      }
+    ],
+    "comment": "Define how users should command Workbot from Slack",
+    "uuid": "6171f3ab-6938-4cc1-aaad-941f786f1cc0"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "name": "CICD | FUNC | Create Environment Folder",
+  "description": "When there is a function call, do action",
+  "version": 3,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "899f069d",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Environment\",\"name\":\"environment\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Folder Name\",\"name\":\"folder_name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Parent Folder ID\",\"name\":\"parent_folder_id\",\"type\":\"string\",\"optional\":true}]",
+      "result_schema_json": "[{\"label\":\"Folder\",\"name\":\"folder\",\"type\":\"object\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"ID\",\"name\":\"id\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Name\",\"name\":\"name\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Parent ID\",\"name\":\"parent_id\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Created at\",\"name\":\"created_at\",\"type\":\"string\"},{\"control_type\":\"text\",\"label\":\"Updated at\",\"name\":\"updated_at\",\"type\":\"string\"}]}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Environment",
+            "name": "environment",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Folder Name",
+            "name": "folder_name",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Parent Folder ID",
+            "name": "parent_folder_id",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+        "name": "create_folder",
+        "as": "f5ae6772",
+        "title": null,
+        "description": "Create <span class=\"provider\">folder</span> in <span class=\"provider\">Workato</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "workato_environment": false
+        },
+        "input": {
+          "workato_environment": "#{_('data.workato_recipe_function.899f069d.parameters.environment')}",
+          "folder_name": "#{_('data.workato_recipe_function.899f069d.parameters.folder_name')}",
+          "parent_id": "#{_('data.workato_recipe_function.899f069d.parameters.parent_folder_id')}"
+        },
+        "visible_config_fields": [
+          "parent_id"
+        ],
+        "comment": "Get the list of top-level folders in input environment.",
+        "uuid": "d4153549-b4de-4e1c-9de8-10efca07cda1"
+      },
+      {
+        "number": 2,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "41425ba8",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "result": {
+            "folder": {
+              "id": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5ae6772.id')}",
+              "name": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5ae6772.name')}",
+              "parent_id": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5ae6772.parent_id')}",
+              "created_at": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5ae6772.created_at')}",
+              "updated_at": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.f5ae6772.updated_at')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "label": "Folder",
+                "name": "folder",
+                "type": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Parent ID",
+                    "name": "parent_id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Created at",
+                    "name": "created_at",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Updated at",
+                    "name": "updated_at",
+                    "type": "string"
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "label": "Folder",
+                "name": "folder",
+                "type": "object",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Parent ID",
+                    "name": "parent_id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Created at",
+                    "name": "created_at",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Updated at",
+                    "name": "updated_at",
+                    "type": "string"
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "ed8b23a2-2383-4c2d-8eb1-c078a64ea954"
+      }
+    ],
+    "comment": "Create and return a list of folders for the requested Workato environment.",
+    "uuid": "34962b0f-2a8c-42c2-b5fd-084c6545018c"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_cicd_for_workato_v3.connection.json",
+        "name": "CICD | CON | CICD for Workato V3",
+        "folder": "Connections",
+        "custom": true
+      }
+    }
+  ]
+}

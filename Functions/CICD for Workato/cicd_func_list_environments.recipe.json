@@ -1,0 +1,531 @@
+{
+  "name": "CICD | FUNC | List Environments",
+  "description": "When there is a function call, do action",
+  "version": 12,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "5740d605",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Source environment\",\"name\":\"source_environment\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Environment\",\"name\":\"environment\",\"type\":\"string\",\"optional\":true},{\"label\":\"Exclude production\",\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Exclude production\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"exclude_production\",\"type\":\"boolean\",\"optional\":false},\"name\":\"exclude_production\",\"type\":\"boolean\",\"optional\":true,\"default\":\"false\",\"control_type\":\"checkbox\",\"render_input\":{},\"parse_output\":{}}]",
+      "result_schema_json": "[{\"name\":\"environments\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Environments\",\"optional\":false,\"properties\":[{\"control_type\":\"text\",\"label\":\"Name\",\"name\":\"name\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"checkbox\",\"label\":\"Is production\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Is production\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"is_production\",\"type\":\"boolean\",\"optional\":false},\"name\":\"is_production\",\"type\":\"boolean\",\"optional\":false},{\"control_type\":\"integer\",\"label\":\"Level\",\"parse_output\":\"integer_conversion\",\"name\":\"level\",\"type\":\"integer\",\"optional\":false}]}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Source environment",
+            "name": "source_environment",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "Environment",
+            "name": "environment",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "checkbox",
+            "label": "Exclude production",
+            "render_input": {
+            },
+            "parse_output": {
+            },
+            "toggle_hint": "Select from option list",
+            "toggle_field": {
+              "label": "Exclude production",
+              "control_type": "text",
+              "toggle_hint": "Use custom value",
+              "name": "exclude_production",
+              "type": "boolean",
+              "optional": false
+            },
+            "name": "exclude_production",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "present",
+              "lhs": "#{_('data.workato_recipe_function.5740d605.parameters.environment')}",
+              "rhs": "",
+              "uuid": "condition-9bc1ee22-4e83-4e48-84f8-faf5986032d5"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+            "name": "get_environment_by_name",
+            "as": "73ebbc40",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "env_name": false
+            },
+            "input": {
+              "env_name": "#{_('data.workato_recipe_function.5740d605.parameters.environment')}"
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "name": "name",
+                "optional": true,
+                "type": "string"
+              },
+              {
+                "control_type": "number",
+                "label": "Is production",
+                "name": "isProduction",
+                "optional": true,
+                "type": "number",
+                "parse_output": "float_conversion"
+              },
+              {
+                "control_type": "number",
+                "label": "Level",
+                "name": "level",
+                "optional": true,
+                "type": "integer",
+                "parse_output": "integer_conversion"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "control_type": "select",
+                "label": "Environment Name",
+                "name": "env_name",
+                "optional": false,
+                "pick_list": "environments",
+                "toggle_field": {
+                  "name": "env_name",
+                  "label": "Environment Reference",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Use Environment Name"
+                },
+                "toggle_hint": "Select from list",
+                "type": "string"
+              }
+            ],
+            "uuid": "a302da65-8165-4a96-a9be-0277d600396f"
+          },
+          {
+            "number": 3,
+            "provider": "workato_recipe_function",
+            "name": "return_result",
+            "as": "4f8c984b",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "result.environments.is_production": false
+            },
+            "input": {
+              "result": {
+                "environments": {
+                  "name": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.73ebbc40.name')}",
+                  "is_production": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.73ebbc40.isProduction')}",
+                  "level": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.73ebbc40.level')}"
+                }
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "environments",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Environments",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Is production",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Is production",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "is_production",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "is_production",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "integer",
+                        "label": "Level",
+                        "parse_output": "integer_conversion",
+                        "name": "level",
+                        "type": "integer",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "environments",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Environments",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "checkbox",
+                        "label": "Is production",
+                        "render_input": {
+                        },
+                        "parse_output": {
+                        },
+                        "toggle_hint": "Select from option list",
+                        "toggle_field": {
+                          "label": "Is production",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "name": "is_production",
+                          "type": "boolean",
+                          "optional": false
+                        },
+                        "name": "is_production",
+                        "type": "boolean",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "integer",
+                        "label": "Level",
+                        "parse_output": "integer_conversion",
+                        "name": "level",
+                        "type": "integer",
+                        "optional": false
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "001ef1e9-1466-4f92-8ec3-54309718f1ed"
+          }
+        ],
+        "uuid": "9f1c0b51-61f1-4063-acc6-b44b0e7e984c"
+      },
+      {
+        "number": 4,
+        "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+        "name": "get_environments",
+        "as": "5b477304",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "exclude_prod": false,
+          "source_env": false
+        },
+        "input": {
+          "source_env": "=_('data.workato_recipe_function.5740d605.parameters.source_environment').presence",
+          "exclude_prod": "#{_('data.workato_recipe_function.5740d605.parameters.exclude_production')}"
+        },
+        "extended_output_schema": [
+          {
+            "label": "Environments",
+            "name": "environments",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "optional": true,
+                "type": "string",
+                "name": "name"
+              },
+              {
+                "control_type": "number",
+                "label": "Is production",
+                "parse_output": "float_conversion",
+                "optional": true,
+                "type": "number",
+                "name": "isProduction"
+              },
+              {
+                "control_type": "number",
+                "label": "Level",
+                "parse_output": "integer_conversion",
+                "optional": true,
+                "type": "integer",
+                "name": "level"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "control_type": "select",
+            "label": "Source Environment",
+            "name": "source_env",
+            "optional": true,
+            "pick_list": "environments",
+            "toggle_field": {
+              "name": "source_env",
+              "label": "Source Environment Reference",
+              "type": "string",
+              "control_type": "text",
+              "optional": true,
+              "toggle_hint": "Use Environment Name"
+            },
+            "toggle_hint": "Select from list",
+            "type": "string"
+          },
+          {
+            "control_type": "checkbox",
+            "default": false,
+            "label": "Exclude Production",
+            "name": "exclude_prod",
+            "optional": true,
+            "toggle_field": {
+              "name": "exclude_prod",
+              "label": "Exclude Production",
+              "type": "string",
+              "control_type": "text",
+              "optional": true,
+              "toggle_hint": "Use Value"
+            },
+            "toggle_hint": "Select from list",
+            "type": "number",
+            "parse_output": "float_conversion"
+          }
+        ],
+        "visible_config_fields": [
+          "exclude_prod",
+          "source_env"
+        ],
+        "uuid": "cab0086d-ca16-474a-bb68-4170c0f76833"
+      },
+      {
+        "number": 5,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "88502aba",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.environments.is_production": false
+        },
+        "input": {
+          "result": {
+            "environments": {
+              "____source": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.5b477304.environments')}",
+              "name": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.5b477304.environments.first.name')}",
+              "is_production": "=_('data.cicd_for_workato_v3_connector_615247_1662611664.5b477304.environments.first.isProduction')&.is_true? ? true : false",
+              "level": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.5b477304.environments.first.level')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "environments",
+                "type": "array",
+                "of": "object",
+                "label": "Environments",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is production",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is production",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_production",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_production",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Level",
+                    "parse_output": "integer_conversion",
+                    "name": "level",
+                    "type": "integer",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "environments",
+                "type": "array",
+                "of": "object",
+                "label": "Environments",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Is production",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Is production",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "is_production",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "is_production",
+                    "type": "boolean",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Level",
+                    "parse_output": "integer_conversion",
+                    "name": "level",
+                    "type": "integer",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "e24064f7-1732-4529-a25d-40ef762be717"
+      }
+    ],
+    "uuid": "7faa48de-999c-4485-812b-c52db94b9276"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_cicd_for_workato_v3.connection.json",
+        "name": "CICD | CON | CICD for Workato V3",
+        "folder": "Connections",
+        "custom": true
+      }
+    }
+  ]
+}

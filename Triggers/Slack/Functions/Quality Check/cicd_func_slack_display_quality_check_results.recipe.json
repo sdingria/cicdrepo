@@ -1,0 +1,691 @@
+{
+  "name": "CICD | FUNC | (Slack) Display Quality Check Results",
+  "description": "When there is a function call, do action and other actions",
+  "version": 30,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "da28212c",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Aqs execution ID\",\"name\":\"aqs_execution_id\",\"type\":\"string\",\"optional\":false},{\"name\":\"thread_id\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Thread ID\"},{\"name\":\"execution_reference\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Execution reference\"}]",
+      "result_schema_json": "[]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Aqs execution ID",
+            "name": "aqs_execution_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Thread ID",
+            "name": "thread_id",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "Execution reference",
+            "name": "execution_reference",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "bc54afed",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Approval Logs</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | Approval Logs"
+        },
+        "toggleCfg": {
+          "parameters.method": true
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Data Access Functions/cicd_func_approval_logs.recipe.json",
+            "name": "CICD | FUNC | Approval Logs",
+            "folder": "Data Access Functions"
+          },
+          "parameters": {
+            "table": "CICD | Approval Logs",
+            "method": "GET",
+            "entries": {
+              "execution_reference": "#{_('data.workato_recipe_function.da28212c.parameters.execution_reference')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table"
+              },
+              {
+                "control_type": "text",
+                "label": "Method",
+                "type": "string",
+                "name": "method"
+              },
+              {
+                "control_type": "text",
+                "label": "Count",
+                "type": "string",
+                "name": "count"
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Approval channel",
+                    "name": "approval_channel",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "status",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "comments",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Action by",
+                    "name": "action_by",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Action on",
+                    "name": "action_on",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution context",
+                    "name": "execution_context",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table",
+                "optional": true,
+                "default": "CICD | Approval Logs"
+              },
+              {
+                "control_type": "select",
+                "label": "Method",
+                "type": "string",
+                "name": "method",
+                "optional": false,
+                "hint": "GET, POST, PUT or DELETE.  For PUT method, \"id\" is mandatory.",
+                "pick_list": [
+                  [
+                    "GET",
+                    "GET"
+                  ],
+                  [
+                    "POST",
+                    "POST"
+                  ],
+                  [
+                    "PUT",
+                    "PUT"
+                  ],
+                  [
+                    "DELETE",
+                    "DELETE"
+                  ]
+                ],
+                "toggle_hint": "Select from list",
+                "toggle_field": {
+                  "name": "method",
+                  "label": "Method",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Enter Value",
+                  "hint": "Map Method"
+                }
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Approval channel",
+                    "name": "approval_channel",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "status",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "comments",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Action by",
+                    "name": "action_by",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Action on",
+                    "name": "action_on",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution context",
+                    "name": "execution_context",
+                    "type": "string",
+                    "optional": true
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters",
+          "parameters.table",
+          "parameters.entries.execution_reference"
+        ],
+        "uuid": "6f6d6f06-454f-4074-8139-3185610fc6de"
+      },
+      {
+        "number": 2,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "d138fd3e",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Get Execution Results</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | Get Execution Results"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Extensions/Quality Check/AQS/cicd_func_get_execution_results.recipe.json",
+            "name": "CICD | FUNC | Get Execution Results",
+            "folder": "Extensions/Quality Check/AQS"
+          },
+          "parameters": {
+            "aqs_execution_id": "#{_('data.workato_recipe_function.da28212c.parameters.aqs_execution_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Execution ID",
+                "name": "execution_id",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "results",
+                "type": "array",
+                "of": "object",
+                "label": "Results",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution date time",
+                    "name": "execution_date_time",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project ID",
+                    "name": "recipe_manifest_project_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Recipe manifest project name",
+                    "name": "recipe_manifest_project_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Result",
+                    "name": "result",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Percentage score",
+                    "name": "percentage_score",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Non compliant details",
+                    "name": "non_compliant_details",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset type",
+                    "name": "asset_type",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Aqs execution ID",
+                "name": "aqs_execution_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "67851df1-f0b5-4cfd-9067-3d5a600bbadd"
+      },
+      {
+        "number": 3,
+        "provider": "json_parser",
+        "name": "parse_json",
+        "as": "635cccde",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "sample_document": "{\"results\": [{\"rule\":\"Connection Naming Convention\",\"result\":\"fail\",\"message\":\"Naming convention does not adhere to naming standards\",\"asset_id\":\"\",\"asset_name\":\"conn_http_invalid_name.connection.json\",\"asset_type\":\"connection\"},{\"rule\":\"Documentation/comments\",\"result\":\"fail\",\"message\":\"Consider adding more comments to the recipe steps.\",\"asset_id\":\"\",\"asset_name\":\"trigger_aqs_manually.recipe.json\",\"asset_type\":\"recipe\"}]}",
+          "document": "#{_('data.workato_recipe_function.d138fd3e.result.results.first.non_compliant_details')}"
+        },
+        "extended_output_schema": [
+          {
+            "label": "Document",
+            "name": "document",
+            "properties": [
+              {
+                "name": "results",
+                "type": "array",
+                "of": "object",
+                "label": "Results",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Rule",
+                    "type": "string",
+                    "name": "rule"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Result",
+                    "type": "string",
+                    "name": "result"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Message",
+                    "type": "string",
+                    "name": "message"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset ID",
+                    "type": "string",
+                    "name": "asset_id"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset name",
+                    "type": "string",
+                    "name": "asset_name"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset type",
+                    "type": "string",
+                    "name": "asset_type"
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "74c1d499-5a36-4945-9905-4679f84f2297"
+      },
+      {
+        "number": 4,
+        "provider": "slack_bot",
+        "name": "post_bot_message",
+        "as": "76df4e97",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "channel": {
+            "ids": [
+              "C046WM23KR7"
+            ],
+            "titles": [
+              "cicd-v3-approvals"
+            ]
+          }
+        },
+        "toggleCfg": {
+          "channel": true,
+          "attachment_items.message.color": false
+        },
+        "input": {
+          "blocks": [
+            {
+              "block_type": "section_with_text",
+              "section_text": "=\"*Quality Check Results* with execution reference`\" + _('data.workato_recipe_function.da28212c.parameters.aqs_execution_id') + \"`\""
+            },
+            {
+              "block_type": "divider"
+            },
+            {
+              "block_type": "section_with_text",
+              "section_text": "=_('data.workato_recipe_function.d138fd3e.result.results.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.d138fd3e.result.results') == 0 ? '>*~~ _No execution details found._ ~~*' : ''"
+            }
+          ],
+          "multiple_attachments": "true",
+          "attachment_items": {
+            "____source": "#{_('data.json_parser.635cccde.document.results')}",
+            "message": {
+              "title": "*#{_('data.json_parser.635cccde.document.results.first.rule')}*",
+              "footer": "*Asset Name*: #{_('data.json_parser.635cccde.document.results.first.asset_name')}\n*Asset Type*: #{_('data.json_parser.635cccde.document.results.first.asset_type')}",
+              "color": "=_('data.json_parser.635cccde.document.results.first.result') == \"fail\" ? \"danger\" : \"good\""
+            },
+            "attachment_fields": [
+              {
+                "title": "Result",
+                "value": "#{_('data.json_parser.635cccde.document.results.first.result')}"
+              },
+              {
+                "title": "Message",
+                "value": "#{_('data.json_parser.635cccde.document.results.first.message')}"
+              }
+            ]
+          },
+          "advanced": {
+            "thread_ts": "#{_('data.workato_recipe_function.da28212c.parameters.thread_id')}"
+          },
+          "channel": "#{_('data.workato_recipe_function.bc54afed.result.entries.first.approval_channel')}"
+        },
+        "visible_config_fields": [
+          "blocks",
+          "blocks.block_type",
+          "blocks.section_text",
+          "blocks.image_url",
+          "blocks.alt_text",
+          "blocks.button_title",
+          "blocks.url",
+          "blocks.bot_command",
+          "blocks.params",
+          "blocks.style",
+          "blocks.attachment_fields",
+          "blocks.attachment_fields.value",
+          "blocks.placeholder_text",
+          "blocks.menu_type",
+          "blocks.dynamic_menu_recipe",
+          "blocks.field_name",
+          "blocks.options",
+          "blocks.options.title",
+          "blocks.options.bot_command",
+          "blocks.options.params",
+          "blocks.options.init_value",
+          "blocks.init_option",
+          "blocks.initial_date",
+          "blocks.options.value",
+          "blocks.init_options",
+          "blocks.image_title",
+          "blocks.external_id",
+          "blocks.elements",
+          "blocks.elements.type",
+          "blocks.elements.text",
+          "blocks.elements.image_url",
+          "blocks.elements.alt_text",
+          "blocks.actions",
+          "blocks.actions.type",
+          "blocks.actions.button_title",
+          "blocks.actions.url",
+          "blocks.actions.bot_command",
+          "blocks.actions.params",
+          "blocks.actions.style",
+          "blocks.actions.placeholder_text",
+          "blocks.actions.initial_date",
+          "blocks.actions.field_name",
+          "blocks.actions.options",
+          "blocks.actions.options.params",
+          "blocks.actions.menu_type",
+          "blocks.actions.dynamic_menu_recipe",
+          "blocks.objects",
+          "blocks.objects.blocks",
+          "blocks.objects.blocks.block_type",
+          "blocks.objects.blocks.section_text",
+          "blocks.objects.blocks.image_url",
+          "blocks.objects.blocks.alt_text",
+          "blocks.objects.blocks.button_title",
+          "blocks.objects.blocks.url",
+          "blocks.objects.blocks.bot_command",
+          "blocks.objects.blocks.params",
+          "blocks.objects.blocks.style",
+          "blocks.objects.blocks.attachment_fields",
+          "blocks.objects.blocks.attachment_fields.value",
+          "blocks.objects.blocks.placeholder_text",
+          "blocks.objects.blocks.menu_type",
+          "blocks.objects.blocks.dynamic_menu_recipe",
+          "blocks.objects.blocks.field_name",
+          "blocks.objects.blocks.options",
+          "blocks.objects.blocks.options.title",
+          "blocks.objects.blocks.options.bot_command",
+          "blocks.objects.blocks.options.params",
+          "blocks.objects.blocks.options.init_value",
+          "blocks.objects.blocks.init_option",
+          "blocks.objects.blocks.initial_date",
+          "blocks.objects.blocks.image_title",
+          "blocks.objects.blocks.elements",
+          "blocks.objects.blocks.elements.type",
+          "blocks.objects.blocks.elements.text",
+          "blocks.objects.blocks.elements.image_url",
+          "blocks.objects.blocks.elements.alt_text",
+          "blocks.objects.blocks.actions",
+          "blocks.objects.blocks.actions.type",
+          "blocks.objects.blocks.actions.button_title",
+          "blocks.objects.blocks.actions.url",
+          "blocks.objects.blocks.actions.bot_command",
+          "blocks.objects.blocks.actions.params",
+          "blocks.objects.blocks.actions.style",
+          "blocks.objects.blocks.actions.placeholder_text",
+          "blocks.objects.blocks.actions.initial_date",
+          "blocks.objects.blocks.actions.field_name",
+          "blocks.objects.blocks.actions.options",
+          "blocks.objects.blocks.actions.options.params",
+          "blocks.objects.blocks.actions.menu_type",
+          "blocks.objects.blocks.actions.dynamic_menu_recipe",
+          "text",
+          "message.title",
+          "message.title_link",
+          "message.attachment_text",
+          "message.color",
+          "attachment_fields",
+          "attachment_buttons",
+          "attachment_items.message.title",
+          "attachment_items.message.title_link",
+          "attachment_items.message.attachment_text",
+          "attachment_items.message.color",
+          "attachment_items.attachment_fields",
+          "attachment_items.attachment_buttons",
+          "advanced.ts",
+          "multiple_attachments",
+          "channel",
+          "attachment_items.message.footer",
+          "attachment_items",
+          "attachment_items.message",
+          "attachment_fields.value",
+          "attachment_fields.title",
+          "attachment_items.attachment_fields.value",
+          "attachment_items.attachment_fields.title",
+          "advanced.thread_ts"
+        ],
+        "uuid": "b95ecdfc-cec7-4233-83e3-43a2255de15a"
+      }
+    ],
+    "uuid": "b75846f6-78d3-4a5e-885b-9482792a5306"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

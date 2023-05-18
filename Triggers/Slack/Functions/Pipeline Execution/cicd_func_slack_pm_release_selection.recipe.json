@@ -1,0 +1,1327 @@
+{
+  "name": "CICD | FUNC | (Slack) PM Release Selection",
+  "description": "When there is a function call, do action and other actions",
+  "version": 15,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "e63538ea",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Project config ID\"},{\"name\":\"trigger_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Trigger ID\"}]",
+      "result_schema_json": "[{\"control_type\":\"text\",\"label\":\"PM Release\",\"name\":\"pm_release\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"checkbox\",\"label\":\"Modal cancelled\",\"render_input\":{},\"parse_output\":{},\"toggle_hint\":\"Select from option list\",\"toggle_field\":{\"label\":\"Modal cancelled\",\"control_type\":\"text\",\"toggle_hint\":\"Use custom value\",\"name\":\"modal_cancelled\",\"type\":\"boolean\",\"optional\":false},\"name\":\"modal_cancelled\",\"type\":\"boolean\",\"optional\":false,\"default\":\"false\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Project config ID",
+            "name": "project_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Trigger ID",
+            "name": "trigger_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "4dcfe76d",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Project Configuration"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+            "name": "CICD | LT | Project Configuration",
+            "folder": ""
+          },
+          "parameters": {
+            "col1": "#{_('data.workato_recipe_function.e63538ea.parameters.project_config_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Context",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Notification Settings",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "label": "Entry",
+                "type": "object",
+                "name": "entry"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Id",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Name",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Environment",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Id",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Asset Type",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Context",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Notification Settings",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Dependencies",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Target Folder Details",
+                "name": "col9",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Last Updated",
+                "name": "col10",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "87b9204a-5d71-48c6-bec9-bb24ea6f9b46"
+      },
+      {
+        "number": 2,
+        "provider": "json_parser",
+        "name": "parse_json",
+        "as": "825522aa",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "sample_document": "{\"code_repository\":null,\"code_reviewer\":null,\"pm_project_key\":\"ACCL\"}",
+          "document": "=_('data.lookup_table.4dcfe76d.entries.first.entry.col6').presence || \"{}\""
+        },
+        "extended_output_schema": [
+          {
+            "label": "Document",
+            "name": "document",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Code repository",
+                "type": "string",
+                "name": "code_repository"
+              },
+              {
+                "control_type": "text",
+                "label": "Code reviewer",
+                "type": "string",
+                "name": "code_reviewer"
+              },
+              {
+                "control_type": "text",
+                "label": "Pm project key",
+                "type": "string",
+                "name": "pm_project_key"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "4b53df27-f581-4fe3-b139-63c0754f293a"
+      },
+      {
+        "number": 3,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "present",
+              "lhs": "#{_('data.workato.job_context.account_properties.Accl_CICD_project_management_system', 'account_property', 'Accl.CICD.project_management_system')}",
+              "rhs": "",
+              "uuid": "condition-a3a9a8bf-9c52-4e84-b48c-956378cae4d3"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 4,
+            "keyword": "if",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "type": "compound",
+              "operand": "and",
+              "conditions": [
+                {
+                  "operand": "present",
+                  "lhs": "#{_('data.json_parser.825522aa.document.pm_project_key')}",
+                  "rhs": "",
+                  "uuid": "condition-29edf72b-42ec-4d38-ace5-264d51a83fac"
+                }
+              ]
+            },
+            "block": [
+              {
+                "number": 5,
+                "provider": "workato_recipe_function",
+                "name": "call_recipe",
+                "as": "90c734d0",
+                "title": null,
+                "description": "Call <span class=\"provider\">CICD | FUNC | List Unreleased Versions</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "flow_id": "CICD | FUNC | List Unreleased Versions"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "flow_id": {
+                    "zip_name": "Extensions/Project Management/cicd_func_list_unreleased_versions.recipe.json",
+                    "name": "CICD | FUNC | List Unreleased Versions",
+                    "folder": "Extensions/Project Management"
+                  },
+                  "parameters": {
+                    "project_id": "#{_('data.json_parser.825522aa.document.pm_project_key')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "label": "Result",
+                    "name": "result",
+                    "properties": [
+                      {
+                        "name": "releases",
+                        "type": "array",
+                        "of": "object",
+                        "label": "Releases",
+                        "optional": true,
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Name",
+                            "name": "name",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Description",
+                            "name": "description",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "ID",
+                            "name": "id",
+                            "type": "string",
+                            "optional": true
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Project ID",
+                        "name": "project_id",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "80a8ad59-6fd6-4f41-a235-f2c40c559111"
+              },
+              {
+                "number": 6,
+                "provider": "workato_variable",
+                "name": "declare_list",
+                "as": "43350bc8",
+                "title": " Create PM Release List list",
+                "description": "Create <span class=\"provider\">PM Release List</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "name": "PM Release List",
+                  "list_item_schema_json": "[{\"name\":\"id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"ID\"},{\"name\":\"name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Name\"}]",
+                  "list_items": {
+                    "____source": "#{_('data.workato_recipe_function.90c734d0.result.releases')}",
+                    "id": "#{_('data.workato_recipe_function.90c734d0.result.releases.first.id')}",
+                    "name": "#{_('data.workato_recipe_function.90c734d0.result.releases.first.name')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "hint": "",
+                    "label": "PM Release List",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "hint": "Set the initial items in the list. Defaults to an empty list if not supplied.",
+                    "label": "Items",
+                    "name": "list_items",
+                    "of": "object",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "uuid": "fde4f5e1-7b9e-4b28-a719-1926537e13b2"
+              },
+              {
+                "number": 7,
+                "provider": "workato_variable",
+                "name": "insert_to_list",
+                "as": "db1cbbc1",
+                "title": "Add item to PM Release List list",
+                "description": "Add <span class=\"provider\">item</span> to <span class=\"provider\">PM Release List</span> list",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "name": "PM Release List (step 6)"
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "location": "start",
+                  "name": "fde4f5e1-7b9e-4b28-a719-1926537e13b2:43350bc8",
+                  "list_item": {
+                    "id": "##AC##",
+                    "name": "<< Auto Create >>"
+                  }
+                },
+                "extended_input_schema": [
+                  {
+                    "hint": "",
+                    "label": "List item",
+                    "name": "list_item",
+                    "optional": false,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string",
+                        "optional": false
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": false
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "ab4a5b77-8f2b-4bb7-8d9a-0e8fd3705004"
+              },
+              {
+                "number": 8,
+                "provider": "slack_bot",
+                "name": "block_kit_modals",
+                "as": "d36daaed",
+                "title": null,
+                "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                  "modal_action_type": true
+                },
+                "input": {
+                  "modal_action_type": "open",
+                  "trigger_id": "#{_('data.workato_recipe_function.e63538ea.parameters.trigger_id')}",
+                  "view": {
+                    "modal_title": "PM Release Selection",
+                    "submit_view": {
+                      "continue_flow": "true",
+                      "submit_text": "Submit",
+                      "close_text": "Cancel",
+                      "notify_on_close": "true"
+                    },
+                    "blocks": [
+                      {
+                        "block_type": "select_menu_input",
+                        "objects": {
+                          "blocks": [
+                            {
+                            }
+                          ]
+                        },
+                        "label_text": "Release Selection",
+                        "hint_text": "Select the release from project management tool to which this movement will be tagged to.",
+                        "optional": "true",
+                        "block_id": "pm_release_id",
+                        "placeholder_text": "Release Selection",
+                        "menu_type": "static_select",
+                        "options": {
+                          "____source": "#{_('data.workato_variable.43350bc8.list_items')}",
+                          "title": "#{_('data.workato_variable.43350bc8.list_items.first.name')}",
+                          "value": "#{_('data.workato_variable.43350bc8.list_items.first.id')}#*##{_('data.workato_variable.43350bc8.list_items.first.name')}"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Modal cancelled",
+                    "name": "view_cancelled",
+                    "toggle_field": {
+                      "label": "Modal cancelled",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "view_cancelled"
+                    },
+                    "toggle_hint": "Select from option list",
+                    "type": "boolean",
+                    "parse_output": {
+                    },
+                    "render_input": {
+                    }
+                  },
+                  {
+                    "label": "Parameters",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Pm release ID",
+                        "name": "pm_release_id",
+                        "type": "string"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "visible_config_fields": [
+                  "modal_action_type",
+                  "view_id",
+                  "view.blocks",
+                  "view.blocks.block_type",
+                  "view.blocks.section_text",
+                  "view.blocks.image_url",
+                  "view.blocks.alt_text",
+                  "view.blocks.button_title",
+                  "view.blocks.url",
+                  "view.blocks.bot_command",
+                  "view.blocks.params",
+                  "view.blocks.style",
+                  "view.blocks.attachment_fields",
+                  "view.blocks.attachment_fields.value",
+                  "view.blocks.placeholder_text",
+                  "view.blocks.menu_type",
+                  "view.blocks.dynamic_menu_recipe",
+                  "view.blocks.field_name",
+                  "view.blocks.options",
+                  "view.blocks.options.title",
+                  "view.blocks.options.bot_command",
+                  "view.blocks.options.params",
+                  "view.blocks.options.init_value",
+                  "view.blocks.init_option",
+                  "view.blocks.options.value",
+                  "view.blocks.init_options",
+                  "view.blocks.initial_date",
+                  "view.blocks.image_title",
+                  "view.blocks.elements",
+                  "view.blocks.elements.type",
+                  "view.blocks.elements.text",
+                  "view.blocks.elements.image_url",
+                  "view.blocks.elements.alt_text",
+                  "view.blocks.actions",
+                  "view.blocks.actions.type",
+                  "view.blocks.actions.button_title",
+                  "view.blocks.actions.url",
+                  "view.blocks.actions.bot_command",
+                  "view.blocks.actions.params",
+                  "view.blocks.actions.style",
+                  "view.blocks.actions.placeholder_text",
+                  "view.blocks.actions.initial_date",
+                  "view.blocks.actions.field_name",
+                  "view.blocks.actions.options",
+                  "view.blocks.actions.options.params",
+                  "view.blocks.actions.menu_type",
+                  "view.blocks.actions.dynamic_menu_recipe",
+                  "view.blocks.label_text",
+                  "view.blocks.hint_text",
+                  "view.blocks.optional",
+                  "view.blocks.initial_value",
+                  "view.blocks.objects",
+                  "view.blocks.objects.blocks",
+                  "view.blocks.objects.blocks.block_type",
+                  "view.blocks.objects.blocks.section_text",
+                  "view.blocks.objects.blocks.image_url",
+                  "view.blocks.objects.blocks.alt_text",
+                  "view.blocks.objects.blocks.button_title",
+                  "view.blocks.objects.blocks.url",
+                  "view.blocks.objects.blocks.bot_command",
+                  "view.blocks.objects.blocks.params",
+                  "view.blocks.objects.blocks.style",
+                  "view.blocks.objects.blocks.attachment_fields",
+                  "view.blocks.objects.blocks.attachment_fields.value",
+                  "view.blocks.objects.blocks.placeholder_text",
+                  "view.blocks.objects.blocks.menu_type",
+                  "view.blocks.objects.blocks.dynamic_menu_recipe",
+                  "view.blocks.objects.blocks.field_name",
+                  "view.blocks.objects.blocks.options",
+                  "view.blocks.objects.blocks.options.title",
+                  "view.blocks.objects.blocks.options.bot_command",
+                  "view.blocks.objects.blocks.options.params",
+                  "view.blocks.objects.blocks.options.init_value",
+                  "view.blocks.objects.blocks.init_option",
+                  "view.blocks.objects.blocks.initial_date",
+                  "view.blocks.objects.blocks.image_title",
+                  "view.blocks.objects.blocks.elements",
+                  "view.blocks.objects.blocks.elements.type",
+                  "view.blocks.objects.blocks.elements.text",
+                  "view.blocks.objects.blocks.elements.image_url",
+                  "view.blocks.objects.blocks.elements.alt_text",
+                  "view.blocks.objects.blocks.actions",
+                  "view.blocks.objects.blocks.actions.type",
+                  "view.blocks.objects.blocks.actions.button_title",
+                  "view.blocks.objects.blocks.actions.url",
+                  "view.blocks.objects.blocks.actions.bot_command",
+                  "view.blocks.objects.blocks.actions.params",
+                  "view.blocks.objects.blocks.actions.style",
+                  "view.blocks.objects.blocks.actions.placeholder_text",
+                  "view.blocks.objects.blocks.actions.initial_date",
+                  "view.blocks.objects.blocks.actions.field_name",
+                  "view.blocks.objects.blocks.actions.options",
+                  "view.blocks.objects.blocks.actions.options.params",
+                  "view.blocks.objects.blocks.actions.menu_type",
+                  "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+                  "view.submit_view.continue_flow",
+                  "view.submit_view.bot_command",
+                  "view.submit_view.params",
+                  "view.submit_view.submit_text",
+                  "view.submit_view.close_text",
+                  "trigger_id",
+                  "view",
+                  "view.modal_title",
+                  "view.submit_view",
+                  "view.submit_view.notify_on_close"
+                ],
+                "uuid": "594192ad-b39a-4f99-8dce-b4c864310319"
+              },
+              {
+                "number": 9,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "is_true",
+                      "lhs": "#{_('data.slack_bot.d36daaed.view_cancelled')}",
+                      "rhs": "",
+                      "uuid": "condition-5faeecfa-b83b-4e09-93c9-2940a9838470"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 10,
+                    "provider": "workato_recipe_function",
+                    "name": "return_result",
+                    "as": "864ca11d",
+                    "title": null,
+                    "description": null,
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "result.modal_cancelled": true
+                    },
+                    "input": {
+                      "result": {
+                        "modal_cancelled": "true"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "PM Release",
+                            "name": "pm_release",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "label": "Result",
+                        "name": "result",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "PM Release",
+                            "name": "pm_release",
+                            "type": "string",
+                            "optional": true
+                          },
+                          {
+                            "control_type": "checkbox",
+                            "label": "Modal cancelled",
+                            "render_input": {
+                            },
+                            "parse_output": {
+                            },
+                            "toggle_hint": "Select from option list",
+                            "toggle_field": {
+                              "label": "Modal cancelled",
+                              "control_type": "text",
+                              "toggle_hint": "Use custom value",
+                              "name": "modal_cancelled",
+                              "type": "boolean",
+                              "optional": false
+                            },
+                            "name": "modal_cancelled",
+                            "type": "boolean",
+                            "optional": false,
+                            "default": "false"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "result",
+                      "result.modal_cancelled",
+                      "result.pm_release_id"
+                    ],
+                    "uuid": "a7d35360-e51c-4f0b-80ed-492f2e8e1095"
+                  }
+                ],
+                "uuid": "bd3d59fb-1a46-4fe6-ba6a-3aff303f8c93"
+              },
+              {
+                "number": 11,
+                "keyword": "else",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 12,
+                    "provider": "slack_bot",
+                    "name": "block_kit_modals",
+                    "as": "10acd2aa",
+                    "title": null,
+                    "description": "Open a <span class=\"provider\">modal view</span> as <span class=\"provider\">Slack Workbot</span> and wait for user input",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "modal_action_type": true
+                    },
+                    "input": {
+                      "modal_action_type": "open",
+                      "trigger_id": "#{_('data.workato_recipe_function.e63538ea.parameters.trigger_id')}",
+                      "view": {
+                        "modal_title": "PM Release Selection",
+                        "submit_view": {
+                          "continue_flow": "true",
+                          "submit_text": "Submit",
+                          "close_text": "Cancel",
+                          "notify_on_close": "true"
+                        },
+                        "blocks": [
+                          {
+                            "block_type": "section_with_text",
+                            "objects": {
+                              "blocks": [
+                                {
+                                }
+                              ]
+                            },
+                            "label_text": "Release Selection",
+                            "hint_text": "Select the release from project management tool to which this movement will be tagged to.",
+                            "optional": "true",
+                            "placeholder_text": "Release Selection",
+                            "menu_type": "static_select",
+                            "options": {
+                              "____source": "#{_('data.workato_variable.43350bc8.list_items')}",
+                              "title": "#{_('data.workato_variable.43350bc8.list_items.first.name')}",
+                              "value": "#{_('data.workato_variable.43350bc8.list_items.first.id')}#*##{_('data.workato_variable.43350bc8.list_items.first.name')}"
+                            },
+                            "section_text": ":exclamation: Release selection not possible as selected project configuration *#{_('data.lookup_table.4dcfe76d.entries.first.entry.col2')}* doesn't have a _PM Project Key_."
+                          }
+                        ]
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "checkbox",
+                        "label": "Modal cancelled",
+                        "name": "view_cancelled",
+                        "toggle_field": {
+                          "label": "Modal cancelled",
+                          "control_type": "text",
+                          "toggle_hint": "Use custom value",
+                          "type": "boolean",
+                          "name": "view_cancelled"
+                        },
+                        "toggle_hint": "Select from option list",
+                        "type": "boolean",
+                        "parse_output": {
+                        },
+                        "render_input": {
+                        }
+                      },
+                      {
+                        "label": "Parameters",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Pm release ID",
+                            "name": "pm_release_id",
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "visible_config_fields": [
+                      "modal_action_type",
+                      "view_id",
+                      "view.blocks",
+                      "view.blocks.block_type",
+                      "view.blocks.section_text",
+                      "view.blocks.image_url",
+                      "view.blocks.alt_text",
+                      "view.blocks.button_title",
+                      "view.blocks.url",
+                      "view.blocks.bot_command",
+                      "view.blocks.params",
+                      "view.blocks.style",
+                      "view.blocks.attachment_fields",
+                      "view.blocks.attachment_fields.value",
+                      "view.blocks.placeholder_text",
+                      "view.blocks.menu_type",
+                      "view.blocks.dynamic_menu_recipe",
+                      "view.blocks.field_name",
+                      "view.blocks.options",
+                      "view.blocks.options.title",
+                      "view.blocks.options.bot_command",
+                      "view.blocks.options.params",
+                      "view.blocks.options.init_value",
+                      "view.blocks.init_option",
+                      "view.blocks.options.value",
+                      "view.blocks.init_options",
+                      "view.blocks.initial_date",
+                      "view.blocks.image_title",
+                      "view.blocks.elements",
+                      "view.blocks.elements.type",
+                      "view.blocks.elements.text",
+                      "view.blocks.elements.image_url",
+                      "view.blocks.elements.alt_text",
+                      "view.blocks.actions",
+                      "view.blocks.actions.type",
+                      "view.blocks.actions.button_title",
+                      "view.blocks.actions.url",
+                      "view.blocks.actions.bot_command",
+                      "view.blocks.actions.params",
+                      "view.blocks.actions.style",
+                      "view.blocks.actions.placeholder_text",
+                      "view.blocks.actions.initial_date",
+                      "view.blocks.actions.field_name",
+                      "view.blocks.actions.options",
+                      "view.blocks.actions.options.params",
+                      "view.blocks.actions.menu_type",
+                      "view.blocks.actions.dynamic_menu_recipe",
+                      "view.blocks.label_text",
+                      "view.blocks.hint_text",
+                      "view.blocks.optional",
+                      "view.blocks.initial_value",
+                      "view.blocks.objects",
+                      "view.blocks.objects.blocks",
+                      "view.blocks.objects.blocks.block_type",
+                      "view.blocks.objects.blocks.section_text",
+                      "view.blocks.objects.blocks.image_url",
+                      "view.blocks.objects.blocks.alt_text",
+                      "view.blocks.objects.blocks.button_title",
+                      "view.blocks.objects.blocks.url",
+                      "view.blocks.objects.blocks.bot_command",
+                      "view.blocks.objects.blocks.params",
+                      "view.blocks.objects.blocks.style",
+                      "view.blocks.objects.blocks.attachment_fields",
+                      "view.blocks.objects.blocks.attachment_fields.value",
+                      "view.blocks.objects.blocks.placeholder_text",
+                      "view.blocks.objects.blocks.menu_type",
+                      "view.blocks.objects.blocks.dynamic_menu_recipe",
+                      "view.blocks.objects.blocks.field_name",
+                      "view.blocks.objects.blocks.options",
+                      "view.blocks.objects.blocks.options.title",
+                      "view.blocks.objects.blocks.options.bot_command",
+                      "view.blocks.objects.blocks.options.params",
+                      "view.blocks.objects.blocks.options.init_value",
+                      "view.blocks.objects.blocks.init_option",
+                      "view.blocks.objects.blocks.initial_date",
+                      "view.blocks.objects.blocks.image_title",
+                      "view.blocks.objects.blocks.elements",
+                      "view.blocks.objects.blocks.elements.type",
+                      "view.blocks.objects.blocks.elements.text",
+                      "view.blocks.objects.blocks.elements.image_url",
+                      "view.blocks.objects.blocks.elements.alt_text",
+                      "view.blocks.objects.blocks.actions",
+                      "view.blocks.objects.blocks.actions.type",
+                      "view.blocks.objects.blocks.actions.button_title",
+                      "view.blocks.objects.blocks.actions.url",
+                      "view.blocks.objects.blocks.actions.bot_command",
+                      "view.blocks.objects.blocks.actions.params",
+                      "view.blocks.objects.blocks.actions.style",
+                      "view.blocks.objects.blocks.actions.placeholder_text",
+                      "view.blocks.objects.blocks.actions.initial_date",
+                      "view.blocks.objects.blocks.actions.field_name",
+                      "view.blocks.objects.blocks.actions.options",
+                      "view.blocks.objects.blocks.actions.options.params",
+                      "view.blocks.objects.blocks.actions.menu_type",
+                      "view.blocks.objects.blocks.actions.dynamic_menu_recipe",
+                      "view.submit_view.continue_flow",
+                      "view.submit_view.bot_command",
+                      "view.submit_view.params",
+                      "view.submit_view.submit_text",
+                      "view.submit_view.close_text",
+                      "trigger_id",
+                      "view",
+                      "view.modal_title",
+                      "view.submit_view",
+                      "view.submit_view.notify_on_close"
+                    ],
+                    "uuid": "d8f1fe7e-1bcc-423c-8ebc-107dd2a95b8e"
+                  },
+                  {
+                    "number": 13,
+                    "keyword": "if",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "type": "compound",
+                      "operand": "and",
+                      "conditions": [
+                        {
+                          "operand": "is_true",
+                          "lhs": "#{_('data.slack_bot.10acd2aa.view_cancelled')}",
+                          "rhs": "",
+                          "uuid": "condition-5faeecfa-b83b-4e09-93c9-2940a9838470"
+                        }
+                      ]
+                    },
+                    "block": [
+                      {
+                        "number": 14,
+                        "provider": "workato_recipe_function",
+                        "name": "return_result",
+                        "as": "75539795",
+                        "title": null,
+                        "description": null,
+                        "keyword": "action",
+                        "dynamicPickListSelection": {
+                        },
+                        "toggleCfg": {
+                          "result.modal_cancelled": true
+                        },
+                        "input": {
+                          "result": {
+                            "modal_cancelled": "true"
+                          }
+                        },
+                        "extended_output_schema": [
+                          {
+                            "label": "Result",
+                            "name": "result",
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "PM Release",
+                                "name": "pm_release",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "checkbox",
+                                "label": "Modal cancelled",
+                                "render_input": {
+                                },
+                                "parse_output": {
+                                },
+                                "toggle_hint": "Select from option list",
+                                "toggle_field": {
+                                  "label": "Modal cancelled",
+                                  "control_type": "text",
+                                  "toggle_hint": "Use custom value",
+                                  "name": "modal_cancelled",
+                                  "type": "boolean",
+                                  "optional": false
+                                },
+                                "name": "modal_cancelled",
+                                "type": "boolean",
+                                "optional": false,
+                                "default": "false"
+                              }
+                            ],
+                            "type": "object"
+                          }
+                        ],
+                        "extended_input_schema": [
+                          {
+                            "label": "Result",
+                            "name": "result",
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "PM Release",
+                                "name": "pm_release",
+                                "type": "string",
+                                "optional": true
+                              },
+                              {
+                                "control_type": "checkbox",
+                                "label": "Modal cancelled",
+                                "render_input": {
+                                },
+                                "parse_output": {
+                                },
+                                "toggle_hint": "Select from option list",
+                                "toggle_field": {
+                                  "label": "Modal cancelled",
+                                  "control_type": "text",
+                                  "toggle_hint": "Use custom value",
+                                  "name": "modal_cancelled",
+                                  "type": "boolean",
+                                  "optional": false
+                                },
+                                "name": "modal_cancelled",
+                                "type": "boolean",
+                                "optional": false,
+                                "default": "false"
+                              }
+                            ],
+                            "type": "object"
+                          }
+                        ],
+                        "visible_config_fields": [
+                          "result",
+                          "result.modal_cancelled",
+                          "result.pm_release_id"
+                        ],
+                        "uuid": "9f6cdc79-4946-436c-a016-9301a07e7cdf"
+                      }
+                    ],
+                    "uuid": "249f8172-e5b5-45ef-b7bd-8e3a8d9de95e"
+                  }
+                ],
+                "uuid": "b5dee6b7-bbdd-4010-b238-e9d440908669"
+              }
+            ],
+            "uuid": "8648c9d2-d93f-4577-9eed-74788d5e5aff"
+          }
+        ],
+        "uuid": "be728d79-f447-44db-ad03-a1fd1f117842"
+      },
+      {
+        "number": 15,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "a847a8e4",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "result.modal_cancelled": true
+        },
+        "input": {
+          "result": {
+            "modal_cancelled": "false",
+            "pm_release": "=_('data.slack_bot.d36daaed.parameters.pm_release_id').presence"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "PM Release",
+                "name": "pm_release",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Modal cancelled",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Modal cancelled",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "modal_cancelled",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "modal_cancelled",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "PM Release",
+                "name": "pm_release",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "checkbox",
+                "label": "Modal cancelled",
+                "render_input": {
+                },
+                "parse_output": {
+                },
+                "toggle_hint": "Select from option list",
+                "toggle_field": {
+                  "label": "Modal cancelled",
+                  "control_type": "text",
+                  "toggle_hint": "Use custom value",
+                  "name": "modal_cancelled",
+                  "type": "boolean",
+                  "optional": false
+                },
+                "name": "modal_cancelled",
+                "type": "boolean",
+                "optional": false,
+                "default": "false"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "result",
+          "result.modal_cancelled",
+          "result.pm_release_id",
+          "result.pm_release"
+        ],
+        "uuid": "c095544a-95bd-499e-8323-52d0dc2fb510"
+      }
+    ],
+    "uuid": "482089ea-8ad4-4bbe-b212-c5004e39e821"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

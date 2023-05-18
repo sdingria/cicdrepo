@@ -1,0 +1,562 @@
+{
+  "name": "CICD | FUNC | (Slack) List Pipeline Executions",
+  "description": "When there is a function call, do action",
+  "version": 61,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "b179ce55",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Execution Reference\",\"name\":\"execution_reference\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Execution Status\",\"name\":\"execution_status\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"User ID\",\"name\":\"user_id\",\"type\":\"string\",\"optional\":false},{\"name\":\"thread_id\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Thread ID\"},{\"name\":\"project_configuration_id\",\"type\":\"string\",\"optional\":true,\"control_type\":\"text\",\"label\":\"Project configuration ID\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Execution Reference",
+            "name": "execution_reference",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "Execution Status",
+            "name": "execution_status",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Thread ID",
+            "name": "thread_id",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "control_type": "text",
+            "label": "Project configuration ID",
+            "name": "project_configuration_id",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "4e47a4d0",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | List Pipeline Executions</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | List Pipeline Executions"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/cicd_func_list_pipeline_executions.recipe.json",
+            "name": "CICD | FUNC | List Pipeline Executions",
+            "folder": "Functions"
+          },
+          "parameters": {
+            "pipeline_execution_status": "=_('data.workato_recipe_function.b179ce55.parameters.execution_status').presence",
+            "pipeline_execution_reference": "=_('data.workato_recipe_function.b179ce55.parameters.execution_reference').presence",
+            "project_configuration_id": "=_('data.workato_recipe_function.b179ce55.parameters.project_configuration_id').presence"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "pipeline_executions",
+                "type": "array",
+                "of": "object",
+                "label": "Pipeline executions",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution Reference",
+                    "name": "execution_reference",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Configuration ID",
+                    "name": "pipeline_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Configuration ID",
+                    "name": "project_config_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "project_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Package Version",
+                    "name": "package_version",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Execution Status",
+                    "name": "execution_status",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Target Is Production",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Target Is Production",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "target_is_production",
+                      "type": "boolean",
+                      "optional": true
+                    },
+                    "name": "target_is_production",
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Job URL",
+                    "name": "job_url",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Configuration Name",
+                    "name": "pipeline_config_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comment",
+                    "name": "comment",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Created on",
+                    "name": "created_on",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Created by",
+                    "name": "created_by",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Pipeline Execution Status",
+                "name": "pipeline_execution_status",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Pipeline Execution Reference",
+                "name": "pipeline_execution_reference",
+                "type": "string",
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project configuration ID",
+                "name": "project_configuration_id",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters.pipeline_execution_status",
+          "parameters",
+          "parameters.pipeline_execution_reference",
+          "parameters.project_configuration_id"
+        ],
+        "uuid": "4437e0de-4609-408a-b57c-f7506059fa10"
+      },
+      {
+        "number": 2,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "9f1bb513",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | User Permission Analyzer</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | User Permission Analyzer"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/RBAC/cicd_func_user_permission_analyzer.recipe.json",
+            "name": "CICD | FUNC | User Permission Analyzer",
+            "folder": "Functions/RBAC"
+          },
+          "parameters": {
+            "user": "#{_('data.workato_recipe_function.b179ce55.parameters.user_id')}",
+            "permissions": "=[\"continue_deployment\",\"continue_deployment_(prod)\"]"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "object",
+                "label": "Permissions",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Result",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Result",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "name": "result",
+                      "type": "boolean",
+                      "optional": false
+                    },
+                    "name": "result",
+                    "type": "boolean",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "User",
+                "name": "user",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "name": "permissions",
+                "type": "array",
+                "of": "string",
+                "label": "Permissions",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "c05df6ea-e9e6-471d-bd73-32267fa0cd7f",
+        "skip": false
+      },
+      {
+        "number": 3,
+        "provider": "slack_bot",
+        "name": "post_bot_message",
+        "as": "87ac2281",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+          "channel": true,
+          "attachment_items.message.color": false,
+          "attachment_items.attachment_buttons.0.bot_command": true
+        },
+        "input": {
+          "channel": "#{_('data.workato_recipe_function.b179ce55.parameters.user_id')}",
+          "multiple_attachments": "true",
+          "attachment_items": {
+            "____source": "#{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions')}",
+            "message": {
+              "pretext": "*Execution Reference* :: <#{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.job_url')}|#{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_reference')}>",
+              "color": "=_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status') == 'ERROR' || _('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status') == 'REJECTED' ? 'danger' : (_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status') == 'APPROVED' || _('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status') == 'RUNNING (APPROVED)' || _('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status') == 'RUNNING' ? 'warning' : (_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status') == 'SUCCESS' ? 'good' : 'default'))",
+              "footer": "#{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.comment')}\n******\n_Executed By:_ #{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.created_by')}\n_Executed On:_ #{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.created_on')}"
+            },
+            "attachment_fields": [
+              {
+                "title": "Pipeline Name",
+                "value": "#{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.pipeline_config_name')}"
+              },
+              {
+                "title": "Project Name",
+                "value": "#{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.project_name')}"
+              },
+              {
+                "title": "Package Version",
+                "value": "#{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.package_version')}"
+              },
+              {
+                "title": "Status",
+                "value": "=_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status').titleize"
+              }
+            ],
+            "attachment_buttons": [
+              {
+                "title": "=_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_status') == \"APPROVED\" ? (_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.target_is_production').is_true? and _('data.workato_recipe_function.9f1bb513.result.permissions').where(name: \"continue_deployment_(prod)\", result: true).length > 0 ? \"Continue Deployment\" : (_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.target_is_production').is_not_true? and _('data.workato_recipe_function.9f1bb513.result.permissions').where(name: \"continue_deployment\", result: true).length > 0 ? \"Continue Deployment\" : \"\")) : \"\"",
+                "bot_command": {
+                  "zip_name": "Triggers/Slack/cicd_bot_slack_cicd_command_router.recipe.json",
+                  "name": "CICD | BOT | (Slack) CICD Command Router",
+                  "folder": "Triggers/Slack"
+                },
+                "params": "command: continue_deployment param1: #{_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.execution_reference')}"
+              }
+            ]
+          },
+          "blocks": [
+            {
+              "block_type": "section_with_text",
+              "section_text": "=_('data.workato_recipe_function.b179ce55.parameters.execution_reference').present? ? '*Status of Pipeline Execution:*' : (_('data.workato_recipe_function.b179ce55.parameters.execution_status').present? ? '*List of _[' + _('data.workato_recipe_function.b179ce55.parameters.execution_status').titleize + ']_ Pipeline Executions:*' : '*List of Pipeline Executions:*')"
+            },
+            {
+              "block_type": "divider"
+            },
+            {
+              "block_type": "section_with_text",
+              "section_text": "=_('data.workato_recipe_function.4e47a4d0.result.pipeline_executions.first.____Size', 'list_meta', '____Size', 'data.workato_recipe_function.4e47a4d0.result.pipeline_executions') == 0 ? '>*~~ _No pipeline executions found._ ~~*' : ''"
+            }
+          ],
+          "advanced": {
+            "thread_ts": "#{_('data.workato_recipe_function.b179ce55.parameters.thread_id')}"
+          }
+        },
+        "visible_config_fields": [
+          "channel",
+          "blocks",
+          "blocks.block_type",
+          "blocks.section_text",
+          "blocks.image_url",
+          "blocks.alt_text",
+          "blocks.button_title",
+          "blocks.url",
+          "blocks.bot_command",
+          "blocks.params",
+          "blocks.style",
+          "blocks.attachment_fields",
+          "blocks.attachment_fields.value",
+          "blocks.placeholder_text",
+          "blocks.menu_type",
+          "blocks.dynamic_menu_recipe",
+          "blocks.field_name",
+          "blocks.options",
+          "blocks.options.title",
+          "blocks.options.bot_command",
+          "blocks.options.params",
+          "blocks.options.init_value",
+          "blocks.init_option",
+          "blocks.initial_date",
+          "blocks.options.value",
+          "blocks.init_options",
+          "blocks.image_title",
+          "blocks.external_id",
+          "blocks.elements",
+          "blocks.elements.type",
+          "blocks.elements.text",
+          "blocks.elements.image_url",
+          "blocks.elements.alt_text",
+          "blocks.actions",
+          "blocks.actions.type",
+          "blocks.actions.button_title",
+          "blocks.actions.url",
+          "blocks.actions.bot_command",
+          "blocks.actions.params",
+          "blocks.actions.style",
+          "blocks.actions.placeholder_text",
+          "blocks.actions.initial_date",
+          "blocks.actions.field_name",
+          "blocks.actions.options",
+          "blocks.actions.options.params",
+          "blocks.actions.menu_type",
+          "blocks.actions.dynamic_menu_recipe",
+          "blocks.objects",
+          "blocks.objects.blocks",
+          "blocks.objects.blocks.block_type",
+          "blocks.objects.blocks.section_text",
+          "blocks.objects.blocks.image_url",
+          "blocks.objects.blocks.alt_text",
+          "blocks.objects.blocks.button_title",
+          "blocks.objects.blocks.url",
+          "blocks.objects.blocks.bot_command",
+          "blocks.objects.blocks.params",
+          "blocks.objects.blocks.style",
+          "blocks.objects.blocks.attachment_fields",
+          "blocks.objects.blocks.attachment_fields.value",
+          "blocks.objects.blocks.placeholder_text",
+          "blocks.objects.blocks.menu_type",
+          "blocks.objects.blocks.dynamic_menu_recipe",
+          "blocks.objects.blocks.field_name",
+          "blocks.objects.blocks.options",
+          "blocks.objects.blocks.options.title",
+          "blocks.objects.blocks.options.bot_command",
+          "blocks.objects.blocks.options.params",
+          "blocks.objects.blocks.options.init_value",
+          "blocks.objects.blocks.init_option",
+          "blocks.objects.blocks.initial_date",
+          "blocks.objects.blocks.image_title",
+          "blocks.objects.blocks.elements",
+          "blocks.objects.blocks.elements.type",
+          "blocks.objects.blocks.elements.text",
+          "blocks.objects.blocks.elements.image_url",
+          "blocks.objects.blocks.elements.alt_text",
+          "blocks.objects.blocks.actions",
+          "blocks.objects.blocks.actions.type",
+          "blocks.objects.blocks.actions.button_title",
+          "blocks.objects.blocks.actions.url",
+          "blocks.objects.blocks.actions.bot_command",
+          "blocks.objects.blocks.actions.params",
+          "blocks.objects.blocks.actions.style",
+          "blocks.objects.blocks.actions.placeholder_text",
+          "blocks.objects.blocks.actions.initial_date",
+          "blocks.objects.blocks.actions.field_name",
+          "blocks.objects.blocks.actions.options",
+          "blocks.objects.blocks.actions.options.params",
+          "blocks.objects.blocks.actions.menu_type",
+          "blocks.objects.blocks.actions.dynamic_menu_recipe",
+          "text",
+          "message.title",
+          "message.title_link",
+          "message.attachment_text",
+          "message.color",
+          "attachment_fields",
+          "attachment_buttons",
+          "attachment_items.message.title",
+          "attachment_items.message.title_link",
+          "attachment_items.message.attachment_text",
+          "attachment_items.message.color",
+          "attachment_items.attachment_fields",
+          "attachment_items.attachment_buttons",
+          "advanced.ts",
+          "multiple_attachments",
+          "message.pretext",
+          "attachment_items",
+          "attachment_items.message.pretext",
+          "attachment_fields.value",
+          "attachment_fields.title",
+          "attachment_items.message",
+          "attachment_items.attachment_fields.title",
+          "attachment_items.attachment_fields.value",
+          "attachment_items.message.footer",
+          "message.footer",
+          "advanced.thread_ts",
+          "advanced",
+          "attachment_items.attachment_buttons.title",
+          "attachment_buttons.params",
+          "attachment_buttons.bot_command",
+          "attachment_buttons.title",
+          "attachment_items.attachment_buttons.params",
+          "attachment_items.attachment_buttons.bot_command"
+        ],
+        "uuid": "43f29ca6-e82c-4d0e-9f72-b70eb56af601"
+      }
+    ],
+    "uuid": "272ce19d-7d8e-432f-aeed-cb8b5cb1712d"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    }
+  ]
+}

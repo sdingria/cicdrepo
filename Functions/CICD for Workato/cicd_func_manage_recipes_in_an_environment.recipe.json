@@ -1,0 +1,485 @@
+{
+  "name": "CICD | FUNC | Manage Recipes in an Environment",
+  "description": "When there is a trigger event, do action",
+  "version": 20,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "634efed4",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Environment\",\"name\":\"environment\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"text\",\"label\":\"Project folder ID\",\"name\":\"project_folder_id\",\"type\":\"string\",\"optional\":false},{\"control_type\":\"select\",\"label\":\"Recipe Action\",\"name\":\"recipe_action\",\"hint\":\"Please select an action\",\"optional\":false,\"type\":\"string\",\"options\":[[\"Start\",\"start\"],[\"Stop\",\"stop\"],[\"Delete\",\"delete\"]],\"toggle_hint\":\"Select from list\",\"toggle_field\":{\"name\":\"recipe_action\",\"label\":\"Recipe Action\",\"type\":\"string\",\"control_type\":\"text\",\"optional\":false,\"hint\":\"Please enter a supported action from [start, stop and delete]\",\"toggle_hint\":\"Use Recipe Action\"}},{\"name\":\"user_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User ID\"},{\"name\":\"user_name\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"User name\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Environment",
+            "name": "environment",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Project folder ID",
+            "name": "project_folder_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "select",
+            "label": "Recipe Action",
+            "name": "recipe_action",
+            "hint": "Please select an action",
+            "optional": false,
+            "type": "string",
+            "options": [
+              [
+                "Start",
+                "start"
+              ],
+              [
+                "Stop",
+                "stop"
+              ],
+              [
+                "Delete",
+                "delete"
+              ]
+            ],
+            "toggle_hint": "Select from list",
+            "toggle_field": {
+              "name": "recipe_action",
+              "label": "Recipe Action",
+              "type": "string",
+              "control_type": "text",
+              "optional": false,
+              "hint": "Please enter a supported action from [start, stop and delete]",
+              "toggle_hint": "Use Recipe Action"
+            }
+          },
+          {
+            "control_type": "text",
+            "label": "User ID",
+            "name": "user_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "User name",
+            "name": "user_name",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "f85bedd9",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Gather folder list for a Project</span>",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUN | Gather folder list for a Project"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Functions/CICD for Workato/cicd_func_gather_folder_list_for_a_project.recipe.json",
+            "name": "CICD | FUNC | Gather folder list for a Project",
+            "folder": "Functions/CICD for Workato"
+          },
+          "parameters": {
+            "environment": "#{_('data.workato_recipe_function.634efed4.parameters.environment')}",
+            "project_folder_id": "#{_('data.workato_recipe_function.634efed4.parameters.project_folder_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "folder_list",
+                "type": "array",
+                "of": "object",
+                "label": "Folder list",
+                "optional": false,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Folder name",
+                    "name": "folder_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "environment",
+                "type": "string",
+                "optional": false
+              },
+              {
+                "control_type": "text",
+                "label": "Project folder ID",
+                "name": "project_folder_id",
+                "type": "string",
+                "optional": false
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "6b26e22c-0376-4c18-b302-8169903d7aaa"
+      },
+      {
+        "number": 2,
+        "as": "ee6489bf",
+        "keyword": "foreach",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "repeat_mode": "simple",
+        "clear_scope": "false",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 3,
+            "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+            "name": "list_recipes",
+            "as": "8205016c",
+            "title": null,
+            "description": "List <span class=\"provider\">recipes</span> in a Workato <span class=\"provider\">environment</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+              "workato_environment": false
+            },
+            "input": {
+              "workato_environment": "#{_('data.workato_recipe_function.634efed4.parameters.environment')}",
+              "folder_id": "#{_('data.foreach.ee6489bf.folder_id')}"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "select",
+                "hint": "Enter environment.",
+                "label": "Environment",
+                "name": "workato_environment",
+                "optional": false,
+                "pick_list": "environments",
+                "toggle_field": {
+                  "name": "workato_environment",
+                  "label": "Environment",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "hint": "Enter environment.",
+                  "toggle_hint": "Custom value"
+                },
+                "toggle_hint": "Select from list",
+                "type": "string"
+              },
+              {
+                "control_type": "text",
+                "hint": "Returns lsit of recipes in the specified folder.",
+                "label": "Folder ID",
+                "name": "folder_id",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "visible_config_fields": [
+              "folder_id"
+            ],
+            "uuid": "d173a28c-5801-4320-9a74-0f4f7f9787e8"
+          },
+          {
+            "number": 4,
+            "as": "0b71f562",
+            "keyword": "foreach",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "repeat_mode": "simple",
+            "clear_scope": "false",
+            "input": {
+            },
+            "block": [
+              {
+                "number": 5,
+                "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+                "name": "manage_recipes",
+                "as": "ba3d0c4b",
+                "title": null,
+                "description": "Manage <span class=\"provider\">recipes</span> in Workato <span class=\"provider\">environment</span>",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                  "recipe_action": false,
+                  "workato_environment": false
+                },
+                "input": {
+                  "workato_environment": "#{_('data.workato_recipe_function.634efed4.parameters.environment')}",
+                  "recipe_id": "#{_('data.foreach.0b71f562.id')}",
+                  "recipe_action": "#{_('data.workato_recipe_function.634efed4.parameters.recipe_action')}"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "select",
+                    "hint": "Enter environment.",
+                    "label": "Environment",
+                    "name": "workato_environment",
+                    "optional": false,
+                    "pick_list": "environments",
+                    "toggle_field": {
+                      "name": "workato_environment",
+                      "label": "Environment",
+                      "type": "string",
+                      "control_type": "text",
+                      "optional": false,
+                      "hint": "Enter environment.",
+                      "toggle_hint": "Custom value"
+                    },
+                    "toggle_hint": "Select from list",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "hint": "Please select an action",
+                    "label": "Recipe Action",
+                    "name": "recipe_action",
+                    "optional": false,
+                    "toggle_field": {
+                      "name": "recipe_action",
+                      "label": "Recipe Action",
+                      "type": "string",
+                      "control_type": "text",
+                      "optional": false,
+                      "hint": "Please enter a supported action from [start, stop and delete]",
+                      "toggle_hint": "Use Recipe Action"
+                    },
+                    "toggle_hint": "Select from list",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "hint": "Please enter the recipe ID.",
+                    "label": "Recipe ID",
+                    "name": "recipe_id",
+                    "optional": false,
+                    "type": "string"
+                  }
+                ],
+                "uuid": "b5f681a1-9faf-4f27-b17d-d7a0e2742d04"
+              }
+            ],
+            "source": "#{_('data.cicd_for_workato_v3_connector_615247_1662611664.8205016c.items')}",
+            "uuid": "1a5f856c-04ce-4702-89de-5c26119b701c"
+          }
+        ],
+        "source": "#{_('data.workato_recipe_function.f85bedd9.result.folder_list')}",
+        "uuid": "5f4e4c87-5611-4f9f-835f-82e29c279857"
+      },
+      {
+        "number": 6,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe_async",
+        "as": "eac7b6b1",
+        "title": null,
+        "description": "Call <span class=\"provider\">CICD | FUNC | Audit Log</span> (async)",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "CICD | FUNC | Audit Log"
+        },
+        "toggleCfg": {
+          "parameters.method": true
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "Data Access Functions/cicd_func_audit_log.recipe.json",
+            "name": "CICD | FUNC | Audit Log",
+            "folder": "Data Access Functions"
+          },
+          "parameters": {
+            "table": "CICD | Audit Log",
+            "method": "POST",
+            "entries": {
+              "entity": "Recipe Management",
+              "operation": "=_('data.workato_recipe_function.634efed4.parameters.recipe_action').titleize + \" Recipes\"",
+              "user_id": "#{_('data.workato_recipe_function.634efed4.parameters.user_id')}",
+              "user_name": "#{_('data.workato_recipe_function.634efed4.parameters.user_name')}",
+              "entity_id": "#{_('data.workato_recipe_function.634efed4.parameters.environment')} | #{_('data.workato_recipe_function.634efed4.parameters.project_folder_id')}",
+              "timestamp": "=now"
+            }
+          }
+        },
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Table",
+                "type": "string",
+                "name": "table",
+                "optional": true,
+                "default": "CICD | Audit Log"
+              },
+              {
+                "control_type": "select",
+                "label": "Method",
+                "type": "string",
+                "name": "method",
+                "optional": false,
+                "hint": "GET, POST",
+                "pick_list": [
+                  [
+                    "GET",
+                    "GET"
+                  ],
+                  [
+                    "POST",
+                    "POST"
+                  ]
+                ],
+                "toggle_hint": "Select from list",
+                "toggle_field": {
+                  "name": "method",
+                  "label": "Method",
+                  "type": "string",
+                  "control_type": "text",
+                  "optional": false,
+                  "toggle_hint": "Enter Value",
+                  "hint": "Map Method"
+                }
+              },
+              {
+                "name": "entries",
+                "type": "array",
+                "of": "object",
+                "label": "Entries",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Entity",
+                    "name": "entity",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Entity ID",
+                    "name": "entity_id",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Operation",
+                    "name": "operation",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User ID",
+                    "name": "user_id",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "User name",
+                    "name": "user_name",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Timestamp",
+                    "name": "timestamp",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "flow_id",
+          "parameters",
+          "parameters.table",
+          "parameters.entries.entity_id"
+        ],
+        "uuid": "57067550-ca8d-42f0-bf34-ac7bbbf94b3b"
+      }
+    ],
+    "uuid": "95505ad4-1dfb-470c-acb9-f62f3f4ccd94"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "cicd_for_workato_v3_connector_615247_1662611664",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_cicd_for_workato_v3.connection.json",
+        "name": "CICD | CON | CICD for Workato V3",
+        "folder": "Connections",
+        "custom": true
+      }
+    }
+  ]
+}

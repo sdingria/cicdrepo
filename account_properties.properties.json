@@ -1,0 +1,7 @@
+{
+  "Accl.CICD.enable_rbac_for_deployment_approvals": null,
+  "Accl.CICD.App": null,
+  "Accl.CICD.project_management_system": null,
+  "Accl.CICD.source_code_repository": null,
+  "Accl.CICD.aqs_min_score_to_pass": null
+}

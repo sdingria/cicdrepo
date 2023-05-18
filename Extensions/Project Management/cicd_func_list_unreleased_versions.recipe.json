@@ -1,0 +1,261 @@
+{
+  "name": "CICD | FUNC | List Unreleased Versions",
+  "description": "When there is a function call, do action and other actions",
+  "version": 6,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "2c336478",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "result_schema_json": "[{\"name\":\"releases\",\"type\":\"array\",\"of\":\"object\",\"label\":\"Releases\",\"optional\":true,\"properties\":[{\"control_type\":\"text\",\"label\":\"Name\",\"name\":\"name\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"Description\",\"name\":\"description\",\"type\":\"string\",\"optional\":true},{\"control_type\":\"text\",\"label\":\"ID\",\"name\":\"id\",\"type\":\"string\",\"optional\":true}]}]",
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Project ID\",\"name\":\"project_id\",\"type\":\"string\",\"optional\":false}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Project ID",
+            "name": "project_id",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "=_('data.workato.job_context.account_properties.Accl_CICD_project_management_system', 'account_property', 'Accl.CICD.project_management_system').downcase",
+              "rhs": "jira",
+              "uuid": "condition-442df69b-6313-4e00-952d-7adb61271d26"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "4e98ec69",
+            "title": null,
+            "description": "Call <span class=\"provider\">CICD | FUNC | List Jira Unreleased Versions</span>",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "CICD | FUNC | List Jira Unreleased Versions"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "Extensions/Project Management/Jira/cicd_func_list_jira_unreleased_versions.recipe.json",
+                "name": "CICD | FUNC | List Jira Unreleased Versions",
+                "folder": "Extensions/Project Management/Jira"
+              },
+              "parameters": {
+                "projectIdOrKey": "#{_('data.workato_recipe_function.2c336478.parameters.project_id')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "name": "project_versions",
+                    "type": "array",
+                    "of": "object",
+                    "label": "Project versions",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Description",
+                        "name": "description",
+                        "type": "string",
+                        "optional": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string",
+                        "optional": true
+                      }
+                    ]
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Project ID or key",
+                    "name": "projectIdOrKey",
+                    "type": "string",
+                    "optional": false
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "18b726e6-a8e7-4d53-b292-7bb1612929e7"
+          }
+        ],
+        "uuid": "a0f62850-1f27-4e06-b288-c0029b4b09b6"
+      },
+      {
+        "number": 3,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "ee9eb85e",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "result": {
+            "releases": {
+              "____source": "#{_('data.workato_recipe_function.4e98ec69.result.project_versions')}",
+              "name": "#{_('data.workato_recipe_function.4e98ec69.result.project_versions.first.name')}",
+              "description": "#{_('data.workato_recipe_function.4e98ec69.result.project_versions.first.description')}",
+              "id": "#{_('data.workato_recipe_function.4e98ec69.result.project_versions.first.id')}"
+            }
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "releases",
+                "type": "array",
+                "of": "object",
+                "label": "Releases",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "name": "releases",
+                "type": "array",
+                "of": "object",
+                "label": "Releases",
+                "optional": true,
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "string",
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "ID",
+                    "name": "id",
+                    "type": "string",
+                    "optional": true
+                  }
+                ]
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "result.releases.name",
+          "result.releases.description",
+          "result.releases.id"
+        ],
+        "uuid": "33f87fbe-00ee-421f-8c23-3250b9ec2e08"
+      }
+    ],
+    "uuid": "19e4d21d-f902-4cc6-a76e-8b1fb09a543d"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

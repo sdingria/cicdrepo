@@ -1,0 +1,75 @@
+{
+  "name": "CICD | LT | Pipeline Execution",
+  "schema": [
+    {
+      "control_type": "text",
+      "label": "Execution Reference",
+      "name": "col1",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Pipeline Configuration ID",
+      "name": "col2",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Project Configuration ID",
+      "name": "col3",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Pipeline Context",
+      "name": "col4",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Promote Context",
+      "name": "col5",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Stage",
+      "name": "col6",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Status",
+      "name": "col7",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Job URL",
+      "name": "col8",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Comments",
+      "name": "col9",
+      "type": "string",
+      "sticky": true
+    },
+    {
+      "control_type": "text",
+      "label": "Execution Audit",
+      "name": "col10",
+      "type": "string",
+      "sticky": true
+    }
+  ]
+}

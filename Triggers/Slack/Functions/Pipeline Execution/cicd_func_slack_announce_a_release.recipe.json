@@ -1,0 +1,1651 @@
+{
+  "name": "CICD | FUNC | (Slack) Announce a release",
+  "description": "When there is a function call, do action",
+  "version": 23,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "5e6471ee",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"project_config_id\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Project config ID\"},{\"name\":\"pipeline_execution_reference\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Pipeline execution reference\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Project config ID",
+            "name": "project_config_id",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "Pipeline execution reference",
+            "name": "pipeline_execution_reference",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "b84dcda5",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Deployment Details</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Deployment Details"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_deployment_details.lookup_table.json",
+            "name": "CICD | LT | Deployment Details",
+            "folder": ""
+          },
+          "parameters": {
+            "col1": "#{_('data.workato_recipe_function.5e6471ee.parameters.pipeline_execution_reference')}",
+            "col4": "#{_('data.workato_recipe_function.5e6471ee.parameters.project_config_id')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Execution Reference",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Configuration Id",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Configuration Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Package Version",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Package Id",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployed On",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "isActive",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "label": "Entry",
+                "type": "object",
+                "name": "entry"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Pipeline Execution Reference",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Pipeline Configuration Id",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Configuration Id",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Name",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Package Version",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Package Id",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Deployed On",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "isActive",
+                "name": "col9",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Comments",
+                "name": "col10",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "cb02e444-51e4-4238-b019-3a252e84ab5f"
+      },
+      {
+        "number": 2,
+        "provider": "lookup_table",
+        "name": "search_entries",
+        "as": "02f44d2b",
+        "title": null,
+        "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Deployment Details</span>\n      lookup table\n    ",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "lookup_table_id": "CICD | LT | Deployment Details"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "lookup_table_id": {
+            "zip_name": "cicd_lt_deployment_details.lookup_table.json",
+            "name": "CICD | LT | Deployment Details",
+            "folder": ""
+          },
+          "parameters": {
+            "col4": "#{_('data.workato_recipe_function.5e6471ee.parameters.project_config_id')}",
+            "col3": "#{_('data.lookup_table.b84dcda5.entries.first.entry.col3')}",
+            "col6": "#{_('data.lookup_table.b84dcda5.entries.first.entry.col6')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Entries",
+            "name": "entries",
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "parse_output": "integer_conversion",
+                "type": "integer",
+                "name": "id"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Execution Reference",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Configuration Id",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Configuration Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Package Version",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Package Id",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deployed On",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "isActive",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "label": "Entry",
+                "type": "object",
+                "name": "entry"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "hint": "Provide one or more entry fields to search the entry",
+            "label": "Search by",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Pipeline Execution Reference",
+                "name": "col1",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Pipeline Configuration Id",
+                "name": "col2",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Environment",
+                "name": "col3",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Configuration Id",
+                "name": "col4",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Project Name",
+                "name": "col5",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Package Version",
+                "name": "col6",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Package Id",
+                "name": "col7",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Deployed On",
+                "name": "col8",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "isActive",
+                "name": "col9",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              },
+              {
+                "control_type": "text",
+                "label": "Comments",
+                "name": "col10",
+                "type": "string",
+                "sticky": true,
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "comment": "Search if release is already existing",
+        "uuid": "3bce9439-655d-4280-aae0-897efc2ebe63"
+      },
+      {
+        "number": 3,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_('data.lookup_table.02f44d2b.entries.first.____Size', 'list_meta', '____Size', 'data.lookup_table.02f44d2b.entries')}",
+              "rhs": "1",
+              "uuid": "condition-2df84d54-23da-449c-a0db-48b7a5f74f57"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 4,
+            "provider": "lookup_table",
+            "name": "search_entries",
+            "as": "4c3d2327",
+            "title": null,
+            "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Execution</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | Pipeline Execution"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_pipeline_execution.lookup_table.json",
+                "name": "CICD | LT | Pipeline Execution",
+                "folder": ""
+              },
+              "parameters": {
+                "col1": "#{_('data.workato_recipe_function.5e6471ee.parameters.pipeline_execution_reference')}",
+                "col6": "Deploy"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Entries",
+                "name": "entries",
+                "of": "object",
+                "properties": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "id"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Execution Reference",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Pipeline Configuration ID",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Project Configuration ID",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Pipeline Context",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Promote Context",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Stage",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Status",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Job URL",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Comments",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Created On",
+                        "name": "col10",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Entry",
+                    "type": "object",
+                    "name": "entry"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search the entry",
+                "label": "Search by",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Execution Reference",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Configuration ID",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Configuration ID",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Pipeline Context",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Promote Context",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Stage",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Status",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Job URL",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Comments",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Created On",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "ee4ebfe1-899d-4efe-81f9-d18ef14d4628"
+          },
+          {
+            "number": 5,
+            "provider": "json_parser",
+            "name": "parse_json",
+            "as": "26e551e6",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "sample_document": "{\"project_name\":\"Test Project\",\"deploy_package_id\":\"7838\"}",
+              "document": "=_('data.lookup_table.4c3d2327.entries.first.entry.col4').presence || \"{}\""
+            },
+            "extended_output_schema": [
+              {
+                "label": "Document",
+                "name": "document",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Project name",
+                    "type": "string",
+                    "name": "project_name"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Deploy package ID",
+                    "type": "string",
+                    "name": "deploy_package_id"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "comment": "Parse deployment package details",
+            "uuid": "126fae73-e107-4583-a08b-a092b215501b"
+          },
+          {
+            "number": 6,
+            "provider": "lookup_table",
+            "name": "search_entries",
+            "as": "f63dadf3",
+            "title": null,
+            "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Project Configuration</span>\n      lookup table\n    ",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "CICD | LT | Project Configuration"
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "cicd_lt_project_configuration.lookup_table.json",
+                "name": "CICD | LT | Project Configuration",
+                "folder": ""
+              },
+              "parameters": {
+                "col1": "#{_('data.workato_recipe_function.5e6471ee.parameters.project_config_id')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Entries",
+                "name": "entries",
+                "of": "object",
+                "properties": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "parse_output": "integer_conversion",
+                    "type": "integer",
+                    "name": "id"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Project Name",
+                        "name": "col2",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Asset Environment",
+                        "name": "col3",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Asset Id",
+                        "name": "col4",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Asset Type",
+                        "name": "col5",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Code Repository",
+                        "name": "col6",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Notification Settings",
+                        "name": "col7",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Dependencies",
+                        "name": "col8",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Target Folder Details",
+                        "name": "col9",
+                        "type": "string",
+                        "sticky": true
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Last Updated",
+                        "name": "col10",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "label": "Entry",
+                    "type": "object",
+                    "name": "entry"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search the entry",
+                "label": "Search by",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Project Name",
+                    "name": "col2",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Environment",
+                    "name": "col3",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Id",
+                    "name": "col4",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Asset Type",
+                    "name": "col5",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Code Repository",
+                    "name": "col6",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Notification Settings",
+                    "name": "col7",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Dependencies",
+                    "name": "col8",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Target Folder Details",
+                    "name": "col9",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Last Updated",
+                    "name": "col10",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "9d822c8f-6fc5-4226-95f8-1f4052dd26dc"
+          },
+          {
+            "number": 7,
+            "provider": "json_parser",
+            "name": "parse_json",
+            "as": "f974e6a7",
+            "title": null,
+            "description": null,
+            "keyword": "action",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+              "sample_document": "{\"reviewer_notification_id\":\"sample_id\", \"release_announcement\":\"sample_channel\"}",
+              "document": "=_('data.lookup_table.f63dadf3.entries.first.entry.col7').presence || \"{}\""
+            },
+            "extended_output_schema": [
+              {
+                "label": "Document",
+                "name": "document",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Reviewer notification ID",
+                    "type": "string",
+                    "name": "reviewer_notification_id"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Release announcement",
+                    "type": "string",
+                    "name": "release_announcement"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "comment": "Parse release announcement channel details",
+            "uuid": "2566cf99-5d26-414d-97ff-32b9f1e0eed5"
+          },
+          {
+            "number": 8,
+            "keyword": "try",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+            },
+            "block": [
+              {
+                "number": 9,
+                "keyword": "if",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "type": "compound",
+                  "operand": "and",
+                  "conditions": [
+                    {
+                      "operand": "present",
+                      "lhs": "#{_('data.json_parser.f974e6a7.document.release_announcement')}",
+                      "rhs": "",
+                      "uuid": "condition-0c94048a-fe79-4612-93ef-851ce0588569"
+                    }
+                  ]
+                },
+                "block": [
+                  {
+                    "number": 10,
+                    "provider": "slack_bot",
+                    "name": "post_bot_message",
+                    "as": "e4f9d9fc",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "channel": true,
+                      "message.color": true
+                    },
+                    "input": {
+                      "channel": "#{_('data.json_parser.f974e6a7.document.release_announcement')}",
+                      "message": {
+                        "color": "good",
+                        "pretext": ":bookmark: *New release created*"
+                      },
+                      "attachment_fields": [
+                        {
+                          "title": "Project Name",
+                          "value": "#{_('data.lookup_table.f63dadf3.entries.first.entry.col2')}"
+                        },
+                        {
+                          "title": "Release Version",
+                          "value": "#{_('data.lookup_table.b84dcda5.entries.first.entry.col6')}"
+                        },
+                        {
+                          "title": "Package ID",
+                          "value": "#{_('data.json_parser.26e551e6.document.deploy_package_id')}"
+                        },
+                        {
+                          "title": "Pipeline Execution Reference",
+                          "value": "#{_('data.workato_recipe_function.5e6471ee.parameters.pipeline_execution_reference')}"
+                        },
+                        {
+                          "title": "Released On",
+                          "value": "=_('data.lookup_table.b84dcda5.entries.first.entry.col8').to_time.strftime(\"%A, %d %B %Y\")"
+                        },
+                        {
+                          "title": "Comment",
+                          "value": "=_('data.lookup_table.b84dcda5.entries.first.entry.col10').presence || \"[None]\""
+                        }
+                      ]
+                    },
+                    "visible_config_fields": [
+                      "blocks",
+                      "blocks.block_type",
+                      "blocks.section_text",
+                      "blocks.image_url",
+                      "blocks.alt_text",
+                      "blocks.button_title",
+                      "blocks.url",
+                      "blocks.bot_command",
+                      "blocks.params",
+                      "blocks.style",
+                      "blocks.attachment_fields",
+                      "blocks.attachment_fields.value",
+                      "blocks.placeholder_text",
+                      "blocks.menu_type",
+                      "blocks.dynamic_menu_recipe",
+                      "blocks.field_name",
+                      "blocks.options",
+                      "blocks.options.title",
+                      "blocks.options.bot_command",
+                      "blocks.options.params",
+                      "blocks.options.init_value",
+                      "blocks.init_option",
+                      "blocks.initial_date",
+                      "blocks.options.value",
+                      "blocks.init_options",
+                      "blocks.image_title",
+                      "blocks.external_id",
+                      "blocks.elements",
+                      "blocks.elements.type",
+                      "blocks.elements.text",
+                      "blocks.elements.image_url",
+                      "blocks.elements.alt_text",
+                      "blocks.actions",
+                      "blocks.actions.type",
+                      "blocks.actions.button_title",
+                      "blocks.actions.url",
+                      "blocks.actions.bot_command",
+                      "blocks.actions.params",
+                      "blocks.actions.style",
+                      "blocks.actions.placeholder_text",
+                      "blocks.actions.initial_date",
+                      "blocks.actions.field_name",
+                      "blocks.actions.options",
+                      "blocks.actions.options.params",
+                      "blocks.actions.menu_type",
+                      "blocks.actions.dynamic_menu_recipe",
+                      "blocks.objects",
+                      "blocks.objects.blocks",
+                      "blocks.objects.blocks.block_type",
+                      "blocks.objects.blocks.section_text",
+                      "blocks.objects.blocks.image_url",
+                      "blocks.objects.blocks.alt_text",
+                      "blocks.objects.blocks.button_title",
+                      "blocks.objects.blocks.url",
+                      "blocks.objects.blocks.bot_command",
+                      "blocks.objects.blocks.params",
+                      "blocks.objects.blocks.style",
+                      "blocks.objects.blocks.attachment_fields",
+                      "blocks.objects.blocks.attachment_fields.value",
+                      "blocks.objects.blocks.placeholder_text",
+                      "blocks.objects.blocks.menu_type",
+                      "blocks.objects.blocks.dynamic_menu_recipe",
+                      "blocks.objects.blocks.field_name",
+                      "blocks.objects.blocks.options",
+                      "blocks.objects.blocks.options.title",
+                      "blocks.objects.blocks.options.bot_command",
+                      "blocks.objects.blocks.options.params",
+                      "blocks.objects.blocks.options.init_value",
+                      "blocks.objects.blocks.init_option",
+                      "blocks.objects.blocks.initial_date",
+                      "blocks.objects.blocks.image_title",
+                      "blocks.objects.blocks.elements",
+                      "blocks.objects.blocks.elements.type",
+                      "blocks.objects.blocks.elements.text",
+                      "blocks.objects.blocks.elements.image_url",
+                      "blocks.objects.blocks.elements.alt_text",
+                      "blocks.objects.blocks.actions",
+                      "blocks.objects.blocks.actions.type",
+                      "blocks.objects.blocks.actions.button_title",
+                      "blocks.objects.blocks.actions.url",
+                      "blocks.objects.blocks.actions.bot_command",
+                      "blocks.objects.blocks.actions.params",
+                      "blocks.objects.blocks.actions.style",
+                      "blocks.objects.blocks.actions.placeholder_text",
+                      "blocks.objects.blocks.actions.initial_date",
+                      "blocks.objects.blocks.actions.field_name",
+                      "blocks.objects.blocks.actions.options",
+                      "blocks.objects.blocks.actions.options.params",
+                      "blocks.objects.blocks.actions.menu_type",
+                      "blocks.objects.blocks.actions.dynamic_menu_recipe",
+                      "text",
+                      "message.title",
+                      "message.title_link",
+                      "message.attachment_text",
+                      "message.color",
+                      "attachment_fields",
+                      "attachment_buttons",
+                      "attachment_items.message.title",
+                      "attachment_items.message.title_link",
+                      "attachment_items.message.attachment_text",
+                      "attachment_items.message.color",
+                      "attachment_items.attachment_fields",
+                      "attachment_items.attachment_buttons",
+                      "advanced.ts",
+                      "attachment_fields.title",
+                      "attachment_fields.value",
+                      "message.footer",
+                      "channel",
+                      "message",
+                      "message.pretext"
+                    ],
+                    "uuid": "58d2a99b-c546-420d-b36a-562a876ce7eb"
+                  }
+                ],
+                "uuid": "182461ac-2758-499f-9ce9-2bb58cc9ada5"
+              },
+              {
+                "number": 11,
+                "as": "843c22d5",
+                "keyword": "catch",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                  "max_retry_count": "0",
+                  "retry_interval": "2"
+                },
+                "block": [
+                  {
+                    "number": 12,
+                    "provider": "lookup_table",
+                    "name": "search_entries",
+                    "as": "330a63d2",
+                    "title": null,
+                    "description": "\n      Search\n      <span class=\"provider\">entries</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Execution</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | Pipeline Execution"
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_pipeline_execution.lookup_table.json",
+                        "name": "CICD | LT | Pipeline Execution",
+                        "folder": ""
+                      },
+                      "parameters": {
+                        "col1": "#{_('data.workato_recipe_function.5e6471ee.parameters.pipeline_execution_reference')}",
+                        "col6": "Main"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "label": "Entries",
+                        "name": "entries",
+                        "of": "object",
+                        "properties": [
+                          {
+                            "control_type": "number",
+                            "label": "Entry ID",
+                            "parse_output": "integer_conversion",
+                            "type": "integer",
+                            "name": "id"
+                          },
+                          {
+                            "properties": [
+                              {
+                                "control_type": "text",
+                                "label": "Execution Reference",
+                                "name": "col1",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Pipeline Configuration ID",
+                                "name": "col2",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Project Configuration ID",
+                                "name": "col3",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Pipeline Context",
+                                "name": "col4",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Promote Context",
+                                "name": "col5",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Stage",
+                                "name": "col6",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Status",
+                                "name": "col7",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Job URL",
+                                "name": "col8",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Comments",
+                                "name": "col9",
+                                "type": "string",
+                                "sticky": true
+                              },
+                              {
+                                "control_type": "text",
+                                "label": "Created On",
+                                "name": "col10",
+                                "type": "string",
+                                "sticky": true
+                              }
+                            ],
+                            "label": "Entry",
+                            "type": "object",
+                            "name": "entry"
+                          }
+                        ],
+                        "type": "array"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Provide one or more entry fields to search the entry",
+                        "label": "Search by",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Execution Reference",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline Configuration ID",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Project Configuration ID",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline Context",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Promote Context",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Status",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Job URL",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Comments",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Created On",
+                            "name": "col10",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "a0f995ad-2858-4731-84a8-67116ca9edd9"
+                  },
+                  {
+                    "number": 13,
+                    "provider": "lookup_table",
+                    "name": "update_entry",
+                    "as": "a5def7fa",
+                    "title": null,
+                    "description": "\n      Update\n      <span class=\"provider\">entry</span>\n      in\n      <span class=\"provider\">CICD | LT | Pipeline Execution</span>\n      lookup table\n    ",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                      "lookup_table_id": "CICD | LT | Pipeline Execution"
+                    },
+                    "toggleCfg": {
+                      "ignore_not_found": true
+                    },
+                    "input": {
+                      "ignore_not_found": "false",
+                      "lookup_table_id": {
+                        "zip_name": "cicd_lt_pipeline_execution.lookup_table.json",
+                        "name": "CICD | LT | Pipeline Execution",
+                        "folder": ""
+                      },
+                      "id": "#{_('data.lookup_table.330a63d2.entries.first.id')}",
+                      "parameters": {
+                        "col7": "ERROR",
+                        "col9": "#{_('data.catch.843c22d5.message')}",
+                        "col10": "=now"
+                      }
+                    },
+                    "extended_output_schema": [
+                      {
+                        "control_type": "number",
+                        "label": "Entry ID",
+                        "name": "id",
+                        "type": "integer",
+                        "parse_output": "integer_conversion"
+                      },
+                      {
+                        "label": "Entry",
+                        "name": "entry",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Execution Reference",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline Configuration ID",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Project Configuration ID",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline Context",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Promote Context",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Status",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Job URL",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Comments",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Created On",
+                            "name": "col10",
+                            "type": "string",
+                            "sticky": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "extended_input_schema": [
+                      {
+                        "hint": "Fill the fields you want to update",
+                        "label": "Entry fields",
+                        "name": "parameters",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Execution Reference",
+                            "name": "col1",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline Configuration ID",
+                            "name": "col2",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Project Configuration ID",
+                            "name": "col3",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Pipeline Context",
+                            "name": "col4",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Promote Context",
+                            "name": "col5",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Stage",
+                            "name": "col6",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Status",
+                            "name": "col7",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Job URL",
+                            "name": "col8",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Comments",
+                            "name": "col9",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Created On",
+                            "name": "col10",
+                            "type": "string",
+                            "sticky": true,
+                            "optional": true
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "uuid": "b9aeb119-58f9-42fa-83f1-a7ff5aed719b"
+                  }
+                ],
+                "uuid": "091e17e6-3dc1-4ddc-a29f-37e748485462"
+              }
+            ],
+            "uuid": "481fda1a-38e7-4bb7-a387-5d5121e6feab"
+          }
+        ],
+        "comment": "Announce only if the release is being done for the first time",
+        "uuid": "a63a65f0-fd5d-41ca-9d5d-487582f64973"
+      }
+    ],
+    "uuid": "bc792c09-1ac5-4e9e-8bdd-2b5dbaf136f3"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Connections/cicd_con_workbot_for_slack.connection.json",
+        "name": "CICD | CON | Workbot for Slack",
+        "folder": "Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "json_parser",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}
